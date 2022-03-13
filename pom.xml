@@ -35,6 +35,11 @@
                 <artifactId>document-manager-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.luoyanze</groupId>
+                <artifactId>document-manager-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
