@@ -1,4 +1,4 @@
-package cn.luoyanze.documentmanager.Utils;
+package cn.luoyanze.documentmanager.util;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
