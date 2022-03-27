@@ -60,7 +60,7 @@
                     </jdbc>
                     <generator>
                         <database>
-                            <includes>.*</includes>
+                            <includes>S1_.*</includes>
                             <inputSchema>document_manager</inputSchema>
                         </database>
                         <generate>
@@ -70,6 +70,26 @@
                             <packageName>cn.luoyanze.documentmanager.dao</packageName>
                             <directory>src/main/java</directory>
                         </target>
+
+                        <strategy>
+                            <matchers>
+                                <tables>
+                                    <table>
+                                        <expression>^(.*)$</expression>
+                                        <tableClass>
+                                            <!-- table的后缀为TB -->
+                                            <transform>PASCAL</transform>
+                                            <expression>$1_T_B</expression>
+                                        </tableClass>
+                                        <pojoClass>
+                                            <!-- pojo后缀为BO，作为内部使用的简单对象-->
+                                            <transform>PASCAL</transform>
+                                            <expression>$1_B_O</expression>
+                                        </pojoClass>
+                                    </table>
+                                </tables>
+                            </matchers>
+                        </strategy>
                     </generator>
                 </configuration>
             </plugin>
