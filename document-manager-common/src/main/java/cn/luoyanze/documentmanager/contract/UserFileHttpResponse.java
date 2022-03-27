@@ -1,6 +1,7 @@
 package cn.luoyanze.documentmanager.contract;
 
-import cn.luoyanze.documentmanager.model.Head;
+import cn.luoyanze.documentmanager.contract.entity.File;
+import cn.luoyanze.documentmanager.contract.entity.Head;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -17,11 +18,27 @@ public class UserFileHttpResponse {
     @JsonProperty("head")
     private Head head;
 
+    @JsonProperty("fileInfo")
+    private File file;
+
+    public UserFileHttpResponse(Head head, File file) {
+        this.head = head;
+        this.file = file;
+    }
+
     public Head getHead() {
         return head;
     }
 
     public void setHead(Head head) {
         this.head = head;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 }
