@@ -1,10 +1,11 @@
 package cn.luoyanze.documentmanager.controller;
 
+import cn.luoyanze.documentmanager.contract.*;
+import cn.luoyanze.documentmanager.service.UserCommentApiService;
+import cn.luoyanze.documentmanager.service.UserFileApiService;
+import cn.luoyanze.documentmanager.service.UserMenuApiService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -14,21 +15,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "api/user")
 public class UserController {
+
+    private final UserCommentApiService userCommentApiService;
+    private final UserFileApiService userFileApiService;
+    private final UserMenuApiService userMenuApiService;
+
+    public UserController(UserCommentApiService userCommentApiService, UserFileApiService userFileApiService, UserMenuApiService userMenuApiService) {
+        this.userCommentApiService = userCommentApiService;
+        this.userFileApiService = userFileApiService;
+        this.userMenuApiService = userMenuApiService;
+    }
+
     @PostMapping("/menu")
     @ResponseBody
-    public String executeMenu() {
-        return "";
+    public UserMenuHttpResponse executeMenu(@RequestBody UserMenuHttpRequset request) {
+        return userMenuApiService.excute(request);
     }
 
     @PostMapping("/comment")
     @ResponseBody
-    public String executeComment() {
-        return "";
+    public UserCommentHttpResponse executeComment(@RequestBody UserCommentHttpRequset request) {
+        return userCommentApiService.excute(request);
     }
 
     @PostMapping("/file")
     @ResponseBody
-    public String executeFile() {
-        return "";
+    public UserFileHttpResponse executeFile(@RequestBody UserFileHttpRequset request) {
+        return userFileApiService.excute(request);
     }
 }
