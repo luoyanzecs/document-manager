@@ -1,4 +1,4 @@
-package cn.luoyanze.documentmanager.model;
+package cn.luoyanze.documentmanager.contract.entity;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
