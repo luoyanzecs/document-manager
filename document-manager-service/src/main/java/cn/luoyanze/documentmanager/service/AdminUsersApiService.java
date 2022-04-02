@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
  * @Date 2022/3/27 2:04 PM
  */
 
-@Service
 public interface AdminUsersApiService {
 
     AdminUsersHttpResponse execute(AdminUsersHttpRequest requset);

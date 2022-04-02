@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
  * @Date 2022/3/27 2:17 PM
  */
 
-@Service
 public interface UserMenuApiService {
 
     FileMenuHttpResponse excute(FileMenuHttpRequset requset);

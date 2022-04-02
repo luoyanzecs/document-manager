@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
  * @Date 2022/3/27 2:24 PM
  */
 
-@Service
 public interface LoginApiService {
 
     LoginHttpResponse excute(LoginHttpRequset requset);

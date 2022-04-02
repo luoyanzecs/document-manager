@@ -3,12 +3,13 @@ package cn.luoyanze.documentmanager.service.impl;
 import cn.luoyanze.documentmanager.contract.UserFileHttpRequset;
 import cn.luoyanze.documentmanager.contract.UserFileHttpResponse;
 import cn.luoyanze.documentmanager.service.UserFileApiService;
+import org.springframework.stereotype.Service;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 2:21 PM
  */
-
+@Service
 public class UserFileApiServiceImpl implements UserFileApiService {
 
     @Override
