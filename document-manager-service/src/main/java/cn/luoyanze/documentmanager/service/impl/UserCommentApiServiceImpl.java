@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.service.impl;
 
-import cn.luoyanze.documentmanager.contract.UserCommentHttpRequset;
-import cn.luoyanze.documentmanager.contract.UserCommentHttpResponse;
+import cn.luoyanze.documentmanager.contract.FileCommentHttpRequset;
+import cn.luoyanze.documentmanager.contract.FileCommentHttpResponse;
 import cn.luoyanze.documentmanager.service.UserCommentApiService;
 
 /**
@@ -12,7 +12,7 @@ import cn.luoyanze.documentmanager.service.UserCommentApiService;
 public class UserCommentApiServiceImpl implements UserCommentApiService {
 
     @Override
-    public UserCommentHttpResponse excute(UserCommentHttpRequset requset) {
+    public FileCommentHttpResponse excute(FileCommentHttpRequset requset) {
         return null;
     }
 }

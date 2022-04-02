@@ -1,6 +1,6 @@
 package cn.luoyanze.documentmanager.contract;
 
-import cn.luoyanze.documentmanager.contract.entity.Head;
+import cn.luoyanze.documentmanager.contract.entity.ResponseHead;
 import cn.luoyanze.documentmanager.contract.entity.Notice;
 
 import java.util.List;
@@ -15,20 +15,20 @@ public class NoticeHttpResponse {
     /**
      * 头信息
      */
-    private Head head;
+    private ResponseHead head;
 
     private List<Notice> notices;
 
-    public NoticeHttpResponse(Head head, List<Notice> notices) {
+    public NoticeHttpResponse(ResponseHead head, List<Notice> notices) {
         this.head = head;
         this.notices = notices;
     }
 
-    public Head getHead() {
+    public ResponseHead getHead() {
         return head;
     }
 
-    public void setHead(Head head) {
+    public void setHead(ResponseHead head) {
         this.head = head;
     }
 

@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.service;
 
-import cn.luoyanze.documentmanager.contract.UserMenuHttpRequset;
-import cn.luoyanze.documentmanager.contract.UserMenuHttpResponse;
+import cn.luoyanze.documentmanager.contract.FileMenuHttpRequset;
+import cn.luoyanze.documentmanager.contract.FileMenuHttpResponse;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,5 +12,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserMenuApiService {
 
-    UserMenuHttpResponse excute(UserMenuHttpRequset requset);
+    FileMenuHttpResponse excute(FileMenuHttpRequset requset);
 }

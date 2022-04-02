@@ -1,6 +1,6 @@
 package cn.luoyanze.documentmanager.contract;
 
-import cn.luoyanze.documentmanager.contract.entity.Head;
+import cn.luoyanze.documentmanager.contract.entity.ResponseHead;
 import cn.luoyanze.documentmanager.contract.entity.Menu;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,13 +12,13 @@ import java.util.List;
  */
 
 
-public class UserMenuHttpResponse {
+public class FileMenuHttpResponse {
 
     /**
      * 头信息
      */
     @JsonProperty("head")
-    private Head head;
+    private ResponseHead head;
 
     /**
      * 目录列表
@@ -26,17 +26,17 @@ public class UserMenuHttpResponse {
     @JsonProperty("items")
     private List<Menu> menus;
 
-    public UserMenuHttpResponse(Head head, List<Menu> menus) {
+    public FileMenuHttpResponse(ResponseHead head, List<Menu> menus) {
         this.head = head;
         this.menus = menus;
     }
 
 
-    public Head getHead() {
+    public ResponseHead getHead() {
         return head;
     }
 
-    public void setHead(Head head) {
+    public void setHead(ResponseHead head) {
         this.head = head;
     }
 

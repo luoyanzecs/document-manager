@@ -1,6 +1,6 @@
 package cn.luoyanze.documentmanager.contract;
 
-import cn.luoyanze.documentmanager.contract.entity.Head;
+import cn.luoyanze.documentmanager.contract.entity.ResponseHead;
 import cn.luoyanze.documentmanager.contract.entity.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,7 +16,7 @@ public class LoginHttpResponse {
      * 头信息
      */
     @JsonProperty("head")
-    private Head head;
+    private ResponseHead head;
 
     /**
      * 状态
@@ -30,7 +30,7 @@ public class LoginHttpResponse {
     @JsonProperty("userInfo")
     private User user;
 
-    public LoginHttpResponse(Head head, boolean status, User user) {
+    public LoginHttpResponse(ResponseHead head, boolean status, User user) {
         this.head = head;
         this.status = status;
         this.user = user;
@@ -61,11 +61,11 @@ public class LoginHttpResponse {
         this.user = user;
     }
 
-    public Head getHead() {
+    public ResponseHead getHead() {
         return head;
     }
 
-    public void setHead(Head head) {
+    public void setHead(ResponseHead head) {
         this.head = head;
     }
 }

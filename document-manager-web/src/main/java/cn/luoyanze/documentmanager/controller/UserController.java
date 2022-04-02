@@ -28,13 +28,13 @@ public class UserController {
 
     @PostMapping("/menu")
     @ResponseBody
-    public UserMenuHttpResponse executeMenu(@RequestBody UserMenuHttpRequset request) {
+    public FileMenuHttpResponse executeMenu(@RequestBody FileMenuHttpRequset request) {
         return userMenuApiService.excute(request);
     }
 
     @PostMapping("/comment")
     @ResponseBody
-    public UserCommentHttpResponse executeComment(@RequestBody UserCommentHttpRequset request) {
+    public FileCommentHttpResponse executeComment(@RequestBody FileCommentHttpRequset request) {
         return userCommentApiService.excute(request);
     }
 

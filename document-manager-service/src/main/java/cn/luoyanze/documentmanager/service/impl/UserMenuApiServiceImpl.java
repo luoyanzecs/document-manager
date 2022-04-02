@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.service.impl;
 
-import cn.luoyanze.documentmanager.contract.UserMenuHttpRequset;
-import cn.luoyanze.documentmanager.contract.UserMenuHttpResponse;
+import cn.luoyanze.documentmanager.contract.FileMenuHttpRequset;
+import cn.luoyanze.documentmanager.contract.FileMenuHttpResponse;
 import cn.luoyanze.documentmanager.service.UserMenuApiService;
 
 /**
@@ -12,7 +12,7 @@ import cn.luoyanze.documentmanager.service.UserMenuApiService;
 
 public class UserMenuApiServiceImpl implements UserMenuApiService {
     @Override
-    public UserMenuHttpResponse excute(UserMenuHttpRequset requset) {
+    public FileMenuHttpResponse excute(FileMenuHttpRequset requset) {
         return null;
     }
 }
