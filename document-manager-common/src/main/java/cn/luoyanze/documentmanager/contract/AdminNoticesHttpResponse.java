@@ -1,6 +1,6 @@
 package cn.luoyanze.documentmanager.contract;
 
-import cn.luoyanze.documentmanager.contract.entity.Head;
+import cn.luoyanze.documentmanager.contract.entity.ResponseHead;
 import cn.luoyanze.documentmanager.contract.entity.NoticeInAdmin;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,7 +17,7 @@ public class AdminNoticesHttpResponse {
      * 头信息
      */
     @JsonProperty("head")
-    private Head head;
+    private ResponseHead head;
 
     @JsonProperty("fields")
     private List<String> fields;
@@ -37,7 +37,7 @@ public class AdminNoticesHttpResponse {
     @JsonProperty("items")
     private List<NoticeInAdmin> notices;
 
-    public AdminNoticesHttpResponse(Head head, List<String> fields, List<String> keys, List<Integer> cols, Integer currentPage, Integer totalPage, List<NoticeInAdmin> notices) {
+    public AdminNoticesHttpResponse(ResponseHead head, List<String> fields, List<String> keys, List<Integer> cols, Integer currentPage, Integer totalPage, List<NoticeInAdmin> notices) {
         this.head = head;
         this.fields = fields;
         this.keys = keys;
@@ -47,11 +47,11 @@ public class AdminNoticesHttpResponse {
         this.notices = notices;
     }
 
-    public Head getHead() {
+    public ResponseHead getHead() {
         return head;
     }
 
-    public void setHead(Head head) {
+    public void setHead(ResponseHead head) {
         this.head = head;
     }
 

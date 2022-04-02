@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.contract;
 
 import cn.luoyanze.documentmanager.contract.entity.FileInAdmin;
-import cn.luoyanze.documentmanager.contract.entity.Head;
+import cn.luoyanze.documentmanager.contract.entity.ResponseHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class AdminFilesHttpResponse {
      * 头信息
      */
     @JsonProperty("head")
-    private Head head;
+    private ResponseHead head;
 
     @JsonProperty("fields")
     private List<String> fields;
@@ -36,7 +36,7 @@ public class AdminFilesHttpResponse {
     @JsonProperty("items")
     private List<FileInAdmin> files;
 
-    public AdminFilesHttpResponse(Head head, List<String> fields, List<String> keys, List<Integer> cols, Integer currentPage, Integer totalPage, List<FileInAdmin> files) {
+    public AdminFilesHttpResponse(ResponseHead head, List<String> fields, List<String> keys, List<Integer> cols, Integer currentPage, Integer totalPage, List<FileInAdmin> files) {
         this.head = head;
         this.fields = fields;
         this.keys = keys;
@@ -46,11 +46,11 @@ public class AdminFilesHttpResponse {
         this.files = files;
     }
 
-    public Head getHead() {
+    public ResponseHead getHead() {
         return head;
     }
 
-    public void setHead(Head head) {
+    public void setHead(ResponseHead head) {
         this.head = head;
     }
 

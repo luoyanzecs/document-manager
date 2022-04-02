@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.contract;
 
 import cn.luoyanze.documentmanager.contract.entity.Comment;
-import cn.luoyanze.documentmanager.contract.entity.Head;
+import cn.luoyanze.documentmanager.contract.entity.ResponseHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -12,12 +12,12 @@ import java.util.List;
  *
  * /api/user/comment response
  */
-public class UserCommentHttpResponse {
+public class FileCommentHttpResponse {
     /**
      * 头信息
      */
     @JsonProperty("head")
-    private Head head;
+    private ResponseHead head;
 
     /**
      * 评论列表
@@ -25,17 +25,17 @@ public class UserCommentHttpResponse {
     @JsonProperty("comments")
     private List<Comment> comments;
 
-    public UserCommentHttpResponse(Head head, List<Comment> comments) {
+    public FileCommentHttpResponse(ResponseHead head, List<Comment> comments) {
         this.head = head;
         this.comments = comments;
     }
 
 
-    public Head getHead() {
+    public ResponseHead getHead() {
         return head;
     }
 
-    public void setHead(Head head) {
+    public void setHead(ResponseHead head) {
         this.head = head;
     }
 

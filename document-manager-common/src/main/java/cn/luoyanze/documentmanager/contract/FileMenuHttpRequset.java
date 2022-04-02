@@ -5,20 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
- * @Date 2022/3/27 1:42 PM
+ * @Date 2022/3/27 1:47 PM
  */
 
-
-public class AdminUsersHttpRequest {
+public class FileMenuHttpRequset {
 
     @JsonProperty("head")
     private RequsetHead head;
 
-    @JsonProperty("page")
-    private int page;
-
-    @JsonProperty("pageSize")
-    private int size;
+    @JsonProperty("bu")
+    private String bu;
 
     public RequsetHead getHead() {
         return head;
@@ -28,19 +24,11 @@ public class AdminUsersHttpRequest {
         this.head = head;
     }
 
-    public int getPage() {
-        return page;
+    public String getBu() {
+        return bu;
     }
 
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
+    public void setBu(String bu) {
+        this.bu = bu;
     }
 }

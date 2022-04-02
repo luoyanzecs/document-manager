@@ -4,7 +4,7 @@ package cn.luoyanze.documentmanager.contract.entity;
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 11:28 AM
  */
-public class Head {
+public class ResponseHead {
     /**
      * 状态 成功：success， 失败：error
      */
@@ -20,6 +20,19 @@ public class Head {
      */
     private String massage;
 
+    /**
+     * 时间戳
+     */
+    private String timestamp;
+
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public String getStatus() {
         return status;
