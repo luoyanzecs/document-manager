@@ -1,6 +1,6 @@
 package cn.luoyanze.documentmanager.controller;
 
-import cn.luoyanze.documentmanager.contract.*;
+import cn.luoyanze.common.contract.*;
 import cn.luoyanze.documentmanager.service.UserCommentApiService;
 import cn.luoyanze.documentmanager.service.UserFileApiService;
 import cn.luoyanze.documentmanager.service.UserMenuApiService;

@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.service.impl;
 
-import cn.luoyanze.documentmanager.contract.FileMenuHttpRequset;
-import cn.luoyanze.documentmanager.contract.FileMenuHttpResponse;
+import cn.luoyanze.common.contract.FileMenuHttpRequset;
+import cn.luoyanze.common.contract.FileMenuHttpResponse;
 import cn.luoyanze.documentmanager.service.UserMenuApiService;
 import org.springframework.stereotype.Service;
 

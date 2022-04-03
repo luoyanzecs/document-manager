@@ -1,9 +1,9 @@
 package cn.luoyanze.documentmanager.controller;
 
-import cn.luoyanze.documentmanager.contract.LoginHttpRequset;
-import cn.luoyanze.documentmanager.contract.LoginHttpResponse;
-import cn.luoyanze.documentmanager.contract.NoticeHttpRequset;
-import cn.luoyanze.documentmanager.contract.NoticeHttpResponse;
+import cn.luoyanze.common.contract.LoginHttpRequset;
+import cn.luoyanze.common.contract.LoginHttpResponse;
+import cn.luoyanze.common.contract.NoticeHttpRequset;
+import cn.luoyanze.common.contract.NoticeHttpResponse;
 import cn.luoyanze.documentmanager.service.LoginApiService;
 import cn.luoyanze.documentmanager.service.NoticeApiService;
 import org.springframework.web.bind.annotation.*;

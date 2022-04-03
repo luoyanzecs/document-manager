@@ -1,9 +1,7 @@
 package cn.luoyanze.documentmanager.service.impl;
 
-import cn.luoyanze.documentmanager.contract.AdminRecordsHttpRequset;
-import cn.luoyanze.documentmanager.contract.AdminRecordsHttpResponse;
-import cn.luoyanze.documentmanager.contract.AdminUsersHttpRequest;
-import cn.luoyanze.documentmanager.contract.AdminUsersHttpResponse;
+import cn.luoyanze.common.contract.AdminUsersHttpRequest;
+import cn.luoyanze.common.contract.AdminUsersHttpResponse;
 import cn.luoyanze.documentmanager.service.AdminUsersApiService;
 import org.springframework.stereotype.Service;
 

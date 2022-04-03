@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.service.impl;
 
-import cn.luoyanze.documentmanager.contract.LoginHttpRequset;
-import cn.luoyanze.documentmanager.contract.LoginHttpResponse;
+import cn.luoyanze.common.contract.LoginHttpRequset;
+import cn.luoyanze.common.contract.LoginHttpResponse;
 import cn.luoyanze.documentmanager.service.LoginApiService;
 import org.springframework.stereotype.Service;
 

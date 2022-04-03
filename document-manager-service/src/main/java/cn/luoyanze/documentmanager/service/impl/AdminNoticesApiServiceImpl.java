@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.service.impl;
 
-import cn.luoyanze.documentmanager.contract.AdminNoticesHttpRequest;
-import cn.luoyanze.documentmanager.contract.AdminNoticesHttpResponse;
+import cn.luoyanze.common.contract.AdminNoticesHttpRequest;
+import cn.luoyanze.common.contract.AdminNoticesHttpResponse;
 import cn.luoyanze.documentmanager.service.AdminNoticesApiService;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,7 @@
 package cn.luoyanze.documentmanager.service;
 
-import cn.luoyanze.documentmanager.contract.AdminUsersHttpRequest;
-import cn.luoyanze.documentmanager.contract.AdminUsersHttpResponse;
-import org.springframework.stereotype.Service;
+import cn.luoyanze.common.contract.AdminUsersHttpRequest;
+import cn.luoyanze.common.contract.AdminUsersHttpResponse;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]

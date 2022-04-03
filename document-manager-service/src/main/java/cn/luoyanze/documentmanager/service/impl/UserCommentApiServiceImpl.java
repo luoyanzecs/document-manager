@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.service.impl;
 
-import cn.luoyanze.documentmanager.contract.FileCommentHttpRequset;
-import cn.luoyanze.documentmanager.contract.FileCommentHttpResponse;
+import cn.luoyanze.common.contract.FileCommentHttpRequset;
+import cn.luoyanze.common.contract.FileCommentHttpResponse;
 import cn.luoyanze.documentmanager.service.UserCommentApiService;
 import org.springframework.stereotype.Service;
 

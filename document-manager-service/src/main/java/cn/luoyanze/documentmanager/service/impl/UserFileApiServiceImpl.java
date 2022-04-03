@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.service.impl;
 
-import cn.luoyanze.documentmanager.contract.UserFileHttpRequset;
-import cn.luoyanze.documentmanager.contract.UserFileHttpResponse;
+import cn.luoyanze.common.contract.UserFileHttpRequset;
+import cn.luoyanze.common.contract.UserFileHttpResponse;
 import cn.luoyanze.documentmanager.service.UserFileApiService;
 import org.springframework.stereotype.Service;
 
