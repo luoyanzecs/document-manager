@@ -1,7 +1,7 @@
 use `document_manager`;
 CREATE TABLE `S1_USER` (
     `primary_id`        INT(10)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `uuid`              CHAR(16) NOT NULL COMMENT '用户UUID',
+    `uuid`              CHAR(32) NOT NULL COMMENT '用户UUID',
     `account`           CHAR(16) NOT NULL COMMENT '用户账号',
     `password`          CHAR(16) NOT NULL COMMENT '用户密码',
     `role`              CHAR(10) NOT NULL COMMENT '角色',
@@ -17,7 +17,7 @@ CREATE TABLE `S1_USER` (
 
 CREATE TABLE `S1_DOC` (
     `primary_id`        INT(10)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `uuid`              CHAR(16) NOT NULL COMMENT '文章UUID',
+    `uuid`              CHAR(32) NOT NULL COMMENT '文章UUID',
     `permission_bu`     CHAR(16) COMMENT '允许的部门',
     `authority`         INT COMMENT '允许的等级',
     `status`            INT NOT NULL COMMENT '状态 0已删除， 1正常',
@@ -30,7 +30,7 @@ CREATE TABLE `S1_DOC` (
 
 CREATE TABLE `S1_COMMENT`(
     `primary_id`        INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `uuid`              CHAR(16) NOT NULL COMMENT 'UUID',
+    `uuid`              CHAR(32) NOT NULL COMMENT 'UUID',
     `doc_id`            INT(10) UNSIGNED NOT NULL COMMENT '文章id',
     `ctx`               VARCHAR(2048) NOT NULL COMMENT '评论内容',
     `create_time`       DATETIME NOT NULL COMMENT '评论创建时间',
@@ -50,7 +50,7 @@ CREATE TABLE `S1_OPERATE`(
 
 CREATE TABLE `S1_NOTICE`(
     `primary_id`        INT(10)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `uuid`              CHAR(16) NOT NULL COMMENT 'UUID',
+    `uuid`              CHAR(32) NOT NULL COMMENT 'UUID',
     `type`              INT(2) NOT NULL COMMENT '内容type',
     `content`           VARCHAR(1024) NOT NULL COMMENT '内容',
     `start_time`        DATETIME NOT NULL COMMENT '起始时间',

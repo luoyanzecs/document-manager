@@ -1,15 +1,13 @@
 package cn.luoyanze.documentmanager.service;
 
-import cn.luoyanze.documentmanager.contract.FileMenuHttpRequset;
-import cn.luoyanze.documentmanager.contract.FileMenuHttpResponse;
-import org.springframework.stereotype.Service;
+import cn.luoyanze.common.contract.FileMenuHttpRequset;
+import cn.luoyanze.common.contract.FileMenuHttpResponse;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 2:17 PM
  */
 
-@Service
 public interface UserMenuApiService {
 
     FileMenuHttpResponse excute(FileMenuHttpRequset requset);
