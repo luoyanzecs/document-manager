@@ -41,16 +41,6 @@ public class AdminUsersHttpResponse {
     @JsonProperty("items")
     private List<UserInAdmin> users;
 
-    public AdminUsersHttpResponse(ResponseHead head, List<String> fields, List<String> keys, List<Integer> cols, Integer currentPage, Integer totalPage, List<UserInAdmin> users) {
-        this.head = head;
-        this.fields = fields;
-        this.keys = keys;
-        this.cols = cols;
-        this.currentPage = currentPage;
-        this.totalPage = totalPage;
-        this.users = users;
-    }
-
     public ResponseHead getHead() {
         return head;
     }

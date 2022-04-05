@@ -26,6 +26,8 @@ public class S1DocBO implements Serializable {
     private String        ctx;
     private UInteger      userId;
     private LocalDateTime lastUpdateTime;
+    private String        title;
+    private UInteger      dirId;
     private UInteger      lastUpdateUserId;
 
     public S1DocBO() {}
@@ -39,6 +41,8 @@ public class S1DocBO implements Serializable {
         this.ctx = value.ctx;
         this.userId = value.userId;
         this.lastUpdateTime = value.lastUpdateTime;
+        this.title = value.title;
+        this.dirId = value.dirId;
         this.lastUpdateUserId = value.lastUpdateUserId;
     }
 
@@ -51,6 +55,8 @@ public class S1DocBO implements Serializable {
         String        ctx,
         UInteger      userId,
         LocalDateTime lastUpdateTime,
+        String        title,
+        UInteger      dirId,
         UInteger      lastUpdateUserId
     ) {
         this.primaryId = primaryId;
@@ -61,6 +67,8 @@ public class S1DocBO implements Serializable {
         this.ctx = ctx;
         this.userId = userId;
         this.lastUpdateTime = lastUpdateTime;
+        this.title = title;
+        this.dirId = dirId;
         this.lastUpdateUserId = lastUpdateUserId;
     }
 
@@ -177,6 +185,34 @@ public class S1DocBO implements Serializable {
     }
 
     /**
+     * Getter for <code>document_manager.S1_DOC.title</code>. 标题
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_DOC.title</code>. 标题
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * Getter for <code>document_manager.S1_DOC.dir_id</code>. 上级目录ID
+     */
+    public UInteger getDirId() {
+        return this.dirId;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_DOC.dir_id</code>. 上级目录ID
+     */
+    public void setDirId(UInteger dirId) {
+        this.dirId = dirId;
+    }
+
+    /**
      * Getter for <code>document_manager.S1_DOC.last_update_user_id</code>. 最近修改用户id
      */
     public UInteger getLastUpdateUserId() {
@@ -202,6 +238,8 @@ public class S1DocBO implements Serializable {
         sb.append(", ").append(ctx);
         sb.append(", ").append(userId);
         sb.append(", ").append(lastUpdateTime);
+        sb.append(", ").append(title);
+        sb.append(", ").append(dirId);
         sb.append(", ").append(lastUpdateUserId);
 
         sb.append(")");

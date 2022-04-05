@@ -23,6 +23,7 @@ public class S1UserBO implements Serializable {
     private String        account;
     private String        password;
     private String        role;
+    private String        avatar;
     private String        tel;
     private String        email;
     private LocalDateTime lastLoginTime;
@@ -39,6 +40,7 @@ public class S1UserBO implements Serializable {
         this.account = value.account;
         this.password = value.password;
         this.role = value.role;
+        this.avatar = value.avatar;
         this.tel = value.tel;
         this.email = value.email;
         this.lastLoginTime = value.lastLoginTime;
@@ -54,6 +56,7 @@ public class S1UserBO implements Serializable {
         String        account,
         String        password,
         String        role,
+        String        avatar,
         String        tel,
         String        email,
         LocalDateTime lastLoginTime,
@@ -67,6 +70,7 @@ public class S1UserBO implements Serializable {
         this.account = account;
         this.password = password;
         this.role = role;
+        this.avatar = avatar;
         this.tel = tel;
         this.email = email;
         this.lastLoginTime = lastLoginTime;
@@ -144,6 +148,20 @@ public class S1UserBO implements Serializable {
      */
     public void setRole(String role) {
         this.role = role;
+    }
+
+    /**
+     * Getter for <code>document_manager.S1_USER.avatar</code>. 用户头像
+     */
+    public String getAvatar() {
+        return this.avatar;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_USER.avatar</code>. 用户头像
+     */
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     /**
@@ -253,6 +271,7 @@ public class S1UserBO implements Serializable {
         sb.append(", ").append(account);
         sb.append(", ").append(password);
         sb.append(", ").append(role);
+        sb.append(", ").append(avatar);
         sb.append(", ").append(tel);
         sb.append(", ").append(email);
         sb.append(", ").append(lastLoginTime);

@@ -5,6 +5,7 @@ package cn.luoyanze.documentmanager.dao;
 
 
 import cn.luoyanze.documentmanager.dao.tables.S1CommentTB;
+import cn.luoyanze.documentmanager.dao.tables.S1DirTB;
 import cn.luoyanze.documentmanager.dao.tables.S1DocTB;
 import cn.luoyanze.documentmanager.dao.tables.S1ExceptionTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NoticeTB;
@@ -22,6 +23,11 @@ public class Tables {
      * The table <code>document_manager.S1_COMMENT</code>.
      */
     public static final S1CommentTB S1_COMMENT = S1CommentTB.S1_COMMENT;
+
+    /**
+     * The table <code>document_manager.S1_DIR</code>.
+     */
+    public static final S1DirTB S1_DIR = S1DirTB.S1_DIR;
 
     /**
      * The table <code>document_manager.S1_DOC</code>.

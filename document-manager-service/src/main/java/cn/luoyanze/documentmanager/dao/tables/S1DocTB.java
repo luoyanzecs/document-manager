@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row9;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -58,7 +58,7 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     /**
      * The column <code>document_manager.S1_DOC.uuid</code>. 文章UUID
      */
-    public final TableField<S1DocRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(16).nullable(false), this, "文章UUID");
+    public final TableField<S1DocRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(32).nullable(false), this, "文章UUID");
 
     /**
      * The column <code>document_manager.S1_DOC.permission_bu</code>. 允许的部门
@@ -89,6 +89,16 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
      * The column <code>document_manager.S1_DOC.last_update_time</code>. 最近修改时间登录时间
      */
     public final TableField<S1DocRecord, LocalDateTime> LAST_UPDATE_TIME = createField(DSL.name("last_update_time"), SQLDataType.LOCALDATETIME(0), this, "最近修改时间登录时间");
+
+    /**
+     * The column <code>document_manager.S1_DOC.title</code>. 标题
+     */
+    public final TableField<S1DocRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.CLOB.nullable(false), this, "标题");
+
+    /**
+     * The column <code>document_manager.S1_DOC.dir_id</code>. 上级目录ID
+     */
+    public final TableField<S1DocRecord, UInteger> DIR_ID = createField(DSL.name("dir_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "上级目录ID");
 
     /**
      * The column <code>document_manager.S1_DOC.last_update_user_id</code>. 最近修改用户id
@@ -175,11 +185,11 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row9 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<UInteger, String, String, Integer, Integer, String, UInteger, LocalDateTime, UInteger> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row11<UInteger, String, String, Integer, Integer, String, UInteger, LocalDateTime, String, UInteger, UInteger> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 }

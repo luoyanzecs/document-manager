@@ -1,6 +1,6 @@
 package cn.luoyanze.common.util;
 
-import cn.luoyanze.common.eunm.TokenResult;
+import cn.luoyanze.common.model.TokenResult;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -16,7 +16,7 @@ import java.util.Objects;
  * @Date 2022/4/3 10:09 PM
  */
 
-public class TokenUtils {
+public class TokenUtil {
     private static final byte[] SECRET = "77d81055-3f5e-4db3-ac33-8a5e58f14c22".getBytes();
 
     private static final long EXPIRE_TIME = 1000L * 60 * 60 * 24 * 30;

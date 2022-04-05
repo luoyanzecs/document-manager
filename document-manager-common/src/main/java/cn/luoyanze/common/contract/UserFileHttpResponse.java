@@ -26,6 +26,10 @@ public class UserFileHttpResponse {
         this.file = file;
     }
 
+    public UserFileHttpResponse() {
+
+    }
+
     public ResponseHead getHead() {
         return head;
     }

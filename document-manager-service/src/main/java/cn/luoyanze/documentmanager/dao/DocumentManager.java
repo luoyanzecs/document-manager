@@ -5,6 +5,7 @@ package cn.luoyanze.documentmanager.dao;
 
 
 import cn.luoyanze.documentmanager.dao.tables.S1CommentTB;
+import cn.luoyanze.documentmanager.dao.tables.S1DirTB;
 import cn.luoyanze.documentmanager.dao.tables.S1DocTB;
 import cn.luoyanze.documentmanager.dao.tables.S1ExceptionTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NoticeTB;
@@ -36,6 +37,11 @@ public class DocumentManager extends SchemaImpl {
      * The table <code>document_manager.S1_COMMENT</code>.
      */
     public final S1CommentTB S1_COMMENT = S1CommentTB.S1_COMMENT;
+
+    /**
+     * The table <code>document_manager.S1_DIR</code>.
+     */
+    public final S1DirTB S1_DIR = S1DirTB.S1_DIR;
 
     /**
      * The table <code>document_manager.S1_DOC</code>.
@@ -79,6 +85,7 @@ public class DocumentManager extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.<Table<?>>asList(
             S1CommentTB.S1_COMMENT,
+            S1DirTB.S1_DIR,
             S1DocTB.S1_DOC,
             S1ExceptionTB.S1_EXCEPTION,
             S1NoticeTB.S1_NOTICE,

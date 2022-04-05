@@ -1,7 +1,7 @@
 package cn.luoyanze.common;
 
-import cn.luoyanze.common.eunm.TokenResult;
-import cn.luoyanze.common.util.TokenUtils;
+import cn.luoyanze.common.model.TokenResult;
+import cn.luoyanze.common.util.TokenUtil;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
  * @Date 2022/4/3 10:22 PM
  */
 
-public class TokenUtilsTest {
+public class TokenUtilTest {
 
     @Test
     public void test() {
-        String token = TokenUtils.buildJWT("luoyanze");
+        String token = TokenUtil.buildJWT("luoyanze");
         System.out.println(token);
-        TokenResult res = TokenUtils.vaildToken(token, "luoyanze");
+        TokenResult res = TokenUtil.vaildToken(token, "luoyanze");
 
         System.out.println(res.getValue());
     }
