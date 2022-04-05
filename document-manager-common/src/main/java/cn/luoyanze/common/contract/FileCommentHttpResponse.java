@@ -25,11 +25,6 @@ public class FileCommentHttpResponse {
     @JsonProperty("comments")
     private List<Comment> comments;
 
-    public FileCommentHttpResponse(ResponseHead head, List<Comment> comments) {
-        this.head = head;
-        this.comments = comments;
-    }
-
 
     public ResponseHead getHead() {
         return head;

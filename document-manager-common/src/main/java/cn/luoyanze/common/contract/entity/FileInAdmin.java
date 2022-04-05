@@ -46,16 +46,6 @@ public class FileInAdmin {
     @JsonProperty("createTime")
     private String time;
 
-    public FileInAdmin(String fileId, String owner, String userId, String title, String bu, String time) {
-        this.fileId = fileId;
-        this.owner = owner;
-        this.userId = userId;
-        this.title = title;
-        this.bu = bu;
-        this.time = time;
-    }
-
-
     public String getFileId() {
         return fileId;
     }

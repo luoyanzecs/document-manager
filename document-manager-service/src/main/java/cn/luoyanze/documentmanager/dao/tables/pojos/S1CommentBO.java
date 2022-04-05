@@ -21,6 +21,7 @@ public class S1CommentBO implements Serializable {
     private UInteger      primaryId;
     private String        uuid;
     private UInteger      docId;
+    private UInteger      userId;
     private String        ctx;
     private LocalDateTime createTime;
     private UInteger      parentId;
@@ -31,6 +32,7 @@ public class S1CommentBO implements Serializable {
         this.primaryId = value.primaryId;
         this.uuid = value.uuid;
         this.docId = value.docId;
+        this.userId = value.userId;
         this.ctx = value.ctx;
         this.createTime = value.createTime;
         this.parentId = value.parentId;
@@ -40,6 +42,7 @@ public class S1CommentBO implements Serializable {
         UInteger      primaryId,
         String        uuid,
         UInteger      docId,
+        UInteger      userId,
         String        ctx,
         LocalDateTime createTime,
         UInteger      parentId
@@ -47,6 +50,7 @@ public class S1CommentBO implements Serializable {
         this.primaryId = primaryId;
         this.uuid = uuid;
         this.docId = docId;
+        this.userId = userId;
         this.ctx = ctx;
         this.createTime = createTime;
         this.parentId = parentId;
@@ -92,6 +96,20 @@ public class S1CommentBO implements Serializable {
      */
     public void setDocId(UInteger docId) {
         this.docId = docId;
+    }
+
+    /**
+     * Getter for <code>document_manager.S1_COMMENT.user_id</code>. 用户id
+     */
+    public UInteger getUserId() {
+        return this.userId;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_COMMENT.user_id</code>. 用户id
+     */
+    public void setUserId(UInteger userId) {
+        this.userId = userId;
     }
 
     /**
@@ -143,6 +161,7 @@ public class S1CommentBO implements Serializable {
         sb.append(primaryId);
         sb.append(", ").append(uuid);
         sb.append(", ").append(docId);
+        sb.append(", ").append(userId);
         sb.append(", ").append(ctx);
         sb.append(", ").append(createTime);
         sb.append(", ").append(parentId);

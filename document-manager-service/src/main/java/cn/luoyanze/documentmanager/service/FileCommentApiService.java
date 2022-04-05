@@ -8,7 +8,7 @@ import cn.luoyanze.common.contract.FileCommentHttpResponse;
  * @Date 2022/3/27 2:19 PM
  */
 
-public interface UserCommentApiService {
+public interface FileCommentApiService {
 
     FileCommentHttpResponse excute(FileCommentHttpRequset requset);
 }

@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.filter;
 
-import cn.luoyanze.common.eunm.TokenResult;
-import cn.luoyanze.common.util.TokenUtils;
+import cn.luoyanze.common.model.TokenResult;
+import cn.luoyanze.common.util.TokenUtil;
 import cn.luoyanze.common.contract.entity.RequsetHead;
 import cn.luoyanze.documentmanager.service.wrapper.BodyCheckServletRequestWapper;
 import com.alibaba.fastjson.JSON;
@@ -67,8 +67,8 @@ public class IdentifyFilter implements Filter {
         }
 
         if (!StringUtils.isEmpty(head.getToken())) {
-            TokenResult res = TokenUtils.vaildToken(head.getToken(), head.getUsername());
-            return res == TokenResult.SUCCESS;
+            TokenResult res = TokenUtil.vaildToken(head.getToken(), head.getUsername());
+            return TokenResult.checkValid(res);
         } else {
 
             Record2<String, String> record = dao.select(S1_USER.ACCOUNT, S1_USER.PASSWORD)

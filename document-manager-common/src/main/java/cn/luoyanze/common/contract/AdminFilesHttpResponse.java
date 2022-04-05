@@ -36,6 +36,9 @@ public class AdminFilesHttpResponse {
     @JsonProperty("items")
     private List<FileInAdmin> files;
 
+    public AdminFilesHttpResponse() {
+    }
+
     public AdminFilesHttpResponse(ResponseHead head, List<String> fields, List<String> keys, List<Integer> cols, Integer currentPage, Integer totalPage, List<FileInAdmin> files) {
         this.head = head;
         this.fields = fields;

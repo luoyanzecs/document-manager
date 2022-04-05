@@ -2,6 +2,8 @@ package cn.luoyanze.common.contract.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 4:31 PM
@@ -25,16 +27,18 @@ public class Comment {
     @JsonProperty("avatar")
     private String avatar;
 
-    @JsonProperty("reply")
-    private CommentReply reply;
+    @JsonProperty("ctx")
+    private String ctx;
 
-    public Comment(String id, String username, String userId, String time, String avatar, CommentReply reply) {
-        this.id = id;
-        this.username = username;
-        this.userId = userId;
-        this.time = time;
-        this.avatar = avatar;
-        this.reply = reply;
+    @JsonProperty("reply")
+    private List<Comment> reply;
+
+    public String getCtx() {
+        return ctx;
+    }
+
+    public void setCtx(String ctx) {
+        this.ctx = ctx;
     }
 
     public String getId() {
@@ -77,11 +81,11 @@ public class Comment {
         this.avatar = avatar;
     }
 
-    public CommentReply getReply() {
+    public List<Comment> getReply() {
         return reply;
     }
 
-    public void setReply(CommentReply reply) {
+    public void setReply(List<Comment> reply) {
         this.reply = reply;
     }
 }

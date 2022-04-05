@@ -38,16 +38,6 @@ public class AdminRecordsHttpResponse {
     @JsonProperty("items")
     private List<RecordInAdmin> records;
 
-    public AdminRecordsHttpResponse(ResponseHead head, List<String> fields, List<String> keys, List<Integer> cols, Integer currentPage, Integer totalPage, List<RecordInAdmin> records) {
-        this.head = head;
-        this.fields = fields;
-        this.keys = keys;
-        this.cols = cols;
-        this.currentPage = currentPage;
-        this.totalPage = totalPage;
-        this.records = records;
-    }
-
     public ResponseHead getHead() {
         return head;
     }

@@ -39,14 +39,6 @@ public class UserInAdmin {
     @JsonProperty("tel")
     private String tel;
 
-    public UserInAdmin(String itemId, String name, String userId, String bu, String tel) {
-        this.itemId = itemId;
-        this.name = name;
-        this.userId = userId;
-        this.bu = bu;
-        this.tel = tel;
-    }
-
     public String getItemId() {
         return itemId;
     }

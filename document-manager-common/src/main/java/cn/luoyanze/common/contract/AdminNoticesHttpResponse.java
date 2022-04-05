@@ -37,16 +37,6 @@ public class AdminNoticesHttpResponse {
     @JsonProperty("items")
     private List<NoticeInAdmin> notices;
 
-    public AdminNoticesHttpResponse(ResponseHead head, List<String> fields, List<String> keys, List<Integer> cols, Integer currentPage, Integer totalPage, List<NoticeInAdmin> notices) {
-        this.head = head;
-        this.fields = fields;
-        this.keys = keys;
-        this.cols = cols;
-        this.currentPage = currentPage;
-        this.totalPage = totalPage;
-        this.notices = notices;
-    }
-
     public ResponseHead getHead() {
         return head;
     }

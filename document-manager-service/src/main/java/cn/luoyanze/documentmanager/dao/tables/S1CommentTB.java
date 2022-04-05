@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row6;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -58,12 +58,17 @@ public class S1CommentTB extends TableImpl<S1CommentRecord> {
     /**
      * The column <code>document_manager.S1_COMMENT.uuid</code>. UUID
      */
-    public final TableField<S1CommentRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(16).nullable(false), this, "UUID");
+    public final TableField<S1CommentRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(32).nullable(false), this, "UUID");
 
     /**
      * The column <code>document_manager.S1_COMMENT.doc_id</code>. 文章id
      */
     public final TableField<S1CommentRecord, UInteger> DOC_ID = createField(DSL.name("doc_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "文章id");
+
+    /**
+     * The column <code>document_manager.S1_COMMENT.user_id</code>. 用户id
+     */
+    public final TableField<S1CommentRecord, UInteger> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "用户id");
 
     /**
      * The column <code>document_manager.S1_COMMENT.ctx</code>. 评论内容
@@ -160,11 +165,11 @@ public class S1CommentTB extends TableImpl<S1CommentRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<UInteger, String, UInteger, String, LocalDateTime, UInteger> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row7<UInteger, String, UInteger, UInteger, String, LocalDateTime, UInteger> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 }

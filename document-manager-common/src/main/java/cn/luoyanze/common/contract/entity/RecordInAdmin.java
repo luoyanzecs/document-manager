@@ -13,8 +13,12 @@ public class RecordInAdmin {
     /**
      * 条目id
      */
-    @JsonProperty("id")
+    @JsonProperty("itemId")
     private String itemId;
+
+
+    @JsonProperty("id")
+    private String userId;
 
     /**
      * 用户名
@@ -39,14 +43,6 @@ public class RecordInAdmin {
      */
     @JsonProperty("bu")
     private String bu;
-
-    public RecordInAdmin(String itemId, String fid, String operateTime, String operate, String bu) {
-        this.itemId = itemId;
-        this.fid = fid;
-        this.operateTime = operateTime;
-        this.operate = operate;
-        this.bu = bu;
-    }
 
     public String getItemId() {
         return itemId;
@@ -86,5 +82,13 @@ public class RecordInAdmin {
 
     public void setBu(String bu) {
         this.bu = bu;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

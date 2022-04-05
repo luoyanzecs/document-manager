@@ -46,15 +46,6 @@ public class NoticeInAdmin {
     @JsonProperty("bu")
     private String bu;
 
-    public NoticeInAdmin(String itemId, String to, String startTime, String endTime, String ctx, String bu) {
-        this.itemId = itemId;
-        this.to = to;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.ctx = ctx;
-        this.bu = bu;
-    }
-
     public String getItemId() {
         return itemId;
     }

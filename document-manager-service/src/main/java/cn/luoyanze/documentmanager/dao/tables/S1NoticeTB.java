@@ -58,7 +58,7 @@ public class S1NoticeTB extends TableImpl<S1NoticeRecord> {
     /**
      * The column <code>document_manager.S1_NOTICE.uuid</code>. UUID
      */
-    public final TableField<S1NoticeRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(16).nullable(false), this, "UUID");
+    public final TableField<S1NoticeRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(32).nullable(false), this, "UUID");
 
     /**
      * The column <code>document_manager.S1_NOTICE.type</code>. 内容type

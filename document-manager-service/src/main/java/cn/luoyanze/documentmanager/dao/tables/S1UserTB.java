@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row12;
+import org.jooq.Row13;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -58,7 +58,7 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     /**
      * The column <code>document_manager.S1_USER.uuid</code>. 用户UUID
      */
-    public final TableField<S1UserRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(16).nullable(false), this, "用户UUID");
+    public final TableField<S1UserRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(32).nullable(false), this, "用户UUID");
 
     /**
      * The column <code>document_manager.S1_USER.account</code>. 用户账号
@@ -74,6 +74,11 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
      * The column <code>document_manager.S1_USER.role</code>. 角色
      */
     public final TableField<S1UserRecord, String> ROLE = createField(DSL.name("role"), SQLDataType.CHAR(10).nullable(false), this, "角色");
+
+    /**
+     * The column <code>document_manager.S1_USER.avatar</code>. 用户头像
+     */
+    public final TableField<S1UserRecord, String> AVATAR = createField(DSL.name("avatar"), SQLDataType.CHAR(255), this, "用户头像");
 
     /**
      * The column <code>document_manager.S1_USER.tel</code>. 电话
@@ -190,11 +195,11 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row12 type methods
+    // Row13 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row12<UInteger, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, String, Integer> fieldsRow() {
-        return (Row12) super.fieldsRow();
+    public Row13<UInteger, String, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, String, Integer> fieldsRow() {
+        return (Row13) super.fieldsRow();
     }
 }

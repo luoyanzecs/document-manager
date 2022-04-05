@@ -1,4 +1,4 @@
-package cn.luoyanze.common.eunm;
+package cn.luoyanze.common.model;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]

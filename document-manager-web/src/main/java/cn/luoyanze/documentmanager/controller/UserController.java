@@ -1,7 +1,7 @@
 package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.*;
-import cn.luoyanze.documentmanager.service.UserCommentApiService;
+import cn.luoyanze.documentmanager.service.FileCommentApiService;
 import cn.luoyanze.documentmanager.service.UserFileApiService;
 import cn.luoyanze.documentmanager.service.UserMenuApiService;
 import org.springframework.stereotype.Controller;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "api/user")
 public class UserController {
 
-    private final UserCommentApiService userCommentApiService;
+    private final FileCommentApiService fileCommentApiService;
     private final UserFileApiService userFileApiService;
     private final UserMenuApiService userMenuApiService;
 
-    public UserController(UserCommentApiService userCommentApiService, UserFileApiService userFileApiService, UserMenuApiService userMenuApiService) {
-        this.userCommentApiService = userCommentApiService;
+    public UserController(FileCommentApiService fileCommentApiService, UserFileApiService userFileApiService, UserMenuApiService userMenuApiService) {
+        this.fileCommentApiService = fileCommentApiService;
         this.userFileApiService = userFileApiService;
         this.userMenuApiService = userMenuApiService;
     }
@@ -35,7 +35,7 @@ public class UserController {
     @PostMapping("/comment")
     @ResponseBody
     public FileCommentHttpResponse executeComment(@RequestBody FileCommentHttpRequset request) {
-        return userCommentApiService.excute(request);
+        return fileCommentApiService.excute(request);
     }
 
     @PostMapping("/file")

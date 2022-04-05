@@ -30,19 +30,25 @@ public class LoginHttpResponse {
     @JsonProperty("userInfo")
     private User user;
 
-    public LoginHttpResponse(ResponseHead head, boolean status, User user) {
+    @JsonProperty("token")
+    private String token;
+
+    public LoginHttpResponse() {
+    }
+
+    public LoginHttpResponse(ResponseHead head, boolean status, User user, String token) {
         this.head = head;
         this.status = status;
         this.user = user;
+        this.token = token;
     }
 
-    @Override
-    public String toString() {
-        return "LoginHttpResponse{" +
-                "head=" + head +
-                ", status=" + status +
-                ", user=" + user +
-                '}';
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public boolean isStatus() {
