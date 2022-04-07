@@ -54,34 +54,35 @@ public class UserMenuApiServiceImpl implements UserMenuApiService {
                 .filter(it -> it.getParentId().intValue() == 0)
                 .map(it -> new Menu(it.getPrimaryId().toString(), it.getTitle(), true, new ArrayList<>()))
                 .collect(Collectors.toList());
-        List<S1DirBO> subs;
+        List<S1DirBO> subDirNodes;
         List<Menu> parents = root;
         do {
             Set<String> parentsId = parents.stream().map(Menu::getId).collect(Collectors.toSet());
             // 获取所有的subs节点
-            subs = dirs.stream()
+            subDirNodes = dirs.stream()
                     .filter(it -> parentsId.contains(it.getParentId().toString()))
                     .collect(Collectors.toList());
 
-            List<Menu> temp = new ArrayList<>();
-            for (Menu p : parents) {
+            List<Menu> nextLoopParents = new ArrayList<>();
+            for (Menu parent : parents) {
                 // 获取sub节点, 目录节点
-                List<Menu> collect = subs.stream()
-                        .filter(o -> p.getId().equals(o.getParentId().toString()))
-                        .map(it -> new Menu(it.getPrimaryId().toString(), it.getTitle(), true, new ArrayList<>()))
-                        .collect(Collectors.toList());
-                temp.addAll(collect);
+                List<Menu> subNodeInEachParent =
+                        subDirNodes.stream().filter(o -> parent.getId().equals(o.getParentId().toString()))
+                                .map(it -> new Menu(it.getPrimaryId().toString(), it.getTitle(), true, new ArrayList<>()))
+                                .collect(Collectors.toList());
 
-                List<Menu> files = docVOS.stream().filter(it -> it.getParentId().equals(p.getId()))
-                        .map(it -> new Menu(it.getUuid(), it.getTitle(), false, Collections.emptyList()))
-                        .collect(Collectors.toList());
+                nextLoopParents.addAll(subNodeInEachParent);
 
-                collect.addAll(files);
-                p.setSubs(collect);
+                subNodeInEachParent.addAll(
+                        docVOS.stream().filter(it -> it.getParentId().equals(parent.getId()))
+                                .map(it -> new Menu(it.getUuid(), it.getTitle(), false, Collections.emptyList()))
+                                .collect(Collectors.toList())
+                );
+                parent.setSubs(subNodeInEachParent);
             }
 
-            parents = temp;
-        } while (!subs.isEmpty());
+            parents = nextLoopParents;
+        } while (!subDirNodes.isEmpty());
 
         return root;
     }
