@@ -19,10 +19,6 @@ public class NoticeHttpResponse {
 
     private List<Notice> notices;
 
-    public NoticeHttpResponse(ResponseHead head, List<Notice> notices) {
-        this.head = head;
-        this.notices = notices;
-    }
 
     public ResponseHead getHead() {
         return head;

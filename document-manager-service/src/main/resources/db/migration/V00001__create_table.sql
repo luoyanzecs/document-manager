@@ -35,6 +35,8 @@ CREATE TABLE `S1_DIR` (
     `primary_id`        INT(10)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
     `title`             TEXT NOT NULL COMMENT '标题',
     `parent_id`         INT(10)  UNSIGNED NOT NULL COMMENT '上级目录ID',
+    `bu`                CHAR(16) NOT NULL COMMENT '所属部门',
+    `deep`              INT NOT NULL COMMENT '目录层级',
     PRIMARY KEY (primary_id)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
 
