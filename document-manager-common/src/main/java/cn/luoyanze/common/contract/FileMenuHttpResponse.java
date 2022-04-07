@@ -26,12 +26,6 @@ public class FileMenuHttpResponse {
     @JsonProperty("items")
     private List<Menu> menus;
 
-    public FileMenuHttpResponse(ResponseHead head, List<Menu> menus) {
-        this.head = head;
-        this.menus = menus;
-    }
-
-
     public ResponseHead getHead() {
         return head;
     }

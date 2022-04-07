@@ -15,10 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static cn.luoyanze.documentmanager.dao.Tables.S1_USER;
@@ -29,10 +33,12 @@ import static cn.luoyanze.documentmanager.dao.Tables.S1_USER;
  */
 @Component
 @Order(1)
+@WebFilter()
 public class IdentifyFilter implements Filter {
 
     private final static Logger logger = LoggerFactory.getLogger(IdentifyFilter.class);
     private final DSLContext dao;
+    private final static Set<String> EXCLUDE_URLS = Set.of("/login");
 
     public IdentifyFilter(DSLContext dao) {
         this.dao = dao;
@@ -41,8 +47,15 @@ public class IdentifyFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) {
         HttpServletResponse resp = (HttpServletResponse) response;
+        HttpServletRequest req = (HttpServletRequest) request;
+        String path = req.getRequestURI().substring(req.getContextPath().length()).replaceAll("[/]+$", "");
+
         try {
-            BodyCheckServletRequestWapper requestWrapper = new BodyCheckServletRequestWapper((HttpServletRequest) request);
+            if (EXCLUDE_URLS.contains(path)) {
+                filterChain.doFilter(req, response);
+            }
+
+            BodyCheckServletRequestWapper requestWrapper = new BodyCheckServletRequestWapper(req);
             String json = requestWrapper.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
             RequsetHead head =
