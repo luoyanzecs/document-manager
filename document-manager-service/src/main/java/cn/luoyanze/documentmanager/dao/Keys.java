@@ -4,6 +4,7 @@
 package cn.luoyanze.documentmanager.dao;
 
 
+import cn.luoyanze.documentmanager.dao.tables.S1BuTB;
 import cn.luoyanze.documentmanager.dao.tables.S1CommentTB;
 import cn.luoyanze.documentmanager.dao.tables.S1DirTB;
 import cn.luoyanze.documentmanager.dao.tables.S1DocTB;
@@ -11,6 +12,7 @@ import cn.luoyanze.documentmanager.dao.tables.S1ExceptionTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NoticeTB;
 import cn.luoyanze.documentmanager.dao.tables.S1OperateTB;
 import cn.luoyanze.documentmanager.dao.tables.S1UserTB;
+import cn.luoyanze.documentmanager.dao.tables.records.S1BuRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1CommentRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1DirRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1DocRecord;
@@ -36,6 +38,7 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<S1BuRecord> KEY_S1_BU_PRIMARY = Internal.createUniqueKey(S1BuTB.S1_BU, DSL.name("KEY_S1_BU_PRIMARY"), new TableField[] { S1BuTB.S1_BU.PRIMARY_ID }, true);
     public static final UniqueKey<S1CommentRecord> KEY_S1_COMMENT_PRIMARY = Internal.createUniqueKey(S1CommentTB.S1_COMMENT, DSL.name("KEY_S1_COMMENT_PRIMARY"), new TableField[] { S1CommentTB.S1_COMMENT.PRIMARY_ID }, true);
     public static final UniqueKey<S1DirRecord> KEY_S1_DIR_PRIMARY = Internal.createUniqueKey(S1DirTB.S1_DIR, DSL.name("KEY_S1_DIR_PRIMARY"), new TableField[] { S1DirTB.S1_DIR.PRIMARY_ID }, true);
     public static final UniqueKey<S1DocRecord> KEY_S1_DOC_PRIMARY = Internal.createUniqueKey(S1DocTB.S1_DOC, DSL.name("KEY_S1_DOC_PRIMARY"), new TableField[] { S1DocTB.S1_DOC.PRIMARY_ID }, true);

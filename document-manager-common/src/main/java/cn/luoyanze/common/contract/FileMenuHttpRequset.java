@@ -1,13 +1,15 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.entity.RequsetHead;
+import cn.luoyanze.common.contract.common.RequsetHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 1:47 PM
  */
 
+@Data
 public class FileMenuHttpRequset {
 
     @JsonProperty("head")
@@ -15,20 +17,4 @@ public class FileMenuHttpRequset {
 
     @JsonProperty("bu")
     private String bu;
-
-    public RequsetHead getHead() {
-        return head;
-    }
-
-    public void setHead(RequsetHead head) {
-        this.head = head;
-    }
-
-    public String getBu() {
-        return bu;
-    }
-
-    public void setBu(String bu) {
-        this.bu = bu;
-    }
 }

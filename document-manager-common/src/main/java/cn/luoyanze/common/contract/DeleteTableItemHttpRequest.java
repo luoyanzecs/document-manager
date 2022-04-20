@@ -1,19 +1,21 @@
 package cn.luoyanze.common.contract;
 
 import cn.luoyanze.common.contract.common.RequsetHead;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+
+import java.util.List;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
- * @Date 2022/3/27 1:48 PM
+ * @Date 2022/4/21 12:42 AM
  */
-@Getter
-public class FileCommentHttpRequset {
 
-    @JsonProperty("head")
+@Getter
+public class DeleteTableItemHttpRequest {
+
     private RequsetHead head;
 
-    @JsonProperty("fileId")
-    private String id;
+    private int type;
+
+    private List<String> ids;
 }

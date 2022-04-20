@@ -10,5 +10,5 @@ import cn.luoyanze.common.contract.LoginHttpResponse;
 
 public interface LoginApiService {
 
-    LoginHttpResponse excute(LoginHttpRequset requset);
+    LoginHttpResponse execute(LoginHttpRequset requset);
 }
