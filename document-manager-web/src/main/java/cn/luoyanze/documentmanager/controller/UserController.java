@@ -1,11 +1,11 @@
 package cn.luoyanze.documentmanager.controller;
 
+import cn.luoyanze.common.contract.CreateFileHttpRequest;
 import cn.luoyanze.common.contract.*;
-import cn.luoyanze.documentmanager.service.FileCommentApiService;
-import cn.luoyanze.documentmanager.service.UserFileApiService;
-import cn.luoyanze.documentmanager.service.UserMenuApiService;
+import cn.luoyanze.documentmanager.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -16,31 +16,70 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "api/user")
 public class UserController {
 
-    private final FileCommentApiService fileCommentApiService;
-    private final UserFileApiService userFileApiService;
-    private final UserMenuApiService userMenuApiService;
+    private final DBUpdateService dbUpdateService;
+    private final DBSelectService dbSelectService;
+    private final DBInsertService dbInsertService;
 
-    public UserController(FileCommentApiService fileCommentApiService, UserFileApiService userFileApiService, UserMenuApiService userMenuApiService) {
-        this.fileCommentApiService = fileCommentApiService;
-        this.userFileApiService = userFileApiService;
-        this.userMenuApiService = userMenuApiService;
+    public UserController(DBUpdateService dbUpdateService, DBSelectService dbSelectService, DBInsertService dbInsertService) {
+        this.dbUpdateService = dbUpdateService;
+        this.dbSelectService = dbSelectService;
+        this.dbInsertService = dbInsertService;
     }
 
     @PostMapping("/menu")
     @ResponseBody
-    public FileMenuHttpResponse executeMenu(@RequestBody FileMenuHttpRequset request) {
-        return userMenuApiService.excute(request);
+    public FileMenuHttpResponse execute(@RequestBody FileMenuHttpRequset request) {
+        return dbSelectService.selectMenuByBu(request);
     }
 
     @PostMapping("/comment")
     @ResponseBody
-    public FileCommentHttpResponse executeComment(@RequestBody FileCommentHttpRequset request) {
-        return fileCommentApiService.excute(request);
+    public FileCommentHttpResponse execute(@RequestBody FileCommentHttpRequset request) {
+        return dbSelectService.selectFileComment(request);
     }
 
     @PostMapping("/file")
     @ResponseBody
-    public UserFileHttpResponse executeFile(@RequestBody UserFileHttpRequset request) {
-        return userFileApiService.excute(request);
+    public UserFileHttpResponse execute(@RequestBody UserFileHttpRequset request) {
+        return dbSelectService.selectFileById(request);
     }
+
+    @PostMapping("/updateFile")
+    @ResponseBody
+    public UpdateFileHttpResponse excute(@RequestBody UpdateFileHttpRequest request) {
+        return dbUpdateService.updateFile(request);
+    }
+
+    @PostMapping("/createFile")
+    @ResponseBody
+    public CreateFileHttpResponse excute(@RequestBody CreateFileHttpRequest request) {
+        return dbInsertService.insertNewFile(request);
+    }
+
+    @PostMapping("/leaveMessage")
+    @ResponseBody
+    public LeaveMessageHttpResponse excute(@RequestBody LeaveMessageHttpRequest request) {
+        return dbInsertService.insertNewComment(request);
+    }
+
+    // TODO: 文件上传
+    @PostMapping("/uploadAttach")
+    @ResponseBody
+    public UpdateFileHttpResponse excute(@RequestParam("file") MultipartFile file) {
+        return null;
+    }
+
+    // TODO: 文件下载
+    @PostMapping("/downloadAttach")
+    @ResponseBody
+    public UpdateFileHttpResponse excute3() {
+        return null;
+    }
+
+    @PostMapping("/deleteAttach")
+    @ResponseBody
+    public DeleteAttachHttpResponse excute(@RequestBody DeleteAttachHttpRequest request) {
+        return dbUpdateService.deleteAttach(request);
+    }
+
 }

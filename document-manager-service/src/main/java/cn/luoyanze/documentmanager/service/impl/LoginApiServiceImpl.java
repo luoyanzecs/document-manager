@@ -2,8 +2,8 @@ package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.LoginHttpRequset;
 import cn.luoyanze.common.contract.LoginHttpResponse;
-import cn.luoyanze.common.contract.entity.ResponseHead;
-import cn.luoyanze.common.contract.entity.User;
+import cn.luoyanze.common.contract.LoginHttpResponse.User;
+import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.common.util.TokenUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
 import cn.luoyanze.documentmanager.service.LoginApiService;
@@ -29,7 +29,7 @@ public class LoginApiServiceImpl implements LoginApiService {
     }
 
     @Override
-    public LoginHttpResponse excute(LoginHttpRequset requset) {
+    public LoginHttpResponse execute(LoginHttpRequset requset) {
 
         S1UserBO user = dao.select()
                 .from(S1_USER)

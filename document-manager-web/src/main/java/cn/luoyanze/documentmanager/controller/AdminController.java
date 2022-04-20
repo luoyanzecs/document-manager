@@ -1,10 +1,9 @@
 package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.*;
-import cn.luoyanze.documentmanager.service.AdminFilesApiService;
-import cn.luoyanze.documentmanager.service.AdminNoticesApiService;
-import cn.luoyanze.documentmanager.service.AdminRecordsApiService;
-import cn.luoyanze.documentmanager.service.AdminUsersApiService;
+import cn.luoyanze.documentmanager.service.DBInsertService;
+import cn.luoyanze.documentmanager.service.DBUpdateService;
+import cn.luoyanze.documentmanager.service.FilterSearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,41 +19,39 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "api/admin")
 public class AdminController {
 
-    private final AdminFilesApiService adminFilesApiService;
-    private final AdminNoticesApiService adminNoticesApiService;
-    private final AdminRecordsApiService adminRecordsApiService;
-    private final AdminUsersApiService adminUsersApiService;
+    private final FilterSearchService searchService;
+    private final DBInsertService dbInsertService;
+    private final DBUpdateService dbUpdateService;
 
-    public AdminController(AdminFilesApiService adminFilesApiService, AdminNoticesApiService adminNoticesApiService, AdminRecordsApiService adminRecordsApiService, AdminUsersApiService adminUsersApiService) {
-        this.adminFilesApiService = adminFilesApiService;
-        this.adminNoticesApiService = adminNoticesApiService;
-        this.adminRecordsApiService = adminRecordsApiService;
-        this.adminUsersApiService = adminUsersApiService;
+    public AdminController(FilterSearchService searchService, DBInsertService dbInsertService, DBUpdateService dbUpdateService) {
+        this.searchService = searchService;
+        this.dbInsertService = dbInsertService;
+        this.dbUpdateService = dbUpdateService;
     }
 
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
-    public AdminUsersHttpResponse executeUsers(@RequestBody AdminUsersHttpRequest request) {
-        return adminUsersApiService.execute(request);
+    public FilterSearchHttpResponse execute(@RequestBody FilterSearchHttpRequest request) {
+        return searchService.execute(request);
     }
 
-    @RequestMapping(value = "/files", method = RequestMethod.POST)
+    @RequestMapping(value = "/add/user", method = RequestMethod.POST)
     @ResponseBody
-    public AdminFilesHttpResponse executeFiles(@RequestBody AdminFilesHttpRequest request) {
-        return adminFilesApiService.execute(request);
+    public AddUserHttpResponse execute(@RequestBody AddUserHttpRequest request) {
+        return dbInsertService.insertNewUser(request);
     }
 
-    @RequestMapping(value = "/records", method = RequestMethod.POST)
+    @RequestMapping(value = "/add/notice", method = RequestMethod.POST)
     @ResponseBody
-    public AdminRecordsHttpResponse executeRecords(@RequestBody AdminRecordsHttpRequset requset) {
-        return adminRecordsApiService.execute(requset);
+    public AddNoticeHttpResponse execute(@RequestBody AddNoticeHttpRequest request) {
+        return dbInsertService.insertNewNotice(request);
     }
 
-    @RequestMapping(value = "/notices", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public AdminNoticesHttpResponse executeNotices(@RequestBody AdminNoticesHttpRequest request) {
-        return adminNoticesApiService.execute(request);
+    public DeleteTableItemHttpResponse execute(@RequestBody DeleteTableItemHttpRequest request) {
+        return dbUpdateService.deleteTableItem(request);
     }
 
 }

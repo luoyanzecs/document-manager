@@ -1,17 +1,18 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.entity.Comment;
-import cn.luoyanze.common.contract.entity.ResponseHead;
+import cn.luoyanze.common.contract.common.ResponseHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import java.util.List;
+
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 1:48 PM
  *
- * /api/user/comment response
  */
+@Data
 public class FileCommentHttpResponse {
     /**
      * 头信息
@@ -25,20 +26,28 @@ public class FileCommentHttpResponse {
     @JsonProperty("comments")
     private List<Comment> comments;
 
+    @Data
+    public static class Comment {
+        @JsonProperty("commentId")
+        private String id;
 
-    public ResponseHead getHead() {
-        return head;
+        @JsonProperty("name")
+        private String username;
+
+        @JsonProperty("id")
+        private String userId;
+
+        @JsonProperty("time")
+        private String time;
+
+        @JsonProperty("avatar")
+        private String avatar;
+
+        @JsonProperty("ctx")
+        private String ctx;
+
+        @JsonProperty("reply")
+        private List<Comment> reply;
     }
 
-    public void setHead(ResponseHead head) {
-        this.head = head;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 }

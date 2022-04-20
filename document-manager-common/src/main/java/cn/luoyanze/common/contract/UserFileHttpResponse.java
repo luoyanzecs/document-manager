@@ -1,15 +1,17 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.entity.File;
-import cn.luoyanze.common.contract.entity.ResponseHead;
+import cn.luoyanze.common.contract.common.ResponseHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 1:47 PM
  */
 
-
+@Data
 public class UserFileHttpResponse {
 
     /**
@@ -21,28 +23,17 @@ public class UserFileHttpResponse {
     @JsonProperty("fileInfo")
     private File file;
 
-    public UserFileHttpResponse(ResponseHead head, File file) {
-        this.head = head;
-        this.file = file;
-    }
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class File {
+        @JsonProperty("editor")
+        private String editor;
 
-    public UserFileHttpResponse() {
+        @JsonProperty("lastEditorTime")
+        private String lastTime;
 
-    }
-
-    public ResponseHead getHead() {
-        return head;
-    }
-
-    public void setHead(ResponseHead responseHead) {
-        this.head = responseHead;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
+        @JsonProperty("fileContent")
+        private String ctx;
     }
 }

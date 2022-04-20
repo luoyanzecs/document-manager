@@ -1,23 +1,25 @@
 package cn.luoyanze.common.contract;
 
 import cn.luoyanze.common.contract.common.RequsetHead;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
- * @Date 2022/3/27 1:45 PM
+ * @Date 2022/4/21 12:38 AM
  */
 
 @Getter
-public class LoginHttpRequset {
+public class AddUserHttpRequest {
 
-    @JsonProperty("head")
     private RequsetHead head;
 
-    @JsonProperty("username")
-    private String username;
+    private String name;
 
-    @JsonProperty("password")
     private String password;
+
+    private String bu;
+
+    private boolean isAdmin;
+
+    private int rank;
 }

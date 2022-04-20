@@ -1,8 +1,11 @@
 package cn.luoyanze.common.contract;
 
 import cn.luoyanze.common.contract.entity.Menu;
-import cn.luoyanze.common.contract.entity.ResponseHead;
+import cn.luoyanze.common.contract.common.ResponseHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -11,7 +14,7 @@ import java.util.List;
  * @Date 2022/3/27 1:48 PM
  */
 
-
+@Data
 public class FileMenuHttpResponse {
 
     /**
@@ -26,19 +29,28 @@ public class FileMenuHttpResponse {
     @JsonProperty("items")
     private List<Menu> menus;
 
-    public ResponseHead getHead() {
-        return head;
-    }
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Menu {
+        /**
+         * 条目id
+         */
+        @JsonProperty("id")
+        private String id;
 
-    public void setHead(ResponseHead head) {
-        this.head = head;
-    }
+        /**
+         * 标题
+         */
+        @JsonProperty("title")
+        private String title;
 
-    public List<Menu> getMenus() {
-        return menus;
-    }
+        private boolean isDir;
 
-    public void setMenus(List<Menu> menus) {
-        this.menus = menus;
+        /**
+         * 子文件
+         */
+        @JsonProperty("children")
+        private List<Menu> subs;
     }
 }
