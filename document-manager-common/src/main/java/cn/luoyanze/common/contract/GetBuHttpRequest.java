@@ -1,6 +1,6 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.common.RequsetHead;
+import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
 
 /**
@@ -11,5 +11,5 @@ import lombok.Getter;
 @Getter
 public class GetBuHttpRequest {
 
-    private RequsetHead head;
+    private RequestHead head;
 }

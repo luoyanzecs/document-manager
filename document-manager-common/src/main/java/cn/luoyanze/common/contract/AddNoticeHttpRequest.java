@@ -1,6 +1,6 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.common.RequsetHead;
+import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 public class AddNoticeHttpRequest {
 
-    private RequsetHead head;
+    private RequestHead head;
 
     private String text;
 

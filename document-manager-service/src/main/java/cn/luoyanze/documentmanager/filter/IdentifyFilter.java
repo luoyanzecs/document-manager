@@ -2,7 +2,7 @@ package cn.luoyanze.documentmanager.filter;
 
 import cn.luoyanze.common.model.TokenResult;
 import cn.luoyanze.common.util.TokenUtil;
-import cn.luoyanze.common.contract.common.RequsetHead;
+import cn.luoyanze.common.contract.common.RequestHead;
 import cn.luoyanze.documentmanager.service.wrapper.BodyCheckServletRequestWapper;
 import com.alibaba.fastjson.JSON;
 import org.jooq.tools.StringUtils;
@@ -47,10 +47,10 @@ public class IdentifyFilter implements Filter {
             BodyCheckServletRequestWapper requestWrapper = new BodyCheckServletRequestWapper(req);
             String json = requestWrapper.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-            RequsetHead head =
+            RequestHead head =
                     Optional.ofNullable(JSON.parseObject(json, Map.class))
                             .map(it -> it.get("head"))
-                            .map(it -> JSON.parseObject(it.toString(), RequsetHead.class)).orElse(null);
+                            .map(it -> JSON.parseObject(it.toString(), RequestHead.class)).orElse(null);
 
             if (validate(head)) {
                 filterChain.doFilter(requestWrapper, response);
@@ -63,7 +63,7 @@ public class IdentifyFilter implements Filter {
         }
     }
 
-    private boolean validate(RequsetHead head) {
+    private boolean validate(RequestHead head) {
         if (head == null) {
             return false;
         }

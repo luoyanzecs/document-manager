@@ -1,5 +1,6 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
 
 /**
@@ -7,7 +8,18 @@ import lombok.Getter;
  * @Date 2022/4/9 10:09 PM
  */
 
-
 @Getter
 public class UpdateFileHttpRequest {
+
+    private RequestHead head;
+
+    /**
+     * json 格式内容
+     */
+    private String jsonValue;
+
+    /**
+     * 文件uuid
+     */
+    private String fileId;
 }
