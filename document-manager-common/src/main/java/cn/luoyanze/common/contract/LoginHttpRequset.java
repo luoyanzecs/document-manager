@@ -1,46 +1,23 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.entity.RequsetHead;
+import cn.luoyanze.common.contract.common.RequestHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 1:45 PM
  */
 
-
+@Getter
 public class LoginHttpRequset {
 
     @JsonProperty("head")
-    private RequsetHead head;
+    private RequestHead head;
 
     @JsonProperty("username")
     private String username;
 
     @JsonProperty("password")
     private String password;
-
-    public RequsetHead getHead() {
-        return head;
-    }
-
-    public void setHead(RequsetHead head) {
-        this.head = head;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

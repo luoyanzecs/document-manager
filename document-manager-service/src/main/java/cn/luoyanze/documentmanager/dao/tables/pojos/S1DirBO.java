@@ -20,6 +20,8 @@ public class S1DirBO implements Serializable {
     private UInteger primaryId;
     private String   title;
     private UInteger parentId;
+    private String   bu;
+    private Integer  deep;
 
     public S1DirBO() {}
 
@@ -27,16 +29,22 @@ public class S1DirBO implements Serializable {
         this.primaryId = value.primaryId;
         this.title = value.title;
         this.parentId = value.parentId;
+        this.bu = value.bu;
+        this.deep = value.deep;
     }
 
     public S1DirBO(
         UInteger primaryId,
         String   title,
-        UInteger parentId
+        UInteger parentId,
+        String   bu,
+        Integer  deep
     ) {
         this.primaryId = primaryId;
         this.title = title;
         this.parentId = parentId;
+        this.bu = bu;
+        this.deep = deep;
     }
 
     /**
@@ -81,6 +89,34 @@ public class S1DirBO implements Serializable {
         this.parentId = parentId;
     }
 
+    /**
+     * Getter for <code>document_manager.S1_DIR.bu</code>. 所属部门
+     */
+    public String getBu() {
+        return this.bu;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_DIR.bu</code>. 所属部门
+     */
+    public void setBu(String bu) {
+        this.bu = bu;
+    }
+
+    /**
+     * Getter for <code>document_manager.S1_DIR.deep</code>. 目录层级
+     */
+    public Integer getDeep() {
+        return this.deep;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_DIR.deep</code>. 目录层级
+     */
+    public void setDeep(Integer deep) {
+        this.deep = deep;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("S1DirBO (");
@@ -88,6 +124,8 @@ public class S1DirBO implements Serializable {
         sb.append(primaryId);
         sb.append(", ").append(title);
         sb.append(", ").append(parentId);
+        sb.append(", ").append(bu);
+        sb.append(", ").append(deep);
 
         sb.append(")");
         return sb.toString();
