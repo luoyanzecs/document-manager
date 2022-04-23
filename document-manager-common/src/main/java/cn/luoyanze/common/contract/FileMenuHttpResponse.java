@@ -1,6 +1,5 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.entity.Menu;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
