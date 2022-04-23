@@ -1,7 +1,7 @@
 package cn.luoyanze.common.contract;
 
 
-import cn.luoyanze.common.contract.common.RequsetHead;
+import cn.luoyanze.common.contract.common.RequestHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class FilterSearchHttpRequest {
 
     @JsonProperty("head")
-    private RequsetHead head;
+    private RequestHead head;
 
     @JsonProperty("menuIndex")
     private int menuIndex;

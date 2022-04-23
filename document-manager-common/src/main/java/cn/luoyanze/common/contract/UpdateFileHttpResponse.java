@@ -1,5 +1,6 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.ResponseHead;
 import lombok.Data;
 import lombok.Getter;
 
@@ -11,4 +12,6 @@ import lombok.Getter;
 
 @Data
 public class UpdateFileHttpResponse {
+
+    private ResponseHead head;
 }

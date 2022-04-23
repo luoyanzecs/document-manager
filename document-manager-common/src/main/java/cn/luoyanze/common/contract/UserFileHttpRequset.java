@@ -1,6 +1,6 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.common.RequsetHead;
+import cn.luoyanze.common.contract.common.RequestHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -13,7 +13,7 @@ import lombok.Getter;
 public class UserFileHttpRequset {
 
     @JsonProperty("head")
-    private RequsetHead head;
+    private RequestHead head;
 
     @JsonProperty("fileId")
     private String id;

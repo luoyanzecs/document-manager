@@ -6,7 +6,7 @@ package cn.luoyanze.common.contract.common;
  */
 
 
-public class RequsetHead {
+public class RequestHead {
 
     private String timestamp;
 

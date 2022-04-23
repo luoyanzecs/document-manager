@@ -1,6 +1,6 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.common.RequsetHead;
+import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
 
 import java.util.List;
@@ -13,9 +13,14 @@ import java.util.List;
 @Getter
 public class DeleteTableItemHttpRequest {
 
-    private RequsetHead head;
+    private RequestHead head;
 
     private int type;
+
+    /**
+     * 用户选择的目录
+     */
+    private int menuIndex;
 
     private List<String> ids;
 }

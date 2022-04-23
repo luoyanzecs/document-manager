@@ -4,7 +4,6 @@ import cn.luoyanze.common.contract.FilterSearchHttpRequest;
 import cn.luoyanze.common.contract.FilterSearchHttpResponse;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.common.contract.entity.*;
-import cn.luoyanze.common.contract.entity.table.*;
 import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1NoticeBO;

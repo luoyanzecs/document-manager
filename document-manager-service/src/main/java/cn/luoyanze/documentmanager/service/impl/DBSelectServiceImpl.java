@@ -4,7 +4,6 @@ import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.FileCommentHttpResponse.Comment;
 import cn.luoyanze.common.contract.NoticeHttpResponse.Notice;
 import cn.luoyanze.common.contract.common.ResponseHead;
-import cn.luoyanze.common.contract.entity.*;
 import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1DirBO;
@@ -86,33 +85,28 @@ public class DBSelectServiceImpl implements DBSelectService {
     }
 
     private List<Comment> wrapper(List<FileComment> comments, List<FileComment> replys) {
-        ArrayList<Comment> res = new ArrayList<>();
-        comments.forEach(it -> {
-            Comment comment = new Comment();
-            comment.setTime(TimeUtil.formatter(it.getTime()));
-            comment.setUsername(it.getUsername());
-            comment.setAvatar(it.getAvatar());
-            comment.setId(it.getCommentUUID());
-            comment.setCtx(it.getCtx());
-            comment.setUsername(it.getUserId());
+        return comments.stream().map(it -> {
+            Comment comment = wrapperComment(it);
             comment.setReply(
                     replys.stream()
                             .filter(re -> re.getParentId() == it.getCommentPrimaryId())
                             .sorted(Comparator.comparing(FileComment::getTime))
-                            .map(re -> {
-                                Comment reply = new Comment();
-                                reply.setTime(TimeUtil.formatter(re.getTime()));
-                                reply.setUsername(re.getUsername());
-                                reply.setAvatar(re.getAvatar());
-                                reply.setId(re.getCommentUUID());
-                                reply.setCtx(re.getCtx());
-                                reply.setUsername(re.getUserId());
-                                return reply;
-                            }).collect(Collectors.toList())
+                            .map(this::wrapperComment)
+                            .collect(Collectors.toList())
             );
-            res.add(comment);
-        });
-        return res;
+            return comment;
+        }).collect(Collectors.toList());
+    }
+
+    private Comment wrapperComment(FileComment it) {
+        Comment comment = new Comment();
+        comment.setTime(TimeUtil.formatter(it.getTime()));
+        comment.setUsername(it.getUsername());
+        comment.setAvatar(it.getAvatar());
+        comment.setId(it.getCommentUUID());
+        comment.setCtx(it.getCtx());
+        comment.setUsername(it.getUserId());
+        return comment;
     }
 
     @Override
