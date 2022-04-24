@@ -24,7 +24,7 @@ public class ResponseHead {
     /**
      * 消息
      */
-    private String massage;
+    private String message;
 
     /**
      * 时间戳
@@ -34,7 +34,7 @@ public class ResponseHead {
     public ResponseHead(HeadStatus head) {
         this.status = head == HeadStatus.SUCCESS ? "success" : "error";
         this.statusCode = head.getCode();
-        this.massage = head.getValue();
+        this.message = head.getValue();
         this.timestamp = TimeUtil.getTimeStamp();
     }
 }

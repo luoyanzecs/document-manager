@@ -13,7 +13,8 @@ public class DeleteAttachHttpRequest {
 
     private RequestHead head;
 
-    private Integer user_id;
+    private Integer docId;
 
-    private String doc_title;
+    private Integer attachId;
+
 }

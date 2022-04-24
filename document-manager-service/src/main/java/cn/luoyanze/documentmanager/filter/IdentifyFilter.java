@@ -17,7 +17,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -42,7 +41,6 @@ public class IdentifyFilter implements Filter {
         String path = req.getRequestURI().substring(req.getContextPath().length()).replaceAll("[/]+$", "");
 
         try {
-            filterChain.doFilter(request, response);
             if (EXCLUDE_URLS.contains(path)) {
                 resp.sendError(HttpStatus.FORBIDDEN.value(), "验证失败， 请重新登录");
             }

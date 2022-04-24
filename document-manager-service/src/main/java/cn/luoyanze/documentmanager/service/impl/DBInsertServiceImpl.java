@@ -3,11 +3,12 @@ package cn.luoyanze.documentmanager.service.impl;
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1CommentBO;
+import cn.luoyanze.documentmanager.dao.tables.pojos.S1DocBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1NoticeBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
+import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.DBInsertService;
 import org.jooq.DSLContext;
-import org.jooq.types.UInteger;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,12 +33,26 @@ public class DBInsertServiceImpl implements DBInsertService {
     }
 
     @Override
-    public CreateFileHttpResponse insertNewFile(CreateFileHttpRequest request) {
-        return null;
+    public CreateFileHttpResponse insertNewFile(CreateFileHttpRequest request) throws CustomException {
+        S1DocBO doc = new S1DocBO();
+        doc.setCtx("");
+        doc.setUserId(request.getUserId());
+        doc.setLastUpdateUserId(request.getUserId());
+        doc.setTitle(request.getTitle());
+        doc.setPermissionBu(request.getBu());
+        doc.setDirId(request.getParentId());
+        doc.setLastUpdateTime(LocalDateTime.now());
+        int execute = dao.insertInto(S1_DOC).values(doc).execute();
+        CreateFileHttpResponse resp = new CreateFileHttpResponse();
+        if (execute == 0) {
+            throw new CustomException("请重试", DOC_CREATE_FAIL);
+        }
+        resp.setHead(new ResponseHead(SUCCESS));
+        return resp;
     }
 
     @Override
-    public LeaveMessageHttpResponse insertNewComment(LeaveMessageHttpRequest request) {
+    public LeaveMessageHttpResponse insertNewComment(LeaveMessageHttpRequest request) throws CustomException {
 
         S1CommentBO comment = new S1CommentBO();
         comment.setCtx(request.getCtx());
@@ -49,16 +64,15 @@ public class DBInsertServiceImpl implements DBInsertService {
 
         LeaveMessageHttpResponse resp = new LeaveMessageHttpResponse();
 
-        if (execute == 1) {
-            resp.setHead(new ResponseHead(SUCCESS));
-        } else {
-            resp.setHead(new ResponseHead(INSERT_COMMENT_FAIL));
+        if (execute == 0) {
+            throw new CustomException("", INSERT_COMMENT_FAIL);
         }
+        resp.setHead(new ResponseHead(SUCCESS));
         return resp;
     }
 
     @Override
-    public AddNoticeHttpResponse insertNewNotice(AddNoticeHttpRequest request) {
+    public AddNoticeHttpResponse insertNewNotice(AddNoticeHttpRequest request) throws CustomException {
         S1NoticeBO notice = new S1NoticeBO();
         notice.setContent(request.getText());
         notice.setIsGlobal(request.getType());
@@ -74,16 +88,15 @@ public class DBInsertServiceImpl implements DBInsertService {
         );
         int execute = dao.insertInto(S1_NOTICE).values(notice).execute();
         AddNoticeHttpResponse resp = new AddNoticeHttpResponse();
-        if (execute == 1) {
-            resp.setHead(new ResponseHead(SUCCESS));
-        } else {
-            resp.setHead(new ResponseHead(INSERT_NOTICE_FAIL));
+        if (execute == 0) {
+            throw new CustomException("", INSERT_NOTICE_FAIL);
         }
+        resp.setHead(new ResponseHead(SUCCESS));
         return resp;
     }
 
     @Override
-    public AddUserHttpResponse insertNewUser(AddUserHttpRequest request) {
+    public AddUserHttpResponse insertNewUser(AddUserHttpRequest request) throws CustomException {
         S1UserBO user = new S1UserBO();
         user.setAccount(request.getName());
         user.setPassword(request.getPassword());
@@ -95,11 +108,10 @@ public class DBInsertServiceImpl implements DBInsertService {
         int execute = dao.insertInto(S1_USER).values(user).execute();
 
         AddUserHttpResponse resp = new AddUserHttpResponse();
-        if (execute == 1) {
-            resp.setHead(new ResponseHead(SUCCESS));
-        } else {
-            resp.setHead(new ResponseHead(INSERT_NOTICE_FAIL));
+        if (execute == 0) {
+            throw new CustomException("", INSERT_NOTICE_FAIL);
         }
+        resp.setHead(new ResponseHead(SUCCESS));
         return resp;
     }
 }

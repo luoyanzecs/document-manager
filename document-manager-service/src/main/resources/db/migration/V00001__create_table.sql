@@ -33,7 +33,7 @@ CREATE TABLE `S1_DOC`
     `primary_id`          INT  NOT NULL AUTO_INCREMENT COMMENT '自增主键',
     `permission_bu`       CHAR(16) COMMENT '允许的部门',
     `authority`           INT COMMENT '允许的等级',
-    `status`              INT  NOT NULL COMMENT '状态 0已删除， 1正常',
+    `status`              INT  NOT NULL default 1 COMMENT '状态 0已删除， 1正常',
     `ctx`                 TEXT NOT NULL COMMENT '内容',
     `user_id`             INT  NOT NULL COMMENT '创建用户id',
     `last_update_time`    DATETIME COMMENT '最近修改时间登录时间',

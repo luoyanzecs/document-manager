@@ -15,8 +15,6 @@ public class DeleteTableItemHttpRequest {
 
     private RequestHead head;
 
-    private int type;
-
     /**
      * 用户选择的目录
      */

@@ -6,6 +6,7 @@ import cn.luoyanze.common.contract.common.RequestHead;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1AttachBO;
+import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.AttachService;
 import org.jooq.DSLContext;
 import org.slf4j.Logger;
@@ -17,14 +18,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
+import static cn.luoyanze.common.model.HeadStatus.FILE_NOT_EXISIT;
+import static cn.luoyanze.common.model.HeadStatus.UPLOADER_FAIL;
 import static cn.luoyanze.documentmanager.dao.Tables.S1_ATTACH;
 
 /**
@@ -44,7 +45,7 @@ public class AttachServiceImpl implements AttachService {
     }
 
     @Override
-    public AddAttachHttpResponse upload(MultipartFile file, Integer doc, RequestHead head) {
+    public AddAttachHttpResponse upload(MultipartFile file, Integer doc, RequestHead head) throws CustomException {
         AddAttachHttpResponse resp = new AddAttachHttpResponse();
         try {
             String name = file.getName();
@@ -60,29 +61,27 @@ public class AttachServiceImpl implements AttachService {
             attach.setUserPrimaryId(head.getUserId());
 
             int execute = dao.insertInto(S1_ATTACH).values(attach).execute();
-            if (execute == 1) {
-                resp.setHead(new ResponseHead(HeadStatus.SUCCESS));
+            if (execute == 0) {
+                throw new CustomException("请检查您的网络环境", UPLOADER_FAIL);
             }
-        } catch (Exception e) {
+            resp.setHead(new ResponseHead(HeadStatus.SUCCESS));
+            return resp;
+        } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
+            throw new CustomException("可能是文件写入磁盘异常", UPLOADER_FAIL);
         }
-        resp.setHead(new ResponseHead(HeadStatus.UPLOADER_FAIL));
-        return resp;
     }
 
     @Override
-    public Object download(DownloadAttachHttpRequest request) {
+    public Object download(DownloadAttachHttpRequest request) throws CustomException {
         try {
             S1AttachBO attach = dao.selectFrom(S1_ATTACH)
                     .where(S1_ATTACH.PRIMARY_ID.eq(request.getAttachId()))
                     .fetchOneInto(S1AttachBO.class);
             if (attach == null) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .header("Content-Type", "text/plain; charset=utf-8")
-                        .body("附件异常");
+                throw new CustomException("", FILE_NOT_EXISIT);
             }
             File file = ResourceUtils.getFile("classpath:" + attach.getName());
-
             InputStream inputStream = new FileInputStream(file);
             return ResponseEntity.status(HttpStatus.OK)
                     .header("Content-Disposition", "attachment;filename=" + attach.getName())
@@ -90,10 +89,8 @@ public class AttachServiceImpl implements AttachService {
                     .contentType(MediaType.parseMediaType("application/octet-stream"))
                     .body(inputStream);
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .header("Content-Type", "text/plain; charset=utf-8")
-                    .body(e.getMessage());
+        } catch (FileNotFoundException e) {
+            throw new CustomException("该文件不存在", FILE_NOT_EXISIT);
         }
     }
 }

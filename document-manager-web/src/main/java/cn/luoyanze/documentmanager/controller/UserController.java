@@ -49,19 +49,19 @@ public class UserController {
 
     @PostMapping("/updateFile")
     @ResponseBody
-    public UpdateFileHttpResponse execute(@RequestBody UpdateFileHttpRequest request) {
+    public UpdateFileHttpResponse execute(@RequestBody UpdateFileHttpRequest request) throws Exception {
         return dbUpdateService.updateFile(request);
     }
 
     @PostMapping("/createFile")
     @ResponseBody
-    public CreateFileHttpResponse execute(@RequestBody CreateFileHttpRequest request) {
+    public CreateFileHttpResponse execute(@RequestBody CreateFileHttpRequest request) throws Exception {
         return dbInsertService.insertNewFile(request);
     }
 
     @PostMapping("/leaveMessage")
     @ResponseBody
-    public LeaveMessageHttpResponse execute(@RequestBody LeaveMessageHttpRequest request) {
+    public LeaveMessageHttpResponse execute(@RequestBody LeaveMessageHttpRequest request) throws Exception {
         return dbInsertService.insertNewComment(request);
     }
 
@@ -70,19 +70,19 @@ public class UserController {
     public AddAttachHttpResponse execute(
             @RequestParam("file")MultipartFile file,
             @RequestParam("docId")Integer docId,
-            @RequestParam("head")RequestHead head) {
+            @RequestParam("head")RequestHead head) throws Exception {
         return attachService.upload(file, docId, head);
     }
 
     @PostMapping("/downloadAttach")
     @ResponseBody
-    public Object execute(@RequestBody DownloadAttachHttpRequest request) {
+    public Object execute(@RequestBody DownloadAttachHttpRequest request) throws Exception {
         return attachService.download(request);
     }
 
     @PostMapping("/deleteAttach")
     @ResponseBody
-    public DeleteAttachHttpResponse execute(@RequestBody DeleteAttachHttpRequest request) {
+    public DeleteAttachHttpResponse execute(@RequestBody DeleteAttachHttpRequest request) throws Exception {
         return dbUpdateService.deleteAttach(request);
     }
 
