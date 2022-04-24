@@ -15,12 +15,10 @@ public class DeleteTableItemHttpRequest {
 
     private RequestHead head;
 
-    private int type;
-
     /**
      * 用户选择的目录
      */
     private int menuIndex;
 
-    private List<String> ids;
+    private List<Integer> ids;
 }

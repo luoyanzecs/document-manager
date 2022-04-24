@@ -2,6 +2,7 @@ package cn.luoyanze.common.contract;
 
 import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
+import org.jooq.types.UInteger;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -19,7 +20,8 @@ public class UpdateFileHttpRequest {
     private String jsonValue;
 
     /**
-     * 文件uuid
+     * 文件id
      */
-    private String fileId;
+    private Integer fileId;
+
 }

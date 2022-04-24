@@ -5,6 +5,7 @@ package cn.luoyanze.documentmanager.dao.tables;
 
 
 import cn.luoyanze.documentmanager.dao.DocumentManager;
+import cn.luoyanze.documentmanager.dao.Indexes;
 import cn.luoyanze.documentmanager.dao.Keys;
 import cn.luoyanze.documentmanager.dao.tables.records.S1OperateRecord;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row6;
@@ -26,7 +28,6 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 
 /**
@@ -53,12 +54,12 @@ public class S1OperateTB extends TableImpl<S1OperateRecord> {
     /**
      * The column <code>document_manager.S1_OPERATE.primary_id</code>. 自增主键
      */
-    public final TableField<S1OperateRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
+    public final TableField<S1OperateRecord, Integer> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "自增主键");
 
     /**
      * The column <code>document_manager.S1_OPERATE.type</code>. 操作类型
      */
-    public final TableField<S1OperateRecord, UInteger> TYPE = createField(DSL.name("type"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "操作类型");
+    public final TableField<S1OperateRecord, Integer> TYPE = createField(DSL.name("type"), SQLDataType.INTEGER.nullable(false), this, "操作类型");
 
     /**
      * The column <code>document_manager.S1_OPERATE.time</code>. 操作时间
@@ -66,19 +67,19 @@ public class S1OperateTB extends TableImpl<S1OperateRecord> {
     public final TableField<S1OperateRecord, LocalDateTime> TIME = createField(DSL.name("time"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "操作时间");
 
     /**
-     * The column <code>document_manager.S1_OPERATE.doc_uuid</code>. 文章uuid
+     * The column <code>document_manager.S1_OPERATE.doc_id</code>. 文章uuid
      */
-    public final TableField<S1OperateRecord, String> DOC_UUID = createField(DSL.name("doc_uuid"), SQLDataType.CHAR(16).nullable(false), this, "文章uuid");
+    public final TableField<S1OperateRecord, Integer> DOC_ID = createField(DSL.name("doc_id"), SQLDataType.INTEGER.nullable(false), this, "文章uuid");
 
     /**
-     * The column <code>document_manager.S1_OPERATE.user_uuid</code>. user uuid
+     * The column <code>document_manager.S1_OPERATE.user_id</code>. user uuid
      */
-    public final TableField<S1OperateRecord, String> USER_UUID = createField(DSL.name("user_uuid"), SQLDataType.CHAR(16).nullable(false), this, "user uuid");
+    public final TableField<S1OperateRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "user uuid");
 
     /**
      * The column <code>document_manager.S1_OPERATE.content</code>. 内容保留字段
      */
-    public final TableField<S1OperateRecord, String> CONTENT = createField(DSL.name("content"), SQLDataType.VARCHAR(1024), this, "内容保留字段");
+    public final TableField<S1OperateRecord, String> CONTENT = createField(DSL.name("content"), SQLDataType.CLOB, this, "内容保留字段");
 
     private S1OperateTB(Name alias, Table<S1OperateRecord> aliased) {
         this(alias, aliased, null);
@@ -119,8 +120,13 @@ public class S1OperateTB extends TableImpl<S1OperateRecord> {
     }
 
     @Override
-    public Identity<S1OperateRecord, UInteger> getIdentity() {
-        return (Identity<S1OperateRecord, UInteger>) super.getIdentity();
+    public List<Index> getIndexes() {
+        return Arrays.<Index>asList(Indexes.S1_OPERATE_DOC_ID, Indexes.S1_OPERATE_USER_ID);
+    }
+
+    @Override
+    public Identity<S1OperateRecord, Integer> getIdentity() {
+        return (Identity<S1OperateRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -131,6 +137,28 @@ public class S1OperateTB extends TableImpl<S1OperateRecord> {
     @Override
     public List<UniqueKey<S1OperateRecord>> getKeys() {
         return Arrays.<UniqueKey<S1OperateRecord>>asList(Keys.KEY_S1_OPERATE_PRIMARY);
+    }
+
+    @Override
+    public List<ForeignKey<S1OperateRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<S1OperateRecord, ?>>asList(Keys.S1_OPERATE_IBFK_2, Keys.S1_OPERATE_IBFK_1);
+    }
+
+    private transient S1DocTB _s1Doc;
+    private transient S1UserTB _s1User;
+
+    public S1DocTB s1Doc() {
+        if (_s1Doc == null)
+            _s1Doc = new S1DocTB(this, Keys.S1_OPERATE_IBFK_2);
+
+        return _s1Doc;
+    }
+
+    public S1UserTB s1User() {
+        if (_s1User == null)
+            _s1User = new S1UserTB(this, Keys.S1_OPERATE_IBFK_1);
+
+        return _s1User;
     }
 
     @Override
@@ -164,7 +192,7 @@ public class S1OperateTB extends TableImpl<S1OperateRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<UInteger, UInteger, LocalDateTime, String, String, String> fieldsRow() {
+    public Row6<Integer, Integer, LocalDateTime, Integer, Integer, String> fieldsRow() {
         return (Row6) super.fieldsRow();
     }
 }

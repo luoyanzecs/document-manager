@@ -4,6 +4,7 @@ import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -25,4 +26,8 @@ public class AddNoticeHttpRequest {
     private LocalDateTime startTime;
 
     private LocalDateTime expiredTime;
+
+    private List<String> bu;
+
+    private List<Integer> users;
 }

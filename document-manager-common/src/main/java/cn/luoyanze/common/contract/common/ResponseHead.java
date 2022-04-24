@@ -2,11 +2,14 @@ package cn.luoyanze.common.contract.common;
 
 import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.common.util.TimeUtil;
+import lombok.Data;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 11:28 AM
  */
+
+@Data
 public class ResponseHead {
     /**
      * 状态 成功：success， 失败：error
@@ -21,7 +24,7 @@ public class ResponseHead {
     /**
      * 消息
      */
-    private String massage;
+    private String message;
 
     /**
      * 时间戳
@@ -31,39 +34,7 @@ public class ResponseHead {
     public ResponseHead(HeadStatus head) {
         this.status = head == HeadStatus.SUCCESS ? "success" : "error";
         this.statusCode = head.getCode();
-        this.massage = head.getValue();
+        this.message = head.getValue();
         this.timestamp = TimeUtil.getTimeStamp();
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public String getMassage() {
-        return massage;
-    }
-
-    public void setMassage(String massage) {
-        this.massage = massage;
     }
 }

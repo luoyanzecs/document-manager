@@ -6,6 +6,7 @@ import cn.luoyanze.common.contract.LoginHttpResponse.User;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.common.util.TokenUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
+import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.LoginApiService;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class LoginApiServiceImpl implements LoginApiService {
     }
 
     @Override
-    public LoginHttpResponse execute(LoginHttpRequset requset) {
+    public LoginHttpResponse execute(LoginHttpRequset requset) throws Exception {
 
         S1UserBO user = dao.select()
                 .from(S1_USER)
@@ -40,17 +41,16 @@ public class LoginApiServiceImpl implements LoginApiService {
         return wrapper(user, requset);
     }
 
-    private LoginHttpResponse wrapper(S1UserBO user, LoginHttpRequset requset) {
+    private LoginHttpResponse wrapper(S1UserBO user, LoginHttpRequset requset) throws CustomException {
         LoginHttpResponse resp = new LoginHttpResponse();
 
         if (user == null) {
-            resp.setHead(new ResponseHead(USER_NOT_EXISIT));
-            return resp;
+            throw new CustomException("", USER_NOT_EXISIT);
         }
 
         resp.setHead(new ResponseHead(SUCCESS));
         resp.setUser(
-                new User(user.getAccount(), "", user.getUuid(), user.getBu(), user.getAuthority())
+                new User(user.getAccount(), "", user.getPrimaryId(), user.getBu(), user.getAuthority())
         );
         resp.setToken(TokenUtil.buildJWT(requset.getUsername()));
         return resp;

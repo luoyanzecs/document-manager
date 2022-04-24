@@ -29,13 +29,13 @@ public class FileCommentHttpResponse {
     @Data
     public static class Comment {
         @JsonProperty("commentId")
-        private String id;
+        private Integer id;
 
         @JsonProperty("name")
         private String username;
 
         @JsonProperty("id")
-        private String userId;
+        private Integer userId;
 
         @JsonProperty("time")
         private String time;

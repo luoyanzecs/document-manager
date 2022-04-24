@@ -17,7 +17,7 @@ public class NoticeTableItem extends TableItemBase{
      * 条目id
      */
     @JsonProperty("id")
-    private String itemId;
+    private Integer itemId;
 
     /**
      * 接收用户

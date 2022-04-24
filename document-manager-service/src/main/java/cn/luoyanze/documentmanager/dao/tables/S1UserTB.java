@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row13;
+import org.jooq.Row12;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -26,7 +26,6 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 
 /**
@@ -53,12 +52,7 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     /**
      * The column <code>document_manager.S1_USER.primary_id</code>. 自增主键
      */
-    public final TableField<S1UserRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
-
-    /**
-     * The column <code>document_manager.S1_USER.uuid</code>. 用户UUID
-     */
-    public final TableField<S1UserRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(32).nullable(false), this, "用户UUID");
+    public final TableField<S1UserRecord, Integer> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "自增主键");
 
     /**
      * The column <code>document_manager.S1_USER.account</code>. 用户账号
@@ -154,8 +148,8 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     }
 
     @Override
-    public Identity<S1UserRecord, UInteger> getIdentity() {
-        return (Identity<S1UserRecord, UInteger>) super.getIdentity();
+    public Identity<S1UserRecord, Integer> getIdentity() {
+        return (Identity<S1UserRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -195,11 +189,11 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row13 type methods
+    // Row12 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<UInteger, String, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, String, Integer> fieldsRow() {
-        return (Row13) super.fieldsRow();
+    public Row12<Integer, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, String, Integer> fieldsRow() {
+        return (Row12) super.fieldsRow();
     }
 }

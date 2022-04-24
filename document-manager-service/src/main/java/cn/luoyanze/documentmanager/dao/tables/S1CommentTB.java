@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row7;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -26,7 +26,6 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 
 /**
@@ -53,22 +52,17 @@ public class S1CommentTB extends TableImpl<S1CommentRecord> {
     /**
      * The column <code>document_manager.S1_COMMENT.primary_id</code>. 自增主键
      */
-    public final TableField<S1CommentRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
-
-    /**
-     * The column <code>document_manager.S1_COMMENT.uuid</code>. UUID
-     */
-    public final TableField<S1CommentRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(32).nullable(false), this, "UUID");
+    public final TableField<S1CommentRecord, Integer> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "自增主键");
 
     /**
      * The column <code>document_manager.S1_COMMENT.doc_id</code>. 文章id
      */
-    public final TableField<S1CommentRecord, UInteger> DOC_ID = createField(DSL.name("doc_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "文章id");
+    public final TableField<S1CommentRecord, Integer> DOC_ID = createField(DSL.name("doc_id"), SQLDataType.INTEGER.nullable(false), this, "文章id");
 
     /**
      * The column <code>document_manager.S1_COMMENT.user_id</code>. 用户id
      */
-    public final TableField<S1CommentRecord, UInteger> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "用户id");
+    public final TableField<S1CommentRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "用户id");
 
     /**
      * The column <code>document_manager.S1_COMMENT.ctx</code>. 评论内容
@@ -83,7 +77,7 @@ public class S1CommentTB extends TableImpl<S1CommentRecord> {
     /**
      * The column <code>document_manager.S1_COMMENT.parent_id</code>. 上级评论
      */
-    public final TableField<S1CommentRecord, UInteger> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "上级评论");
+    public final TableField<S1CommentRecord, Integer> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.INTEGER.nullable(false), this, "上级评论");
 
     private S1CommentTB(Name alias, Table<S1CommentRecord> aliased) {
         this(alias, aliased, null);
@@ -124,8 +118,8 @@ public class S1CommentTB extends TableImpl<S1CommentRecord> {
     }
 
     @Override
-    public Identity<S1CommentRecord, UInteger> getIdentity() {
-        return (Identity<S1CommentRecord, UInteger>) super.getIdentity();
+    public Identity<S1CommentRecord, Integer> getIdentity() {
+        return (Identity<S1CommentRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -165,11 +159,11 @@ public class S1CommentTB extends TableImpl<S1CommentRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row7 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<UInteger, String, UInteger, UInteger, String, LocalDateTime, UInteger> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row6<Integer, Integer, Integer, String, LocalDateTime, Integer> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 }

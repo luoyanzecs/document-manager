@@ -18,7 +18,7 @@ public class SearchHttpResponse {
 
     @Data
     static class Result {
-        private String id;
+        private Integer id;
         private String title;
         private String ctx;
     }

@@ -2,6 +2,7 @@ package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.CreateFileHttpRequest;
 import cn.luoyanze.common.contract.*;
+import cn.luoyanze.common.contract.common.RequestHead;
 import cn.luoyanze.documentmanager.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,13 @@ public class UserController {
     private final DBUpdateService dbUpdateService;
     private final DBSelectService dbSelectService;
     private final DBInsertService dbInsertService;
+    private final AttachService attachService;
 
-    public UserController(DBUpdateService dbUpdateService, DBSelectService dbSelectService, DBInsertService dbInsertService) {
+    public UserController(DBUpdateService dbUpdateService, DBSelectService dbSelectService, DBInsertService dbInsertService, AttachService attachService) {
         this.dbUpdateService = dbUpdateService;
         this.dbSelectService = dbSelectService;
         this.dbInsertService = dbInsertService;
+        this.attachService = attachService;
     }
 
     @PostMapping("/menu")
@@ -46,39 +49,40 @@ public class UserController {
 
     @PostMapping("/updateFile")
     @ResponseBody
-    public UpdateFileHttpResponse excute(@RequestBody UpdateFileHttpRequest request) {
+    public UpdateFileHttpResponse execute(@RequestBody UpdateFileHttpRequest request) throws Exception {
         return dbUpdateService.updateFile(request);
     }
 
     @PostMapping("/createFile")
     @ResponseBody
-    public CreateFileHttpResponse excute(@RequestBody CreateFileHttpRequest request) {
+    public CreateFileHttpResponse execute(@RequestBody CreateFileHttpRequest request) throws Exception {
         return dbInsertService.insertNewFile(request);
     }
 
     @PostMapping("/leaveMessage")
     @ResponseBody
-    public LeaveMessageHttpResponse excute(@RequestBody LeaveMessageHttpRequest request) {
+    public LeaveMessageHttpResponse execute(@RequestBody LeaveMessageHttpRequest request) throws Exception {
         return dbInsertService.insertNewComment(request);
     }
 
-    // TODO: 文件上传
     @PostMapping("/uploadAttach")
     @ResponseBody
-    public UpdateFileHttpResponse excute(@RequestParam("file") MultipartFile file) {
-        return null;
+    public AddAttachHttpResponse execute(
+            @RequestParam("file")MultipartFile file,
+            @RequestParam("docId")Integer docId,
+            @RequestParam("head")RequestHead head) throws Exception {
+        return attachService.upload(file, docId, head);
     }
 
-    // TODO: 文件下载
     @PostMapping("/downloadAttach")
     @ResponseBody
-    public UpdateFileHttpResponse excute3() {
-        return null;
+    public Object execute(@RequestBody DownloadAttachHttpRequest request) throws Exception {
+        return attachService.download(request);
     }
 
     @PostMapping("/deleteAttach")
     @ResponseBody
-    public DeleteAttachHttpResponse excute(@RequestBody DeleteAttachHttpRequest request) {
+    public DeleteAttachHttpResponse execute(@RequestBody DeleteAttachHttpRequest request) throws Exception {
         return dbUpdateService.deleteAttach(request);
     }
 
