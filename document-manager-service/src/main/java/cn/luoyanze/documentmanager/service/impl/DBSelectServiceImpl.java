@@ -4,7 +4,6 @@ import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.FileCommentHttpResponse.Comment;
 import cn.luoyanze.common.contract.NoticeHttpResponse.Notice;
 import cn.luoyanze.common.contract.common.ResponseHead;
-import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1DirBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1DocBO;
@@ -23,8 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.luoyanze.common.contract.FileMenuHttpResponse.*;
-import static cn.luoyanze.common.model.HeadStatus.FORBBIDEN;
-import static cn.luoyanze.common.model.HeadStatus.SUCCESS;
+import static cn.luoyanze.common.model.HeadStatus.*;
 import static cn.luoyanze.documentmanager.dao.Tables.*;
 import static cn.luoyanze.documentmanager.dao.Tables.S1_DOC;
 
@@ -114,7 +112,7 @@ public class DBSelectServiceImpl implements DBSelectService {
         List<DocVO> docVOS = dao.select().from(S1_DOC).fetchInto(DocVO.class);
 
         FileMenuHttpResponse resp = new FileMenuHttpResponse();
-        resp.setHead(new ResponseHead(HeadStatus.SUCCESS));
+        resp.setHead(new ResponseHead(SUCCESS));
         resp.setMenus(generate(dirs, docVOS));
 
         return resp;
@@ -189,11 +187,16 @@ public class DBSelectServiceImpl implements DBSelectService {
 
     @Override
     public NoticeHttpResponse selectNotice(NoticeHttpRequset requset) {
+        NoticeHttpResponse resp = new NoticeHttpResponse();
         LocalDateTime now = LocalDateTime.now();
         Record2<UInteger, String> user = dao.select(S1_USER.PRIMARY_ID, S1_USER.BU)
                 .from(S1_USER)
                 .where(S1_USER.ACCOUNT.eq(requset.getHead().getUsername()))
                 .fetchOne();
+        if (user == null) {
+            resp.setHead(new ResponseHead(USER_NOT_EXISIT));
+            return resp;
+        }
 
         List<S1NoticeBO> records = dao.select().from(S1_NOTICE)
                 .where(S1_NOTICE.START_TIME.compare(org.jooq.Comparator.LESS, now))
@@ -201,16 +204,15 @@ public class DBSelectServiceImpl implements DBSelectService {
                 .fetchInto(S1NoticeBO.class);
 
         List<Notice> notices = records.stream()
-                .filter(it -> it.getAcceptUsers().contains(user.get(0).toString())
-                        && it.getAcceptBu().contains(user.get(1, String.class))
+                .filter(it -> it.getAcceptUsers().contains(user.get(S1_USER.PRIMARY_ID).toString())
+                        && it.getAcceptBu().contains(user.get(S1_USER.BU))
                 )
                 .map(it -> new Notice(it.getPrimaryId().intValue(), it.getType(), it.getContent()))
                 .collect(Collectors.toList());
 
-        NoticeHttpResponse resp = new NoticeHttpResponse();
-        resp.setHead(new ResponseHead(HeadStatus.SUCCESS));
-        resp.setNotices(notices);
 
+        resp.setHead(new ResponseHead(SUCCESS));
+        resp.setNotices(notices);
         return resp;
     }
 

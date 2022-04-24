@@ -13,6 +13,7 @@ import cn.luoyanze.documentmanager.service.FilterSearchService;
 import org.jooq.DSLContext;
 import org.jooq.Record6;
 import org.jooq.Result;
+import org.jooq.types.UInteger;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -63,7 +64,7 @@ public class FilterSearchServiceImpl implements FilterSearchService {
 
         List<TableItemBase> items = users.stream()
                 .map(it -> new UserTableItem() {{
-                            setItemId(it.getUuid());
+                            setItemId(it.getPrimaryId().intValue());
                             setName(it.getAccount());
                             setBu(it.getBu());
                             setTel(it.getTel());
@@ -94,10 +95,10 @@ public class FilterSearchServiceImpl implements FilterSearchService {
         List<TableItemBase> items =
                 records.stream()
                         .map(it -> new RecordTableItem() {{
-                                    setItemId(it.getPrimaryId().toString());
-                                    setUserId(it.getUserUuid());
+                                    setItemId(it.getPrimaryId().intValue());
+                                    setUserId(it.getPrimaryId().intValue());
                                     setOperate(it.getType().toString());
-                                    setFid(it.getDocUuid());
+                                    setFid(it.getDocId().intValue());
                                     setOperateTime(TimeUtil.formatter(it.getTime()));
                                 }}
                         ).collect(Collectors.toList());
@@ -109,11 +110,10 @@ public class FilterSearchServiceImpl implements FilterSearchService {
 
         int totalPage = dao.fetchCount(S1_DOC) / request.getPageSize();
 
-        Result<Record6<String, String, String, String, LocalDateTime, String>> docs
-                = dao.select(
+        Result<Record6<String, UInteger, UInteger, String, LocalDateTime, String>> docs = dao.select(
                         S1_USER.ACCOUNT,
-                        S1_USER.UUID,
-                        S1_DOC.UUID,
+                        S1_USER.PRIMARY_ID,
+                        S1_DOC.PRIMARY_ID,
                         S1_DOC.PERMISSION_BU,
                         S1_DOC.LAST_UPDATE_TIME,
                         S1_DOC.TITLE
@@ -127,8 +127,8 @@ public class FilterSearchServiceImpl implements FilterSearchService {
         List<TableItemBase> items = docs.stream()
                 .map(it -> new FileTableItem() {{
                             setOwner(it.get(0, String.class));
-                            setUserId(it.get(1, String.class));
-                            setFileId(it.get(2, String.class));
+                            setUserId(it.get(1, UInteger.class).intValue());
+                            setFileId(it.get(2, UInteger.class).intValue());
                             setBu(it.get(3, String.class));
                             setTime(TimeUtil.formatter(it.get(4, LocalDateTime.class)));
                             setTitle(it.get(5, String.class));
@@ -155,7 +155,7 @@ public class FilterSearchServiceImpl implements FilterSearchService {
                             setTo(it.getAcceptUsers());
                             setStartTime(TimeUtil.formatter(it.getStartTime()));
                             setEndTime(TimeUtil.formatter(it.getEndTime()));
-                            setItemId(it.getUuid());
+                            setItemId(it.getPrimaryId().intValue());
                         }}
                 ).collect(Collectors.toList());
 

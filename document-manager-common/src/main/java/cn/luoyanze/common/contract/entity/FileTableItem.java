@@ -29,7 +29,7 @@ public class FileTableItem extends TableItemBase{
      * 文件创建者id
      */
     @JsonProperty("userId")
-    private String userId;
+    private Integer userId;
 
     /**
      * 文件标题
