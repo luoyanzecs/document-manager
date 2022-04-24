@@ -28,7 +28,6 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 
 /**
@@ -55,7 +54,7 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     /**
      * The column <code>document_manager.S1_DOC.primary_id</code>. 自增主键
      */
-    public final TableField<S1DocRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
+    public final TableField<S1DocRecord, Integer> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "自增主键");
 
     /**
      * The column <code>document_manager.S1_DOC.permission_bu</code>. 允许的部门
@@ -80,7 +79,7 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     /**
      * The column <code>document_manager.S1_DOC.user_id</code>. 创建用户id
      */
-    public final TableField<S1DocRecord, UInteger> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "创建用户id");
+    public final TableField<S1DocRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "创建用户id");
 
     /**
      * The column <code>document_manager.S1_DOC.last_update_time</code>. 最近修改时间登录时间
@@ -95,12 +94,12 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     /**
      * The column <code>document_manager.S1_DOC.dir_id</code>. 上级目录ID
      */
-    public final TableField<S1DocRecord, UInteger> DIR_ID = createField(DSL.name("dir_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "上级目录ID");
+    public final TableField<S1DocRecord, Integer> DIR_ID = createField(DSL.name("dir_id"), SQLDataType.INTEGER.nullable(false), this, "上级目录ID");
 
     /**
      * The column <code>document_manager.S1_DOC.last_update_user_id</code>. 最近修改用户id
      */
-    public final TableField<S1DocRecord, UInteger> LAST_UPDATE_USER_ID = createField(DSL.name("last_update_user_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "最近修改用户id");
+    public final TableField<S1DocRecord, Integer> LAST_UPDATE_USER_ID = createField(DSL.name("last_update_user_id"), SQLDataType.INTEGER.nullable(false), this, "最近修改用户id");
 
     private S1DocTB(Name alias, Table<S1DocRecord> aliased) {
         this(alias, aliased, null);
@@ -146,8 +145,8 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     }
 
     @Override
-    public Identity<S1DocRecord, UInteger> getIdentity() {
-        return (Identity<S1DocRecord, UInteger>) super.getIdentity();
+    public Identity<S1DocRecord, Integer> getIdentity() {
+        return (Identity<S1DocRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -221,7 +220,7 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<UInteger, String, Integer, Integer, String, UInteger, LocalDateTime, String, UInteger, UInteger> fieldsRow() {
+    public Row10<Integer, String, Integer, Integer, String, Integer, LocalDateTime, String, Integer, Integer> fieldsRow() {
         return (Row10) super.fieldsRow();
     }
 }

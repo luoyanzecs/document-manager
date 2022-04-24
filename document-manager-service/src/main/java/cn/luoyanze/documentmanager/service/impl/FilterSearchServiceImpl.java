@@ -95,10 +95,10 @@ public class FilterSearchServiceImpl implements FilterSearchService {
         List<TableItemBase> items =
                 records.stream()
                         .map(it -> new RecordTableItem() {{
-                                    setItemId(it.getPrimaryId().intValue());
-                                    setUserId(it.getPrimaryId().intValue());
+                                    setItemId(it.getPrimaryId());
+                                    setUserId(it.getPrimaryId());
                                     setOperate(it.getType().toString());
-                                    setFid(it.getDocId().intValue());
+                                    setFid(it.getDocId());
                                     setOperateTime(TimeUtil.formatter(it.getTime()));
                                 }}
                         ).collect(Collectors.toList());
@@ -110,7 +110,7 @@ public class FilterSearchServiceImpl implements FilterSearchService {
 
         int totalPage = dao.fetchCount(S1_DOC) / request.getPageSize();
 
-        Result<Record6<String, UInteger, UInteger, String, LocalDateTime, String>> docs = dao.select(
+        Result<Record6<String, Integer, Integer, String, LocalDateTime, String>> docs = dao.select(
                         S1_USER.ACCOUNT,
                         S1_USER.PRIMARY_ID,
                         S1_DOC.PRIMARY_ID,
@@ -127,8 +127,8 @@ public class FilterSearchServiceImpl implements FilterSearchService {
         List<TableItemBase> items = docs.stream()
                 .map(it -> new FileTableItem() {{
                             setOwner(it.get(0, String.class));
-                            setUserId(it.get(1, UInteger.class).intValue());
-                            setFileId(it.get(2, UInteger.class).intValue());
+                            setUserId(it.get(1, Integer.class));
+                            setFileId(it.get(2, Integer.class));
                             setBu(it.get(3, String.class));
                             setTime(TimeUtil.formatter(it.get(4, LocalDateTime.class)));
                             setTitle(it.get(5, String.class));
@@ -155,7 +155,7 @@ public class FilterSearchServiceImpl implements FilterSearchService {
                             setTo(it.getAcceptUsers());
                             setStartTime(TimeUtil.formatter(it.getStartTime()));
                             setEndTime(TimeUtil.formatter(it.getEndTime()));
-                            setItemId(it.getPrimaryId().intValue());
+                            setItemId(it.getPrimaryId());
                         }}
                 ).collect(Collectors.toList());
 
