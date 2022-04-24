@@ -74,7 +74,7 @@ public class S1AttachTB extends TableImpl<S1AttachRecord> {
     /**
      * The column <code>document_manager.S1_ATTACH.size</code>. 文件大小
      */
-    public final TableField<S1AttachRecord, Integer> SIZE = createField(DSL.name("size"), SQLDataType.INTEGER.nullable(false), this, "文件大小");
+    public final TableField<S1AttachRecord, Long> SIZE = createField(DSL.name("size"), SQLDataType.BIGINT.nullable(false), this, "文件大小");
 
     /**
      * The column <code>document_manager.S1_ATTACH.time</code>. 上传时间
@@ -202,7 +202,7 @@ public class S1AttachTB extends TableImpl<S1AttachRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Integer, Integer, String, String, Integer, LocalDateTime, Integer, Integer> fieldsRow() {
+    public Row8<Integer, Integer, String, String, Long, LocalDateTime, Integer, Integer> fieldsRow() {
         return (Row8) super.fieldsRow();
     }
 }

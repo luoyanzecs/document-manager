@@ -42,6 +42,7 @@ public class IdentifyFilter implements Filter {
         String path = req.getRequestURI().substring(req.getContextPath().length()).replaceAll("[/]+$", "");
 
         try {
+            filterChain.doFilter(request, response);
             if (EXCLUDE_URLS.contains(path)) {
                 resp.sendError(HttpStatus.FORBIDDEN.value(), "验证失败， 请重新登录");
             }
