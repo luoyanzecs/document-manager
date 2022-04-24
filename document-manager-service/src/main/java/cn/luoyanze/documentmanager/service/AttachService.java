@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface AttachService {
 
-    AddAttachHttpResponse upload(MultipartFile file, Integer doc, RequestHead head);
+    AddAttachHttpResponse upload(MultipartFile file, Integer doc, RequestHead head) throws Exception;
 
-    Object download(DownloadAttachHttpRequest request);
+    Object download(DownloadAttachHttpRequest request) throws Exception;
 }

@@ -38,13 +38,13 @@ public class AdminController {
 
     @RequestMapping(value = "/add/user", method = RequestMethod.POST)
     @ResponseBody
-    public AddUserHttpResponse execute(@RequestBody AddUserHttpRequest request) {
+    public AddUserHttpResponse execute(@RequestBody AddUserHttpRequest request) throws Exception {
         return dbInsertService.insertNewUser(request);
     }
 
     @RequestMapping(value = "/add/notice", method = RequestMethod.POST)
     @ResponseBody
-    public AddNoticeHttpResponse execute(@RequestBody AddNoticeHttpRequest request) {
+    public AddNoticeHttpResponse execute(@RequestBody AddNoticeHttpRequest request) throws Exception {
         return dbInsertService.insertNewNotice(request);
     }
 
