@@ -25,7 +25,6 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 
 /**
@@ -52,7 +51,7 @@ public class S1DirTB extends TableImpl<S1DirRecord> {
     /**
      * The column <code>document_manager.S1_DIR.primary_id</code>. 自增主键
      */
-    public final TableField<S1DirRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
+    public final TableField<S1DirRecord, Integer> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "自增主键");
 
     /**
      * The column <code>document_manager.S1_DIR.title</code>. 标题
@@ -62,7 +61,7 @@ public class S1DirTB extends TableImpl<S1DirRecord> {
     /**
      * The column <code>document_manager.S1_DIR.parent_id</code>. 上级目录ID
      */
-    public final TableField<S1DirRecord, UInteger> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "上级目录ID");
+    public final TableField<S1DirRecord, Integer> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.INTEGER.nullable(false), this, "上级目录ID");
 
     /**
      * The column <code>document_manager.S1_DIR.bu</code>. 所属部门
@@ -113,8 +112,8 @@ public class S1DirTB extends TableImpl<S1DirRecord> {
     }
 
     @Override
-    public Identity<S1DirRecord, UInteger> getIdentity() {
-        return (Identity<S1DirRecord, UInteger>) super.getIdentity();
+    public Identity<S1DirRecord, Integer> getIdentity() {
+        return (Identity<S1DirRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -158,7 +157,7 @@ public class S1DirTB extends TableImpl<S1DirRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<UInteger, String, UInteger, String, Integer> fieldsRow() {
+    public Row5<Integer, String, Integer, String, Integer> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 }

@@ -14,7 +14,6 @@ import cn.luoyanze.documentmanager.model.FileComment;
 import cn.luoyanze.documentmanager.service.DBSelectService;
 import org.jooq.DSLContext;
 import org.jooq.Record2;
-import org.jooq.types.UInteger;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -54,7 +53,7 @@ public class DBSelectServiceImpl implements DBSelectService {
                 ).from(S1_COMMENT)
                 .rightJoin(S1_USER)
                 .on(S1_COMMENT.USER_ID.eq(S1_USER.PRIMARY_ID))
-                .where(S1_COMMENT.PRIMARY_ID.eq(UInteger.valueOf(request.getId())))
+                .where(S1_COMMENT.PRIMARY_ID.eq(request.getId()))
                 .fetchInto(FileComment.class);
 
         Set<Integer> parents = comments.stream().map(FileComment::getCommentId).collect(Collectors.toSet());
@@ -121,8 +120,8 @@ public class DBSelectServiceImpl implements DBSelectService {
     private List<Menu> generate(List<S1DirBO> dirs, List<DocVO> docVOS) {
 
         List<Menu> root = dirs.stream()
-                .filter(it -> it.getParentId().intValue() == 0)
-                .map(it -> new Menu(it.getPrimaryId().intValue(), it.getTitle(), true, new ArrayList<>()))
+                .filter(it -> it.getParentId() == 0)
+                .map(it -> new Menu(it.getPrimaryId(), it.getTitle(), true, new ArrayList<>()))
                 .collect(Collectors.toList());
         List<S1DirBO> subDirNodes;
         List<Menu> parents = root;
@@ -130,7 +129,7 @@ public class DBSelectServiceImpl implements DBSelectService {
             Set<Integer> parentsId = parents.stream().map(Menu::getId).collect(Collectors.toSet());
             // 获取所有的subs节点
             subDirNodes = dirs.stream()
-                    .filter(it -> parentsId.contains(it.getParentId().intValue()))
+                    .filter(it -> parentsId.contains(it.getParentId()))
                     .collect(Collectors.toList());
 
             List<Menu> nextLoopParents = new ArrayList<>();
@@ -138,7 +137,7 @@ public class DBSelectServiceImpl implements DBSelectService {
                 // 获取sub节点, 目录节点
                 List<Menu> subNodeInEachParent =
                         subDirNodes.stream().filter(o -> parent.getId() == o.getParentId().intValue())
-                                .map(it -> new Menu(it.getPrimaryId().intValue(), it.getTitle(), true, new ArrayList<>()))
+                                .map(it -> new Menu(it.getPrimaryId(), it.getTitle(), true, new ArrayList<>()))
                                 .collect(Collectors.toList());
 
                 nextLoopParents.addAll(subNodeInEachParent);
@@ -160,7 +159,7 @@ public class DBSelectServiceImpl implements DBSelectService {
     @Override
     public UserFileHttpResponse selectFileById(UserFileHttpRequset request) {
         S1DocBO doc = dao.select().from(S1_DOC)
-                .where(S1_DOC.PRIMARY_ID.eq(UInteger.valueOf(request.getId())))
+                .where(S1_DOC.PRIMARY_ID.eq(request.getId()))
                 .fetchOneInto(S1DocBO.class);
 
         S1UserBO user = dao.select()
@@ -189,7 +188,7 @@ public class DBSelectServiceImpl implements DBSelectService {
     public NoticeHttpResponse selectNotice(NoticeHttpRequset requset) {
         NoticeHttpResponse resp = new NoticeHttpResponse();
         LocalDateTime now = LocalDateTime.now();
-        Record2<UInteger, String> user = dao.select(S1_USER.PRIMARY_ID, S1_USER.BU)
+        Record2<Integer, String> user = dao.select(S1_USER.PRIMARY_ID, S1_USER.BU)
                 .from(S1_USER)
                 .where(S1_USER.ACCOUNT.eq(requset.getHead().getUsername()))
                 .fetchOne();
@@ -207,7 +206,7 @@ public class DBSelectServiceImpl implements DBSelectService {
                 .filter(it -> it.getAcceptUsers().contains(user.get(S1_USER.PRIMARY_ID).toString())
                         && it.getAcceptBu().contains(user.get(S1_USER.BU))
                 )
-                .map(it -> new Notice(it.getPrimaryId().intValue(), it.getType(), it.getContent()))
+                .map(it -> new Notice(it.getPrimaryId(), it.getType(), it.getContent()))
                 .collect(Collectors.toList());
 
 

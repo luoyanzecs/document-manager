@@ -26,7 +26,6 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 
 /**
@@ -53,7 +52,7 @@ public class S1ExceptionTB extends TableImpl<S1ExceptionRecord> {
     /**
      * The column <code>document_manager.S1_EXCEPTION.primary_id</code>. 自增主键
      */
-    public final TableField<S1ExceptionRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
+    public final TableField<S1ExceptionRecord, Integer> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "自增主键");
 
     /**
      * The column <code>document_manager.S1_EXCEPTION.time</code>. 时间
@@ -109,8 +108,8 @@ public class S1ExceptionTB extends TableImpl<S1ExceptionRecord> {
     }
 
     @Override
-    public Identity<S1ExceptionRecord, UInteger> getIdentity() {
-        return (Identity<S1ExceptionRecord, UInteger>) super.getIdentity();
+    public Identity<S1ExceptionRecord, Integer> getIdentity() {
+        return (Identity<S1ExceptionRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -154,7 +153,7 @@ public class S1ExceptionTB extends TableImpl<S1ExceptionRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<UInteger, LocalDateTime, String, String> fieldsRow() {
+    public Row4<Integer, LocalDateTime, String, String> fieldsRow() {
         return (Row4) super.fieldsRow();
     }
 }

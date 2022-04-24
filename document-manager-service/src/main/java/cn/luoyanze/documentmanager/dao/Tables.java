@@ -4,6 +4,7 @@
 package cn.luoyanze.documentmanager.dao;
 
 
+import cn.luoyanze.documentmanager.dao.tables.S1AttachTB;
 import cn.luoyanze.documentmanager.dao.tables.S1BuTB;
 import cn.luoyanze.documentmanager.dao.tables.S1CommentTB;
 import cn.luoyanze.documentmanager.dao.tables.S1DirTB;
@@ -19,6 +20,11 @@ import cn.luoyanze.documentmanager.dao.tables.S1UserTB;
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>document_manager.S1_ATTACH</code>.
+     */
+    public static final S1AttachTB S1_ATTACH = S1AttachTB.S1_ATTACH;
 
     /**
      * The table <code>document_manager.S1_BU</code>.

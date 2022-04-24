@@ -4,6 +4,7 @@
 package cn.luoyanze.documentmanager.dao;
 
 
+import cn.luoyanze.documentmanager.dao.tables.S1AttachTB;
 import cn.luoyanze.documentmanager.dao.tables.S1BuTB;
 import cn.luoyanze.documentmanager.dao.tables.S1CommentTB;
 import cn.luoyanze.documentmanager.dao.tables.S1DirTB;
@@ -33,6 +34,11 @@ public class DocumentManager extends SchemaImpl {
      * The reference instance of <code>document_manager</code>
      */
     public static final DocumentManager DOCUMENT_MANAGER = new DocumentManager();
+
+    /**
+     * The table <code>document_manager.S1_ATTACH</code>.
+     */
+    public final S1AttachTB S1_ATTACH = S1AttachTB.S1_ATTACH;
 
     /**
      * The table <code>document_manager.S1_BU</code>.
@@ -90,6 +96,7 @@ public class DocumentManager extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.<Table<?>>asList(
+            S1AttachTB.S1_ATTACH,
             S1BuTB.S1_BU,
             S1CommentTB.S1_COMMENT,
             S1DirTB.S1_DIR,
