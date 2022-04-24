@@ -19,7 +19,7 @@ public class UpdateFileHttpRequest {
     private String jsonValue;
 
     /**
-     * 文件uuid
+     * 文件id
      */
-    private String fileId;
+    private Integer fileId;
 }

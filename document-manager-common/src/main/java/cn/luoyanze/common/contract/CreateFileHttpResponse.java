@@ -14,5 +14,5 @@ public class CreateFileHttpResponse {
 
     private ResponseHead head;
 
-    private String fileId;
+    private Integer fileId;
 }

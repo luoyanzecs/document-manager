@@ -21,8 +21,8 @@ public class S1OperateBO implements Serializable {
     private UInteger      primaryId;
     private UInteger      type;
     private LocalDateTime time;
-    private String        docUuid;
-    private String        userUuid;
+    private UInteger      docId;
+    private UInteger      userId;
     private String        content;
 
     public S1OperateBO() {}
@@ -31,8 +31,8 @@ public class S1OperateBO implements Serializable {
         this.primaryId = value.primaryId;
         this.type = value.type;
         this.time = value.time;
-        this.docUuid = value.docUuid;
-        this.userUuid = value.userUuid;
+        this.docId = value.docId;
+        this.userId = value.userId;
         this.content = value.content;
     }
 
@@ -40,15 +40,15 @@ public class S1OperateBO implements Serializable {
         UInteger      primaryId,
         UInteger      type,
         LocalDateTime time,
-        String        docUuid,
-        String        userUuid,
+        UInteger      docId,
+        UInteger      userId,
         String        content
     ) {
         this.primaryId = primaryId;
         this.type = type;
         this.time = time;
-        this.docUuid = docUuid;
-        this.userUuid = userUuid;
+        this.docId = docId;
+        this.userId = userId;
         this.content = content;
     }
 
@@ -95,31 +95,31 @@ public class S1OperateBO implements Serializable {
     }
 
     /**
-     * Getter for <code>document_manager.S1_OPERATE.doc_uuid</code>. 文章uuid
+     * Getter for <code>document_manager.S1_OPERATE.doc_id</code>. 文章uuid
      */
-    public String getDocUuid() {
-        return this.docUuid;
+    public UInteger getDocId() {
+        return this.docId;
     }
 
     /**
-     * Setter for <code>document_manager.S1_OPERATE.doc_uuid</code>. 文章uuid
+     * Setter for <code>document_manager.S1_OPERATE.doc_id</code>. 文章uuid
      */
-    public void setDocUuid(String docUuid) {
-        this.docUuid = docUuid;
+    public void setDocId(UInteger docId) {
+        this.docId = docId;
     }
 
     /**
-     * Getter for <code>document_manager.S1_OPERATE.user_uuid</code>. user uuid
+     * Getter for <code>document_manager.S1_OPERATE.user_id</code>. user uuid
      */
-    public String getUserUuid() {
-        return this.userUuid;
+    public UInteger getUserId() {
+        return this.userId;
     }
 
     /**
-     * Setter for <code>document_manager.S1_OPERATE.user_uuid</code>. user uuid
+     * Setter for <code>document_manager.S1_OPERATE.user_id</code>. user uuid
      */
-    public void setUserUuid(String userUuid) {
-        this.userUuid = userUuid;
+    public void setUserId(UInteger userId) {
+        this.userId = userId;
     }
 
     /**
@@ -143,8 +143,8 @@ public class S1OperateBO implements Serializable {
         sb.append(primaryId);
         sb.append(", ").append(type);
         sb.append(", ").append(time);
-        sb.append(", ").append(docUuid);
-        sb.append(", ").append(userUuid);
+        sb.append(", ").append(docId);
+        sb.append(", ").append(userId);
         sb.append(", ").append(content);
 
         sb.append(")");

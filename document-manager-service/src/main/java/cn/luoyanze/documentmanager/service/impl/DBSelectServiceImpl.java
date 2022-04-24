@@ -47,29 +47,27 @@ public class DBSelectServiceImpl implements DBSelectService {
     public FileCommentHttpResponse selectFileComment(FileCommentHttpRequset request) {
         List<FileComment> comments = dao.select(
                         S1_USER.ACCOUNT.as("username"),
-                        S1_USER.UUID.as("userId"),
+                        S1_USER.PRIMARY_ID.as("userId"),
                         S1_USER.AVATAR.as("avatar"),
                         S1_COMMENT.CTX.as("ctx"),
                         S1_COMMENT.PARENT_ID.as("parentId"),
-                        S1_COMMENT.PRIMARY_ID.as("commentPrimaryId"),
-                        S1_COMMENT.UUID.as("commentUUID"),
+                        S1_COMMENT.PRIMARY_ID.as("commentId"),
                         S1_COMMENT.CREATE_TIME.as("time")
                 ).from(S1_COMMENT)
                 .rightJoin(S1_USER)
                 .on(S1_COMMENT.USER_ID.eq(S1_USER.PRIMARY_ID))
-                .where(S1_COMMENT.UUID.eq(request.getId()))
+                .where(S1_COMMENT.PRIMARY_ID.eq(UInteger.valueOf(request.getId())))
                 .fetchInto(FileComment.class);
 
-        Set<Integer> parents = comments.stream().map(FileComment::getCommentPrimaryId).collect(Collectors.toSet());
+        Set<Integer> parents = comments.stream().map(FileComment::getCommentId).collect(Collectors.toSet());
 
         List<FileComment> replys = dao.select(
                         S1_USER.ACCOUNT.as("username"),
-                        S1_USER.UUID.as("userId"),
+                        S1_USER.PRIMARY_ID.as("userId"),
                         S1_USER.AVATAR.as("avatar"),
                         S1_COMMENT.CTX.as("ctx"),
                         S1_COMMENT.PARENT_ID.as("parentId"),
-                        S1_COMMENT.PRIMARY_ID.as("commentPrimaryId"),
-                        S1_COMMENT.UUID.as("commentUUID"),
+                        S1_COMMENT.PRIMARY_ID.as("commentId"),
                         S1_COMMENT.CREATE_TIME.as("time")
                 ).from(S1_COMMENT)
                 .rightJoin(S1_USER)
@@ -89,7 +87,7 @@ public class DBSelectServiceImpl implements DBSelectService {
             Comment comment = wrapperComment(it);
             comment.setReply(
                     replys.stream()
-                            .filter(re -> re.getParentId() == it.getCommentPrimaryId())
+                            .filter(re -> Objects.equals(re.getParentId(), it.getCommentId()))
                             .sorted(Comparator.comparing(FileComment::getTime))
                             .map(this::wrapperComment)
                             .collect(Collectors.toList())
@@ -103,9 +101,9 @@ public class DBSelectServiceImpl implements DBSelectService {
         comment.setTime(TimeUtil.formatter(it.getTime()));
         comment.setUsername(it.getUsername());
         comment.setAvatar(it.getAvatar());
-        comment.setId(it.getCommentUUID());
+        comment.setId(it.getCommentId());
         comment.setCtx(it.getCtx());
-        comment.setUsername(it.getUserId());
+        comment.setUserId(it.getUserId());
         return comment;
     }
 
@@ -126,30 +124,30 @@ public class DBSelectServiceImpl implements DBSelectService {
 
         List<Menu> root = dirs.stream()
                 .filter(it -> it.getParentId().intValue() == 0)
-                .map(it -> new Menu(it.getPrimaryId().toString(), it.getTitle(), true, new ArrayList<>()))
+                .map(it -> new Menu(it.getPrimaryId().intValue(), it.getTitle(), true, new ArrayList<>()))
                 .collect(Collectors.toList());
         List<S1DirBO> subDirNodes;
         List<Menu> parents = root;
         do {
-            Set<String> parentsId = parents.stream().map(Menu::getId).collect(Collectors.toSet());
+            Set<Integer> parentsId = parents.stream().map(Menu::getId).collect(Collectors.toSet());
             // 获取所有的subs节点
             subDirNodes = dirs.stream()
-                    .filter(it -> parentsId.contains(it.getParentId().toString()))
+                    .filter(it -> parentsId.contains(it.getParentId().intValue()))
                     .collect(Collectors.toList());
 
             List<Menu> nextLoopParents = new ArrayList<>();
             for (Menu parent : parents) {
                 // 获取sub节点, 目录节点
                 List<Menu> subNodeInEachParent =
-                        subDirNodes.stream().filter(o -> parent.getId().equals(o.getParentId().toString()))
-                                .map(it -> new Menu(it.getPrimaryId().toString(), it.getTitle(), true, new ArrayList<>()))
+                        subDirNodes.stream().filter(o -> parent.getId() == o.getParentId().intValue())
+                                .map(it -> new Menu(it.getPrimaryId().intValue(), it.getTitle(), true, new ArrayList<>()))
                                 .collect(Collectors.toList());
 
                 nextLoopParents.addAll(subNodeInEachParent);
 
                 subNodeInEachParent.addAll(
                         docVOS.stream().filter(it -> it.getParentId().equals(parent.getId()))
-                                .map(it -> new Menu(it.getUuid(), it.getTitle(), false, Collections.emptyList()))
+                                .map(it -> new Menu(it.getId(), it.getTitle(), false, Collections.emptyList()))
                                 .collect(Collectors.toList())
                 );
                 parent.setSubs(subNodeInEachParent);
@@ -164,7 +162,7 @@ public class DBSelectServiceImpl implements DBSelectService {
     @Override
     public UserFileHttpResponse selectFileById(UserFileHttpRequset request) {
         S1DocBO doc = dao.select().from(S1_DOC)
-                .where(S1_DOC.UUID.eq(request.getId()))
+                .where(S1_DOC.PRIMARY_ID.eq(UInteger.valueOf(request.getId())))
                 .fetchOneInto(S1DocBO.class);
 
         S1UserBO user = dao.select()
@@ -206,7 +204,7 @@ public class DBSelectServiceImpl implements DBSelectService {
                 .filter(it -> it.getAcceptUsers().contains(user.get(0).toString())
                         && it.getAcceptBu().contains(user.get(1, String.class))
                 )
-                .map(it -> new Notice(it.getUuid(), it.getType(), it.getContent()))
+                .map(it -> new Notice(it.getPrimaryId().intValue(), it.getType(), it.getContent()))
                 .collect(Collectors.toList());
 
         NoticeHttpResponse resp = new NoticeHttpResponse();

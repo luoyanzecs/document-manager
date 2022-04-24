@@ -22,5 +22,5 @@ public class DeleteTableItemHttpRequest {
      */
     private int menuIndex;
 
-    private List<String> ids;
+    private List<Integer> ids;
 }

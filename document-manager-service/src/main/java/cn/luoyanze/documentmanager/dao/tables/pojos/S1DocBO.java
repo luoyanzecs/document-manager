@@ -19,7 +19,6 @@ public class S1DocBO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private UInteger      primaryId;
-    private String        uuid;
     private String        permissionBu;
     private Integer       authority;
     private Integer       status;
@@ -34,7 +33,6 @@ public class S1DocBO implements Serializable {
 
     public S1DocBO(S1DocBO value) {
         this.primaryId = value.primaryId;
-        this.uuid = value.uuid;
         this.permissionBu = value.permissionBu;
         this.authority = value.authority;
         this.status = value.status;
@@ -48,7 +46,6 @@ public class S1DocBO implements Serializable {
 
     public S1DocBO(
         UInteger      primaryId,
-        String        uuid,
         String        permissionBu,
         Integer       authority,
         Integer       status,
@@ -60,7 +57,6 @@ public class S1DocBO implements Serializable {
         UInteger      lastUpdateUserId
     ) {
         this.primaryId = primaryId;
-        this.uuid = uuid;
         this.permissionBu = permissionBu;
         this.authority = authority;
         this.status = status;
@@ -84,20 +80,6 @@ public class S1DocBO implements Serializable {
      */
     public void setPrimaryId(UInteger primaryId) {
         this.primaryId = primaryId;
-    }
-
-    /**
-     * Getter for <code>document_manager.S1_DOC.uuid</code>. 文章UUID
-     */
-    public String getUuid() {
-        return this.uuid;
-    }
-
-    /**
-     * Setter for <code>document_manager.S1_DOC.uuid</code>. 文章UUID
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     /**
@@ -231,7 +213,6 @@ public class S1DocBO implements Serializable {
         StringBuilder sb = new StringBuilder("S1DocBO (");
 
         sb.append(primaryId);
-        sb.append(", ").append(uuid);
         sb.append(", ").append(permissionBu);
         sb.append(", ").append(authority);
         sb.append(", ").append(status);

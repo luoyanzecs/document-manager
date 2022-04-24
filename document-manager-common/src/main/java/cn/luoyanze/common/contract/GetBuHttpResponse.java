@@ -16,8 +16,4 @@ public class GetBuHttpResponse {
     private ResponseHead head;
 
     private List<String> buList;
-
-    public ResponseHead getHead() {
-        return head;
-    }
 }

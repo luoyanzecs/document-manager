@@ -23,11 +23,11 @@ public class CreateFileHttpRequest {
     private String bu;
 
     @JsonProperty("userId")
-    private String userId;
+    private Integer userId;
 
     @JsonProperty("isDir")
     private Boolean isDir;
 
     @JsonProperty("parentId")
-    private String parentId;
+    private Integer parentId;
 }

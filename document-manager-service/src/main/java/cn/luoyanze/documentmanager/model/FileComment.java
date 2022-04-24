@@ -1,5 +1,7 @@
 package cn.luoyanze.documentmanager.model;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
 /**
@@ -7,10 +9,10 @@ import java.time.LocalDateTime;
  * @Date 2022/4/5 10:46 PM
  */
 
-
+@Data
 public class FileComment {
 
-    private String userId;
+    private Integer userId;
 
     private String username;
 
@@ -18,75 +20,9 @@ public class FileComment {
 
     private String ctx;
 
-    private int parentId;
+    private Integer parentId;
 
     private LocalDateTime time;
 
-    private String commentUUID;
-
-    private int commentPrimaryId;
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getCtx() {
-        return ctx;
-    }
-
-    public void setCtx(String ctx) {
-        this.ctx = ctx;
-    }
-
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
-
-    public LocalDateTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-
-    public String getCommentUUID() {
-        return commentUUID;
-    }
-
-    public void setCommentUUID(String commentUUID) {
-        this.commentUUID = commentUUID;
-    }
-
-    public int getCommentPrimaryId() {
-        return commentPrimaryId;
-    }
-
-    public void setCommentPrimaryId(int commentPrimaryId) {
-        this.commentPrimaryId = commentPrimaryId;
-    }
+    private Integer commentId;
 }
