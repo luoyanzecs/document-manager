@@ -5,7 +5,6 @@ import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
 import org.jooq.DSLContext;
-import org.jooq.types.UInteger;
 import org.springframework.stereotype.Service;
 
 import static cn.luoyanze.common.model.HeadStatus.*;
@@ -35,12 +34,12 @@ public class DBUpdateServiceImpl implements DBUpdateService {
     public UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request) {
         int execute = 0;
         if (dao.select().from(S1_USER)
-                .where(S1_USER.PRIMARY_ID.eq((Integer.valueOf(request.getFileId()))))
+                .where(S1_USER.PRIMARY_ID.eq((request.getFileId())))
                 .fetchInto(S1UserBO.class).size() ==1 ){
             execute = dao.update(S1_DOC).set(
                             S1_DOC.CTX, request.getJsonValue())
                     .set(S1_DOC.LAST_UPDATE_USER_ID, request.getUserid())
-                    .where(S1_DOC.PRIMARY_ID.eq((Integer.valueOf(request.getFileId()))))
+                    .where(S1_DOC.PRIMARY_ID.eq((request.getFileId())))
                     .execute();
         }
 
