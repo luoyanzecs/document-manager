@@ -5,7 +5,7 @@ create table S1_ATTACH
     doc_primary_id  int                not null comment '文件ID',
     link            varchar(1024)      not null comment '是否链接',
     name            varchar(1024)      not null comment '文件名',
-    size            int                not null comment '文件大小',
+    size            bigint               not null comment '文件大小',
     time            datetime           not null comment '上传时间',
     user_primary_id int                not null comment '用户id',
     isDel           int default 0      not null comment '是否删除',

@@ -20,7 +20,7 @@ public class S1AttachBO implements Serializable {
     private Integer       docPrimaryId;
     private String        link;
     private String        name;
-    private Integer       size;
+    private Long          size;
     private LocalDateTime time;
     private Integer       userPrimaryId;
     private Integer       isdel;
@@ -43,7 +43,7 @@ public class S1AttachBO implements Serializable {
         Integer       docPrimaryId,
         String        link,
         String        name,
-        Integer       size,
+        Long          size,
         LocalDateTime time,
         Integer       userPrimaryId,
         Integer       isdel
@@ -117,14 +117,14 @@ public class S1AttachBO implements Serializable {
     /**
      * Getter for <code>document_manager.S1_ATTACH.size</code>. 文件大小
      */
-    public Integer getSize() {
+    public Long getSize() {
         return this.size;
     }
 
     /**
      * Setter for <code>document_manager.S1_ATTACH.size</code>. 文件大小
      */
-    public void setSize(Integer size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 

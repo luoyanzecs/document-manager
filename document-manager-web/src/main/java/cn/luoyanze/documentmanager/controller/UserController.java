@@ -2,6 +2,7 @@ package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.CreateFileHttpRequest;
 import cn.luoyanze.common.contract.*;
+import cn.luoyanze.common.contract.common.RequestHead;
 import cn.luoyanze.documentmanager.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -66,22 +67,17 @@ public class UserController {
 
     @PostMapping("/uploadAttach")
     @ResponseBody
-    public UpdateFileHttpResponse execute(@RequestParam("file") MultipartFile file) {
-        return null;
-    }
     public AddAttachHttpResponse execute(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("docId") Integer docId ) {
-        return attachService.upload(file, docId);
+            @RequestParam("file")MultipartFile file,
+            @RequestParam("docId")Integer docId,
+            @RequestParam("head")RequestHead head) {
+        return attachService.upload(file, docId, head);
     }
 
     @PostMapping("/downloadAttach")
     @ResponseBody
-    public UpdateFileHttpResponse execute() {
-        return null;
-    }
-    public void execute(@RequestBody DownloadAttachHttpRequest request) {
-        attachService.download(request);
+    public Object execute(@RequestBody DownloadAttachHttpRequest request) {
+        return attachService.download(request);
     }
 
     @PostMapping("/deleteAttach")

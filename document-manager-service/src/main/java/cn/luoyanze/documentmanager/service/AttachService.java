@@ -2,6 +2,7 @@ package cn.luoyanze.documentmanager.service;
 
 import cn.luoyanze.common.contract.AddAttachHttpResponse;
 import cn.luoyanze.common.contract.DownloadAttachHttpRequest;
+import cn.luoyanze.common.contract.common.RequestHead;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface AttachService {
 
-    AddAttachHttpResponse upload(MultipartFile file, Integer doc);
+    AddAttachHttpResponse upload(MultipartFile file, Integer doc, RequestHead head);
 
-    void download(DownloadAttachHttpRequest request);
+    Object download(DownloadAttachHttpRequest request);
 }
