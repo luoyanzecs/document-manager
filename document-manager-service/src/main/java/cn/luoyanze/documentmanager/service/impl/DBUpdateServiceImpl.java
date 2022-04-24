@@ -45,7 +45,6 @@ public class DBUpdateServiceImpl implements DBUpdateService {
         }
 
         UpdateFileHttpResponse resp = new UpdateFileHttpResponse();
-
         if (execute == 1) {
             resp.setHead(new ResponseHead(SUCCESS));
         } else {
@@ -59,6 +58,10 @@ public class DBUpdateServiceImpl implements DBUpdateService {
      */
     @Override
     public DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request) {
+        int execute = 0;
+        dao.select()
+
+
 
 
 
