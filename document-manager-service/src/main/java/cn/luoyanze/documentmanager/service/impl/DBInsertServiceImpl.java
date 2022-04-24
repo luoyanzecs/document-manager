@@ -42,9 +42,9 @@ public class DBInsertServiceImpl implements DBInsertService {
         S1CommentBO comment = new S1CommentBO();
         comment.setCtx(request.getCtx());
         comment.setCreateTime(LocalDateTime.now());
-        comment.setUserId(UInteger.valueOf(request.getUserId()));
-        comment.setDocId(UInteger.valueOf(request.getFileId()));
-        comment.setParentId(UInteger.valueOf(request.getParentCommentId()));
+        comment.setUserId(request.getUserId());
+        comment.setDocId(request.getFileId());
+        comment.setParentId(request.getParentCommentId());
         int execute = dao.insertInto(S1_COMMENT).values(comment).execute();
 
         LeaveMessageHttpResponse resp = new LeaveMessageHttpResponse();

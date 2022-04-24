@@ -26,7 +26,6 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 
 /**
@@ -53,7 +52,7 @@ public class S1NoticeTB extends TableImpl<S1NoticeRecord> {
     /**
      * The column <code>document_manager.S1_NOTICE.primary_id</code>. 自增主键
      */
-    public final TableField<S1NoticeRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
+    public final TableField<S1NoticeRecord, Integer> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "自增主键");
 
     /**
      * The column <code>document_manager.S1_NOTICE.type</code>. 内容type
@@ -129,8 +128,8 @@ public class S1NoticeTB extends TableImpl<S1NoticeRecord> {
     }
 
     @Override
-    public Identity<S1NoticeRecord, UInteger> getIdentity() {
-        return (Identity<S1NoticeRecord, UInteger>) super.getIdentity();
+    public Identity<S1NoticeRecord, Integer> getIdentity() {
+        return (Identity<S1NoticeRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -174,7 +173,7 @@ public class S1NoticeTB extends TableImpl<S1NoticeRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<UInteger, Integer, String, LocalDateTime, LocalDateTime, String, String, Integer> fieldsRow() {
+    public Row8<Integer, Integer, String, LocalDateTime, LocalDateTime, String, String, Integer> fieldsRow() {
         return (Row8) super.fieldsRow();
     }
 }
