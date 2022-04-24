@@ -33,25 +33,18 @@ public class DBUpdateServiceImpl implements DBUpdateService {
 
     @Override
     public UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request) {
+        int execute = 0;
         if (dao.select().from(S1_USER)
-                .where(S1_USER.PRIMARY_ID.eq((UInteger.valueOf(request.getFileId()))))
+                .where(S1_USER.PRIMARY_ID.eq((Integer.valueOf(request.getFileId()))))
                 .fetchInto(S1UserBO.class).size() ==1 ){
-
-
-            
+            execute = dao.update(S1_DOC).set(
+                            S1_DOC.CTX, request.getJsonValue())
+                    .set(S1_DOC.LAST_UPDATE_USER_ID, request.getUserid())
+                    .where(S1_DOC.PRIMARY_ID.eq((Integer.valueOf(request.getFileId()))))
+                    .execute();
         }
 
-
-
-
-        int execute = dao.update(S1_DOC).set(
-                S1_DOC.CTX, request.getJsonValue())
-                .set(S1_DOC.LAST_UPDATE_USER_ID,request.getUserid())
-                .where(S1_DOC.PRIMARY_ID.eq((UInteger.valueOf(request.getFileId()))))
-                .execute();
         UpdateFileHttpResponse resp = new UpdateFileHttpResponse();
-
-
 
         if (execute == 1) {
             resp.setHead(new ResponseHead(SUCCESS));

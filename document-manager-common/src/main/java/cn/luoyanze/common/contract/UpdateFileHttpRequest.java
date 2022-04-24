@@ -28,5 +28,5 @@ public class UpdateFileHttpRequest {
     /**
      * 更改文件用户的id
      */
-    private UInteger userid;
+    private Integer userid;
 }
