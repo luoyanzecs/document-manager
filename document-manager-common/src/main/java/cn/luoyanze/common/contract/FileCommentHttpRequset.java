@@ -15,5 +15,5 @@ public class FileCommentHttpRequset {
     private RequestHead head;
 
     @JsonProperty("fileId")
-    private String id;
+    private Integer id;
 }

@@ -19,7 +19,6 @@ public class S1NoticeBO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private UInteger      primaryId;
-    private String        uuid;
     private Integer       type;
     private String        content;
     private LocalDateTime startTime;
@@ -32,7 +31,6 @@ public class S1NoticeBO implements Serializable {
 
     public S1NoticeBO(S1NoticeBO value) {
         this.primaryId = value.primaryId;
-        this.uuid = value.uuid;
         this.type = value.type;
         this.content = value.content;
         this.startTime = value.startTime;
@@ -44,7 +42,6 @@ public class S1NoticeBO implements Serializable {
 
     public S1NoticeBO(
         UInteger      primaryId,
-        String        uuid,
         Integer       type,
         String        content,
         LocalDateTime startTime,
@@ -54,7 +51,6 @@ public class S1NoticeBO implements Serializable {
         Integer       isGlobal
     ) {
         this.primaryId = primaryId;
-        this.uuid = uuid;
         this.type = type;
         this.content = content;
         this.startTime = startTime;
@@ -76,20 +72,6 @@ public class S1NoticeBO implements Serializable {
      */
     public void setPrimaryId(UInteger primaryId) {
         this.primaryId = primaryId;
-    }
-
-    /**
-     * Getter for <code>document_manager.S1_NOTICE.uuid</code>. UUID
-     */
-    public String getUuid() {
-        return this.uuid;
-    }
-
-    /**
-     * Setter for <code>document_manager.S1_NOTICE.uuid</code>. UUID
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     /**
@@ -195,7 +177,6 @@ public class S1NoticeBO implements Serializable {
         StringBuilder sb = new StringBuilder("S1NoticeBO (");
 
         sb.append(primaryId);
-        sb.append(", ").append(uuid);
         sb.append(", ").append(type);
         sb.append(", ").append(content);
         sb.append(", ").append(startTime);

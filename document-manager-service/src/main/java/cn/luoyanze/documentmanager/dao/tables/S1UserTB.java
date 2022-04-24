@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row13;
+import org.jooq.Row12;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -54,11 +54,6 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
      * The column <code>document_manager.S1_USER.primary_id</code>. 自增主键
      */
     public final TableField<S1UserRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
-
-    /**
-     * The column <code>document_manager.S1_USER.uuid</code>. 用户UUID
-     */
-    public final TableField<S1UserRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(32).nullable(false), this, "用户UUID");
 
     /**
      * The column <code>document_manager.S1_USER.account</code>. 用户账号
@@ -195,11 +190,11 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row13 type methods
+    // Row12 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<UInteger, String, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, String, Integer> fieldsRow() {
-        return (Row13) super.fieldsRow();
+    public Row12<UInteger, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, String, Integer> fieldsRow() {
+        return (Row12) super.fieldsRow();
     }
 }

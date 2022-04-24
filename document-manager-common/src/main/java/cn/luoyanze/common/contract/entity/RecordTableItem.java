@@ -17,16 +17,16 @@ public class RecordTableItem extends TableItemBase{
      * 条目id
      */
     @JsonProperty("itemId")
-    private String itemId;
+    private Integer itemId;
 
     @JsonProperty("id")
-    private String userId;
+    private Integer userId;
 
     /**
      * 用户名
      */
     @JsonProperty("fid")
-    private String fid;
+    private Integer fid;
 
     /**
      * 操作时间

@@ -49,7 +49,7 @@ public class LoginHttpResponse {
          * 用户id
          */
         @JsonProperty("id")
-        private String id;
+        private Integer id;
 
         /**
          * 用户所在部门

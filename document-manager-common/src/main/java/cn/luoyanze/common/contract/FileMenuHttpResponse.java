@@ -36,7 +36,7 @@ public class FileMenuHttpResponse {
          * 条目id
          */
         @JsonProperty("id")
-        private String id;
+        private Integer id;
 
         /**
          * 标题

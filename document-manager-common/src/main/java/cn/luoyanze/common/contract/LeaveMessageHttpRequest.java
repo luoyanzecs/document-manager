@@ -13,9 +13,11 @@ public class LeaveMessageHttpRequest {
 
     private RequestHead head;
 
-    private String userId;
+    private Integer userId;
 
-    private String fileId;
+    private Integer fileId;
+
+    private Integer parentCommentId;
 
     private String ctx;
 }

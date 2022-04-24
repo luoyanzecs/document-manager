@@ -5,6 +5,7 @@ package cn.luoyanze.documentmanager.dao.tables;
 
 
 import cn.luoyanze.documentmanager.dao.DocumentManager;
+import cn.luoyanze.documentmanager.dao.Indexes;
 import cn.luoyanze.documentmanager.dao.Keys;
 import cn.luoyanze.documentmanager.dao.tables.records.S1DocRecord;
 
@@ -15,9 +16,10 @@ import java.util.List;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row11;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -54,11 +56,6 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
      * The column <code>document_manager.S1_DOC.primary_id</code>. 自增主键
      */
     public final TableField<S1DocRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
-
-    /**
-     * The column <code>document_manager.S1_DOC.uuid</code>. 文章UUID
-     */
-    public final TableField<S1DocRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(32).nullable(false), this, "文章UUID");
 
     /**
      * The column <code>document_manager.S1_DOC.permission_bu</code>. 允许的部门
@@ -144,6 +141,11 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.<Index>asList(Indexes.S1_DOC_DIR_ID, Indexes.S1_DOC_LAST_UPDATE_USER_ID, Indexes.S1_DOC_USER_ID);
+    }
+
+    @Override
     public Identity<S1DocRecord, UInteger> getIdentity() {
         return (Identity<S1DocRecord, UInteger>) super.getIdentity();
     }
@@ -156,6 +158,36 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     @Override
     public List<UniqueKey<S1DocRecord>> getKeys() {
         return Arrays.<UniqueKey<S1DocRecord>>asList(Keys.KEY_S1_DOC_PRIMARY);
+    }
+
+    @Override
+    public List<ForeignKey<S1DocRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<S1DocRecord, ?>>asList(Keys.S1_DOC_IBFK_1, Keys.S1_DOC_IBFK_2, Keys.S1_DOC_IBFK_3);
+    }
+
+    private transient S1UserTB _s1DocIbfk_1;
+    private transient S1DirTB _s1Dir;
+    private transient S1UserTB _s1DocIbfk_3;
+
+    public S1UserTB s1DocIbfk_1() {
+        if (_s1DocIbfk_1 == null)
+            _s1DocIbfk_1 = new S1UserTB(this, Keys.S1_DOC_IBFK_1);
+
+        return _s1DocIbfk_1;
+    }
+
+    public S1DirTB s1Dir() {
+        if (_s1Dir == null)
+            _s1Dir = new S1DirTB(this, Keys.S1_DOC_IBFK_2);
+
+        return _s1Dir;
+    }
+
+    public S1UserTB s1DocIbfk_3() {
+        if (_s1DocIbfk_3 == null)
+            _s1DocIbfk_3 = new S1UserTB(this, Keys.S1_DOC_IBFK_3);
+
+        return _s1DocIbfk_3;
     }
 
     @Override
@@ -185,11 +217,11 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row11 type methods
+    // Row10 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<UInteger, String, String, Integer, Integer, String, UInteger, LocalDateTime, String, UInteger, UInteger> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row10<UInteger, String, Integer, Integer, String, UInteger, LocalDateTime, String, UInteger, UInteger> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 }

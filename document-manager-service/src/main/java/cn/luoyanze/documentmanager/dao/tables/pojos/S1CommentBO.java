@@ -19,7 +19,6 @@ public class S1CommentBO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private UInteger      primaryId;
-    private String        uuid;
     private UInteger      docId;
     private UInteger      userId;
     private String        ctx;
@@ -30,7 +29,6 @@ public class S1CommentBO implements Serializable {
 
     public S1CommentBO(S1CommentBO value) {
         this.primaryId = value.primaryId;
-        this.uuid = value.uuid;
         this.docId = value.docId;
         this.userId = value.userId;
         this.ctx = value.ctx;
@@ -40,7 +38,6 @@ public class S1CommentBO implements Serializable {
 
     public S1CommentBO(
         UInteger      primaryId,
-        String        uuid,
         UInteger      docId,
         UInteger      userId,
         String        ctx,
@@ -48,7 +45,6 @@ public class S1CommentBO implements Serializable {
         UInteger      parentId
     ) {
         this.primaryId = primaryId;
-        this.uuid = uuid;
         this.docId = docId;
         this.userId = userId;
         this.ctx = ctx;
@@ -68,20 +64,6 @@ public class S1CommentBO implements Serializable {
      */
     public void setPrimaryId(UInteger primaryId) {
         this.primaryId = primaryId;
-    }
-
-    /**
-     * Getter for <code>document_manager.S1_COMMENT.uuid</code>. UUID
-     */
-    public String getUuid() {
-        return this.uuid;
-    }
-
-    /**
-     * Setter for <code>document_manager.S1_COMMENT.uuid</code>. UUID
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     /**
@@ -159,7 +141,6 @@ public class S1CommentBO implements Serializable {
         StringBuilder sb = new StringBuilder("S1CommentBO (");
 
         sb.append(primaryId);
-        sb.append(", ").append(uuid);
         sb.append(", ").append(docId);
         sb.append(", ").append(userId);
         sb.append(", ").append(ctx);

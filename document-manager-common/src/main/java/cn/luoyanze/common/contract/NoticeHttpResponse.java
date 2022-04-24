@@ -1,6 +1,5 @@
 package cn.luoyanze.common.contract;
 
-import cn.luoyanze.common.contract.entity.Notice;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -30,7 +29,7 @@ public class NoticeHttpResponse {
     @NoArgsConstructor
     public static class Notice {
         @JsonProperty("id")
-        private String id;
+        private Integer id;
 
         /**
          * 消息类型 1：成功； 2：失败； 其他：普通信息

@@ -19,7 +19,6 @@ public class S1UserBO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private UInteger      primaryId;
-    private String        uuid;
     private String        account;
     private String        password;
     private String        role;
@@ -36,7 +35,6 @@ public class S1UserBO implements Serializable {
 
     public S1UserBO(S1UserBO value) {
         this.primaryId = value.primaryId;
-        this.uuid = value.uuid;
         this.account = value.account;
         this.password = value.password;
         this.role = value.role;
@@ -52,7 +50,6 @@ public class S1UserBO implements Serializable {
 
     public S1UserBO(
         UInteger      primaryId,
-        String        uuid,
         String        account,
         String        password,
         String        role,
@@ -66,7 +63,6 @@ public class S1UserBO implements Serializable {
         Integer       authority
     ) {
         this.primaryId = primaryId;
-        this.uuid = uuid;
         this.account = account;
         this.password = password;
         this.role = role;
@@ -92,20 +88,6 @@ public class S1UserBO implements Serializable {
      */
     public void setPrimaryId(UInteger primaryId) {
         this.primaryId = primaryId;
-    }
-
-    /**
-     * Getter for <code>document_manager.S1_USER.uuid</code>. 用户UUID
-     */
-    public String getUuid() {
-        return this.uuid;
-    }
-
-    /**
-     * Setter for <code>document_manager.S1_USER.uuid</code>. 用户UUID
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     /**
@@ -267,7 +249,6 @@ public class S1UserBO implements Serializable {
         StringBuilder sb = new StringBuilder("S1UserBO (");
 
         sb.append(primaryId);
-        sb.append(", ").append(uuid);
         sb.append(", ").append(account);
         sb.append(", ").append(password);
         sb.append(", ").append(role);

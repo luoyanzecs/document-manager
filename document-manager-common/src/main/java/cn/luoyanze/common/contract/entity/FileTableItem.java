@@ -17,7 +17,7 @@ public class FileTableItem extends TableItemBase{
      * 文件的id
      */
     @JsonProperty("id")
-    private String fileId;
+    private Integer fileId;
 
     /**
      * 文件创建者
