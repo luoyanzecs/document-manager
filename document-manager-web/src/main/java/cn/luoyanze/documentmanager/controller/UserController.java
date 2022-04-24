@@ -82,7 +82,7 @@ public class UserController {
 
     @PostMapping("/deleteAttach")
     @ResponseBody
-    public DeleteAttachHttpResponse excute(@RequestBody DeleteAttachHttpRequest request) {
+    public DeleteAttachHttpResponse execute(@RequestBody DeleteAttachHttpRequest request) {
         return dbUpdateService.deleteAttach(request);
     }
 
