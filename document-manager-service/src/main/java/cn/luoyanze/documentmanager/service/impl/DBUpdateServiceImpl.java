@@ -2,6 +2,7 @@ package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.ResponseHead;
+import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
 import org.jooq.DSLContext;
 import org.jooq.types.UInteger;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import static cn.luoyanze.common.model.HeadStatus.*;
 import static cn.luoyanze.documentmanager.dao.Tables.S1_DOC;
+import static cn.luoyanze.documentmanager.dao.Tables.S1_USER;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -31,7 +33,13 @@ public class DBUpdateServiceImpl implements DBUpdateService {
 
     @Override
     public UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request) {
-        
+        if (dao.select().from(S1_USER)
+                .where(S1_USER.PRIMARY_ID.eq((UInteger.valueOf(request.getFileId()))))
+                .fetchInto(S1UserBO.class).size() ==1 ){
+
+
+            
+        }
 
 
 

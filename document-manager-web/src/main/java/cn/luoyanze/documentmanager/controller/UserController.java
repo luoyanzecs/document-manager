@@ -19,11 +19,13 @@ public class UserController {
     private final DBUpdateService dbUpdateService;
     private final DBSelectService dbSelectService;
     private final DBInsertService dbInsertService;
+    private final AttachService attachService;
 
-    public UserController(DBUpdateService dbUpdateService, DBSelectService dbSelectService, DBInsertService dbInsertService) {
+    public UserController(DBUpdateService dbUpdateService, DBSelectService dbSelectService, DBInsertService dbInsertService, AttachService attachService) {
         this.dbUpdateService = dbUpdateService;
         this.dbSelectService = dbSelectService;
         this.dbInsertService = dbInsertService;
+        this.attachService = attachService;
     }
 
     @PostMapping("/menu")
@@ -62,18 +64,24 @@ public class UserController {
         return dbInsertService.insertNewComment(request);
     }
 
-    // TODO: 文件上传
     @PostMapping("/uploadAttach")
     @ResponseBody
     public UpdateFileHttpResponse execute(@RequestParam("file") MultipartFile file) {
         return null;
     }
+    public AddAttachHttpResponse execute(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("docId") Integer docId ) {
+        return attachService.upload(file, docId);
+    }
 
-    // TODO: 文件下载
     @PostMapping("/downloadAttach")
     @ResponseBody
     public UpdateFileHttpResponse execute() {
         return null;
+    }
+    public void execute(@RequestBody DownloadAttachHttpRequest request) {
+        attachService.download(request);
     }
 
     @PostMapping("/deleteAttach")

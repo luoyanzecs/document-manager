@@ -17,7 +17,7 @@ public enum HeadStatus {
     INSERT_NOTICE_FAIL(105, "通知添加失败"),
 
     UPDATE_FILE_FAIL(106,"文件更新失败"),
-    ;
+    UPLOADER_FAIL(110, "文件上传失败");
 
     private int code;
     private String value;
