@@ -1,6 +1,7 @@
 package cn.luoyanze.documentmanager.service;
 
 import cn.luoyanze.common.contract.*;
+import cn.luoyanze.documentmanager.exception.CustomException;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -9,9 +10,9 @@ import cn.luoyanze.common.contract.*;
 
 public interface DBUpdateService {
 
-    UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request);
+    UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request) throws Exception;
 
-    DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request);
+    DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request) throws Exception;
 
-    DeleteTableItemHttpResponse deleteTableItem(DeleteTableItemHttpRequest request);
+    DeleteTableItemHttpResponse deleteTableItem(DeleteTableItemHttpRequest request) throws Exception;
 }

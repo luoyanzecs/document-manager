@@ -3,7 +3,6 @@ package cn.luoyanze.documentmanager.controller;
 import cn.luoyanze.common.contract.CreateFileHttpRequest;
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.RequestHead;
-import cn.luoyanze.documentmanager.exception.AttachUploadException;
 import cn.luoyanze.documentmanager.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +49,7 @@ public class UserController {
 
     @PostMapping("/updateFile")
     @ResponseBody
-    public UpdateFileHttpResponse execute(@RequestBody UpdateFileHttpRequest request) {
+    public UpdateFileHttpResponse execute(@RequestBody UpdateFileHttpRequest request) throws Exception {
         return dbUpdateService.updateFile(request);
     }
 
@@ -83,7 +82,7 @@ public class UserController {
 
     @PostMapping("/deleteAttach")
     @ResponseBody
-    public DeleteAttachHttpResponse execute(@RequestBody DeleteAttachHttpRequest request) {
+    public DeleteAttachHttpResponse execute(@RequestBody DeleteAttachHttpRequest request) throws Exception {
         return dbUpdateService.deleteAttach(request);
     }
 

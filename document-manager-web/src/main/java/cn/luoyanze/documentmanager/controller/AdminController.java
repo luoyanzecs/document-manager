@@ -50,7 +50,7 @@ public class AdminController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public DeleteTableItemHttpResponse execute(@RequestBody DeleteTableItemHttpRequest request) {
+    public DeleteTableItemHttpResponse execute(@RequestBody DeleteTableItemHttpRequest request) throws Exception {
         return dbUpdateService.deleteTableItem(request);
     }
 

@@ -24,9 +24,4 @@ public class UpdateFileHttpRequest {
      */
     private Integer fileId;
 
-
-    /**
-     * 更改文件用户的id
-     */
-    private Integer userid;
 }
