@@ -1,8 +1,14 @@
 package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.*;
+import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
+import org.jooq.DSLContext;
+import org.jooq.types.UInteger;
 import org.springframework.stereotype.Service;
+
+import static cn.luoyanze.common.model.HeadStatus.*;
+import static cn.luoyanze.documentmanager.dao.Tables.S1_DOC;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -15,9 +21,36 @@ import org.springframework.stereotype.Service;
 @Service
 public class DBUpdateServiceImpl implements DBUpdateService {
 
+    private final DSLContext dao;
+
+
+    public DBUpdateServiceImpl(DSLContext dao) {
+        this.dao = dao;
+    }
+
+
     @Override
     public UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request) {
-        return null;
+        
+
+
+
+
+        int execute = dao.update(S1_DOC).set(
+                S1_DOC.CTX, request.getJsonValue())
+                .set(S1_DOC.LAST_UPDATE_USER_ID,request.getUserid())
+                .where(S1_DOC.PRIMARY_ID.eq((UInteger.valueOf(request.getFileId()))))
+                .execute();
+        UpdateFileHttpResponse resp = new UpdateFileHttpResponse();
+
+
+
+        if (execute == 1) {
+            resp.setHead(new ResponseHead(SUCCESS));
+        } else {
+            resp.setHead(new ResponseHead(UPDATE_FILE_FAIL));
+        }
+        return resp;
     }
 
     /**
@@ -25,11 +58,23 @@ public class DBUpdateServiceImpl implements DBUpdateService {
      */
     @Override
     public DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request) {
-        return null;
+
+
+
+
+        DeleteAttachHttpResponse resp = new DeleteAttachHttpResponse();
+        resp.setHead(new ResponseHead(SUCCESS));
+        return resp;
     }
+
+
+
+
 
     @Override
     public DeleteTableItemHttpResponse deleteTableItem(DeleteTableItemHttpRequest request) {
-        return null;
+        DeleteTableItemHttpResponse resp = new DeleteTableItemHttpResponse();
+        resp.setHead(new ResponseHead(SUCCESS));
+        return resp;
     }
 }

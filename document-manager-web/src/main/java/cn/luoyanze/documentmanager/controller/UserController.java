@@ -46,39 +46,39 @@ public class UserController {
 
     @PostMapping("/updateFile")
     @ResponseBody
-    public UpdateFileHttpResponse excute(@RequestBody UpdateFileHttpRequest request) {
+    public UpdateFileHttpResponse execute(@RequestBody UpdateFileHttpRequest request) {
         return dbUpdateService.updateFile(request);
     }
 
     @PostMapping("/createFile")
     @ResponseBody
-    public CreateFileHttpResponse excute(@RequestBody CreateFileHttpRequest request) {
+    public CreateFileHttpResponse execute(@RequestBody CreateFileHttpRequest request) {
         return dbInsertService.insertNewFile(request);
     }
 
     @PostMapping("/leaveMessage")
     @ResponseBody
-    public LeaveMessageHttpResponse excute(@RequestBody LeaveMessageHttpRequest request) {
+    public LeaveMessageHttpResponse execute(@RequestBody LeaveMessageHttpRequest request) {
         return dbInsertService.insertNewComment(request);
     }
 
     // TODO: 文件上传
     @PostMapping("/uploadAttach")
     @ResponseBody
-    public UpdateFileHttpResponse excute(@RequestParam("file") MultipartFile file) {
+    public UpdateFileHttpResponse execute(@RequestParam("file") MultipartFile file) {
         return null;
     }
 
     // TODO: 文件下载
     @PostMapping("/downloadAttach")
     @ResponseBody
-    public UpdateFileHttpResponse excute3() {
+    public UpdateFileHttpResponse execute() {
         return null;
     }
 
     @PostMapping("/deleteAttach")
     @ResponseBody
-    public DeleteAttachHttpResponse excute(@RequestBody DeleteAttachHttpRequest request) {
+    public DeleteAttachHttpResponse execute(@RequestBody DeleteAttachHttpRequest request) {
         return dbUpdateService.deleteAttach(request);
     }
 
