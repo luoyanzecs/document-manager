@@ -16,6 +16,8 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -41,18 +43,24 @@ public class IdentifyFilter implements Filter {
 
         try {
             if (EXCLUDE_URLS.contains(path)) {
-                filterChain.doFilter(req, response);
+                resp.sendError(HttpStatus.FORBIDDEN.value(), "验证失败， 请重新登录");
             }
 
             BodyCheckServletRequestWapper requestWrapper = new BodyCheckServletRequestWapper(req);
-            String json = requestWrapper.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            RequestHead requestHead = null;
+            if ("/user/uploadAttach".equalsIgnoreCase(path)) {
+                Part head = req.getPart("head");
+                requestHead = JSON.parseObject(String.valueOf(head.getInputStream()), RequestHead.class);
+            } else {
+                String json = requestWrapper.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-            RequestHead head =
-                    Optional.ofNullable(JSON.parseObject(json, Map.class))
-                            .map(it -> it.get("head"))
-                            .map(it -> JSON.parseObject(it.toString(), RequestHead.class)).orElse(null);
+                requestHead = Optional.ofNullable(JSON.parseObject(json, Map.class))
+                                .map(it -> it.get("head"))
+                                .map(it -> JSON.parseObject(it.toString(), RequestHead.class)).orElse(null);
+            }
 
-            if (validate(head)) {
+
+            if (validate(requestHead)) {
                 filterChain.doFilter(requestWrapper, response);
             } else {
                 resp.sendError(HttpStatus.FORBIDDEN.value(), "验证失败， 请重新登录");
