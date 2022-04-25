@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row12;
+import org.jooq.Row13;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -109,6 +109,11 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
      */
     public final TableField<S1UserRecord, Integer> AUTHORITY = createField(DSL.name("authority"), SQLDataType.INTEGER.nullable(false), this, "权限等级");
 
+    /**
+     * The column <code>document_manager.S1_USER.isDel</code>. 0表示正常， 1为删除
+     */
+    public final TableField<S1UserRecord, Integer> ISDEL = createField(DSL.name("isDel"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "0表示正常， 1为删除");
+
     private S1UserTB(Name alias, Table<S1UserRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -189,11 +194,11 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row12 type methods
+    // Row13 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row12<Integer, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, String, Integer> fieldsRow() {
-        return (Row12) super.fieldsRow();
+    public Row13<Integer, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, String, Integer, Integer> fieldsRow() {
+        return (Row13) super.fieldsRow();
     }
 }

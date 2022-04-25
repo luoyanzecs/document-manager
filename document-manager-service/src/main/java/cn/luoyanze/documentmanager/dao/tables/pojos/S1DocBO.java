@@ -26,6 +26,7 @@ public class S1DocBO implements Serializable {
     private String        title;
     private Integer       dirId;
     private Integer       lastUpdateUserId;
+    private Integer       isdel;
 
     public S1DocBO() {}
 
@@ -40,6 +41,7 @@ public class S1DocBO implements Serializable {
         this.title = value.title;
         this.dirId = value.dirId;
         this.lastUpdateUserId = value.lastUpdateUserId;
+        this.isdel = value.isdel;
     }
 
     public S1DocBO(
@@ -52,7 +54,8 @@ public class S1DocBO implements Serializable {
         LocalDateTime lastUpdateTime,
         String        title,
         Integer       dirId,
-        Integer       lastUpdateUserId
+        Integer       lastUpdateUserId,
+        Integer       isdel
     ) {
         this.primaryId = primaryId;
         this.permissionBu = permissionBu;
@@ -64,6 +67,7 @@ public class S1DocBO implements Serializable {
         this.title = title;
         this.dirId = dirId;
         this.lastUpdateUserId = lastUpdateUserId;
+        this.isdel = isdel;
     }
 
     /**
@@ -206,6 +210,20 @@ public class S1DocBO implements Serializable {
         this.lastUpdateUserId = lastUpdateUserId;
     }
 
+    /**
+     * Getter for <code>document_manager.S1_DOC.isDel</code>. 0表示正常， 1为删除
+     */
+    public Integer getIsdel() {
+        return this.isdel;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_DOC.isDel</code>. 0表示正常， 1为删除
+     */
+    public void setIsdel(Integer isdel) {
+        this.isdel = isdel;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("S1DocBO (");
@@ -220,6 +238,7 @@ public class S1DocBO implements Serializable {
         sb.append(", ").append(title);
         sb.append(", ").append(dirId);
         sb.append(", ").append(lastUpdateUserId);
+        sb.append(", ").append(isdel);
 
         sb.append(")");
         return sb.toString();

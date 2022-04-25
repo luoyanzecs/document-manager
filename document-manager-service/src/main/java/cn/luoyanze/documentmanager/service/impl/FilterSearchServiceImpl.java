@@ -64,7 +64,7 @@ public class FilterSearchServiceImpl implements FilterSearchService {
 
         List<TableItemBase> items = users.stream()
                 .map(it -> new UserTableItem() {{
-                            setItemId(it.getPrimaryId().intValue());
+                            setItemId(it.getPrimaryId());
                             setName(it.getAccount());
                             setBu(it.getBu());
                             setTel(it.getTel());
