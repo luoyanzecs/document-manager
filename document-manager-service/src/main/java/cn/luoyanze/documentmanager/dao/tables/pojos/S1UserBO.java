@@ -26,7 +26,7 @@ public class S1UserBO implements Serializable {
     private LocalDateTime lastLoginTime;
     private LocalDateTime registerTime;
     private Integer       status;
-    private String        bu;
+    private Integer       buId;
     private Integer       authority;
     private Integer       isdel;
 
@@ -43,7 +43,7 @@ public class S1UserBO implements Serializable {
         this.lastLoginTime = value.lastLoginTime;
         this.registerTime = value.registerTime;
         this.status = value.status;
-        this.bu = value.bu;
+        this.buId = value.buId;
         this.authority = value.authority;
         this.isdel = value.isdel;
     }
@@ -59,7 +59,7 @@ public class S1UserBO implements Serializable {
         LocalDateTime lastLoginTime,
         LocalDateTime registerTime,
         Integer       status,
-        String        bu,
+        Integer       buId,
         Integer       authority,
         Integer       isdel
     ) {
@@ -73,7 +73,7 @@ public class S1UserBO implements Serializable {
         this.lastLoginTime = lastLoginTime;
         this.registerTime = registerTime;
         this.status = status;
-        this.bu = bu;
+        this.buId = buId;
         this.authority = authority;
         this.isdel = isdel;
     }
@@ -219,17 +219,17 @@ public class S1UserBO implements Serializable {
     }
 
     /**
-     * Getter for <code>document_manager.S1_USER.bu</code>. 用户部门
+     * Getter for <code>document_manager.S1_USER.bu_id</code>. 用户部门
      */
-    public String getBu() {
-        return this.bu;
+    public Integer getBuId() {
+        return this.buId;
     }
 
     /**
-     * Setter for <code>document_manager.S1_USER.bu</code>. 用户部门
+     * Setter for <code>document_manager.S1_USER.bu_id</code>. 用户部门
      */
-    public void setBu(String bu) {
-        this.bu = bu;
+    public void setBuId(Integer buId) {
+        this.buId = buId;
     }
 
     /**
@@ -274,7 +274,7 @@ public class S1UserBO implements Serializable {
         sb.append(", ").append(lastLoginTime);
         sb.append(", ").append(registerTime);
         sb.append(", ").append(status);
-        sb.append(", ").append(bu);
+        sb.append(", ").append(buId);
         sb.append(", ").append(authority);
         sb.append(", ").append(isdel);
 

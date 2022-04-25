@@ -2,21 +2,13 @@ package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.ResponseHead;
-import cn.luoyanze.documentmanager.dao.tables.records.S1DocRecord;
-import cn.luoyanze.documentmanager.dao.tables.records.S1NoticeRecord;
-import cn.luoyanze.documentmanager.dao.tables.records.S1OperateRecord;
-import cn.luoyanze.documentmanager.dao.tables.records.S1UserRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
 import org.jooq.DSLContext;
-import org.jooq.TransactionProvider;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Service;
 
-import java.sql.Savepoint;
 import java.time.LocalDateTime;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static cn.luoyanze.common.model.HeadStatus.*;

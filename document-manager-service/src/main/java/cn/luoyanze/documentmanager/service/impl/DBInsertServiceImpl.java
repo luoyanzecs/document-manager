@@ -6,9 +6,12 @@ import cn.luoyanze.documentmanager.dao.tables.pojos.S1CommentBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1DocBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1NoticeBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
+import cn.luoyanze.documentmanager.dao.tables.records.S1DocRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.DBInsertService;
 import org.jooq.DSLContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,6 +28,7 @@ import static cn.luoyanze.documentmanager.dao.Tables.*;
 
 @Service
 public class DBInsertServiceImpl implements DBInsertService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBInsertServiceImpl.class);
 
     private final DSLContext dao;
 
@@ -33,21 +37,32 @@ public class DBInsertServiceImpl implements DBInsertService {
     }
 
     @Override
-    public CreateFileHttpResponse insertNewFile(CreateFileHttpRequest request) throws CustomException {
-        S1DocBO doc = new S1DocBO();
-        doc.setCtx("");
-        doc.setUserId(request.getUserId());
-        doc.setLastUpdateUserId(request.getUserId());
-        doc.setTitle(request.getTitle());
-        doc.setPermissionBu(request.getBu());
-        doc.setDirId(request.getParentId());
-        doc.setLastUpdateTime(LocalDateTime.now());
-        int execute = dao.insertInto(S1_DOC).values(doc).execute();
+    public CreateFileHttpResponse insertNewFile(CreateFileHttpRequest request) {
         CreateFileHttpResponse resp = new CreateFileHttpResponse();
-        if (execute == 0) {
-            throw new CustomException("请重试", DOC_CREATE_FAIL);
+        try {
+            S1DocRecord record = new S1DocRecord();
+            record.setCtx("");
+            record.setUserId(request.getUserId());
+            record.setLastUpdateUserId(request.getUserId());
+            record.setTitle(request.getTitle());
+            record.setPermissionBu(request.getBu());
+            record.setDirId(request.getParentId());
+            record.setLastUpdateTime(LocalDateTime.now());
+            record.setUserId(request.getUserId());
+            record.setAuthority(0);
+            record.setLastUpdateUserId(request.getUserId());
+            record.setPermissionBu("all");
+
+            int execute = dao.insertInto(S1_DOC).set(record).execute();
+            if (execute != 1) {
+                resp.setHead(new ResponseHead(DOC_CREATE_FAIL));
+            } else {
+                resp.setHead(new ResponseHead(SUCCESS));
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            resp.setHead(new ResponseHead(DOC_CREATE_FAIL));
         }
-        resp.setHead(new ResponseHead(SUCCESS));
         return resp;
     }
 
@@ -77,8 +92,9 @@ public class DBInsertServiceImpl implements DBInsertService {
         notice.setContent(request.getText());
         notice.setIsGlobal(request.getType());
         notice.setEndTime(request.getExpiredTime());
+
         notice.setStartTime(request.getStartTime());
-        notice.setAcceptBu(String.join(",", request.getBu()));
+        notice.setAcceptBu(request.getBu().stream().map(String::valueOf).collect(Collectors.joining(",")));
         notice.setAcceptUsers(
                 request.getUsers().stream()
                         .filter(Objects::nonNull)
@@ -100,7 +116,7 @@ public class DBInsertServiceImpl implements DBInsertService {
         S1UserBO user = new S1UserBO();
         user.setAccount(request.getName());
         user.setPassword(request.getPassword());
-        user.setBu(request.getBu());
+        user.setBuId(request.getBu());
         user.setRole(request.isAdmin() ? "管理员" : "用户");
         user.setAuthority(request.getRank());
         user.setRegisterTime(LocalDateTime.now());

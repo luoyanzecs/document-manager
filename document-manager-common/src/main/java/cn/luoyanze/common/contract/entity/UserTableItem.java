@@ -35,7 +35,7 @@ public class UserTableItem extends TableItemBase{
      * 用户部门
      */
     @JsonProperty("bu")
-    private String bu;
+    private Integer bu;
 
     /**
      * 用户联系方式

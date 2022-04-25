@@ -16,5 +16,5 @@ public class FileMenuHttpRequset {
     private RequestHead head;
 
     @JsonProperty("bu")
-    private String bu;
+    private Integer bu;
 }

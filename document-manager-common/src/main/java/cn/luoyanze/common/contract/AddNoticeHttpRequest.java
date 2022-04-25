@@ -27,7 +27,7 @@ public class AddNoticeHttpRequest {
 
     private LocalDateTime expiredTime;
 
-    private List<String> bu;
+    private List<Integer> bu;
 
     private List<Integer> users;
 }

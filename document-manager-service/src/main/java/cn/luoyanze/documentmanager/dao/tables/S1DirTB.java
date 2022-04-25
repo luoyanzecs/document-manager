@@ -5,6 +5,7 @@ package cn.luoyanze.documentmanager.dao.tables;
 
 
 import cn.luoyanze.documentmanager.dao.DocumentManager;
+import cn.luoyanze.documentmanager.dao.Indexes;
 import cn.luoyanze.documentmanager.dao.Keys;
 import cn.luoyanze.documentmanager.dao.tables.records.S1DirRecord;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row5;
@@ -64,9 +66,9 @@ public class S1DirTB extends TableImpl<S1DirRecord> {
     public final TableField<S1DirRecord, Integer> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.INTEGER.nullable(false), this, "上级目录ID");
 
     /**
-     * The column <code>document_manager.S1_DIR.bu</code>. 所属部门
+     * The column <code>document_manager.S1_DIR.bu_id</code>. 所属部门
      */
-    public final TableField<S1DirRecord, String> BU = createField(DSL.name("bu"), SQLDataType.CHAR(16).nullable(false), this, "所属部门");
+    public final TableField<S1DirRecord, Integer> BU_ID = createField(DSL.name("bu_id"), SQLDataType.INTEGER.nullable(false), this, "所属部门");
 
     /**
      * The column <code>document_manager.S1_DIR.deep</code>. 目录层级
@@ -112,6 +114,11 @@ public class S1DirTB extends TableImpl<S1DirRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.<Index>asList(Indexes.S1_DIR_BU_ID);
+    }
+
+    @Override
     public Identity<S1DirRecord, Integer> getIdentity() {
         return (Identity<S1DirRecord, Integer>) super.getIdentity();
     }
@@ -124,6 +131,20 @@ public class S1DirTB extends TableImpl<S1DirRecord> {
     @Override
     public List<UniqueKey<S1DirRecord>> getKeys() {
         return Arrays.<UniqueKey<S1DirRecord>>asList(Keys.KEY_S1_DIR_PRIMARY);
+    }
+
+    @Override
+    public List<ForeignKey<S1DirRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<S1DirRecord, ?>>asList(Keys.S1_DIR_IBFK_1);
+    }
+
+    private transient S1BuTB _s1Bu;
+
+    public S1BuTB s1Bu() {
+        if (_s1Bu == null)
+            _s1Bu = new S1BuTB(this, Keys.S1_DIR_IBFK_1);
+
+        return _s1Bu;
     }
 
     @Override
@@ -157,7 +178,7 @@ public class S1DirTB extends TableImpl<S1DirRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Integer, String, Integer, String, Integer> fieldsRow() {
+    public Row5<Integer, String, Integer, Integer, Integer> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 }

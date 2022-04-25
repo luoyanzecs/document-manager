@@ -5,6 +5,7 @@ package cn.luoyanze.documentmanager.dao.tables;
 
 
 import cn.luoyanze.documentmanager.dao.DocumentManager;
+import cn.luoyanze.documentmanager.dao.Indexes;
 import cn.luoyanze.documentmanager.dao.Keys;
 import cn.luoyanze.documentmanager.dao.tables.records.S1UserRecord;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row13;
@@ -100,9 +102,9 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     public final TableField<S1UserRecord, Integer> STATUS = createField(DSL.name("status"), SQLDataType.INTEGER.nullable(false), this, "在职状态， 在职1， 不在职0");
 
     /**
-     * The column <code>document_manager.S1_USER.bu</code>. 用户部门
+     * The column <code>document_manager.S1_USER.bu_id</code>. 用户部门
      */
-    public final TableField<S1UserRecord, String> BU = createField(DSL.name("bu"), SQLDataType.CHAR(16).nullable(false), this, "用户部门");
+    public final TableField<S1UserRecord, Integer> BU_ID = createField(DSL.name("bu_id"), SQLDataType.INTEGER.nullable(false), this, "用户部门");
 
     /**
      * The column <code>document_manager.S1_USER.authority</code>. 权限等级
@@ -153,6 +155,11 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.<Index>asList(Indexes.S1_USER_BU_ID);
+    }
+
+    @Override
     public Identity<S1UserRecord, Integer> getIdentity() {
         return (Identity<S1UserRecord, Integer>) super.getIdentity();
     }
@@ -165,6 +172,20 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     @Override
     public List<UniqueKey<S1UserRecord>> getKeys() {
         return Arrays.<UniqueKey<S1UserRecord>>asList(Keys.KEY_S1_USER_PRIMARY);
+    }
+
+    @Override
+    public List<ForeignKey<S1UserRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<S1UserRecord, ?>>asList(Keys.S1_USER_IBFK_1);
+    }
+
+    private transient S1BuTB _s1Bu;
+
+    public S1BuTB s1Bu() {
+        if (_s1Bu == null)
+            _s1Bu = new S1BuTB(this, Keys.S1_USER_IBFK_1);
+
+        return _s1Bu;
     }
 
     @Override
@@ -198,7 +219,7 @@ public class S1UserTB extends TableImpl<S1UserRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<Integer, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, String, Integer, Integer> fieldsRow() {
+    public Row13<Integer, String, String, String, String, String, String, LocalDateTime, LocalDateTime, Integer, Integer, Integer, Integer> fieldsRow() {
         return (Row13) super.fieldsRow();
     }
 }

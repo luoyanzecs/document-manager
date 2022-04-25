@@ -17,7 +17,7 @@ public class AddUserHttpRequest {
 
     private String password;
 
-    private String bu;
+    private int bu;
 
     private boolean isAdmin;
 

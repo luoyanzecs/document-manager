@@ -19,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row11;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -65,11 +65,6 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
      * The column <code>document_manager.S1_DOC.authority</code>. 允许的等级
      */
     public final TableField<S1DocRecord, Integer> AUTHORITY = createField(DSL.name("authority"), SQLDataType.INTEGER, this, "允许的等级");
-
-    /**
-     * The column <code>document_manager.S1_DOC.status</code>. 状态 0已删除， 1正常
-     */
-    public final TableField<S1DocRecord, Integer> STATUS = createField(DSL.name("status"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("1", SQLDataType.INTEGER)), this, "状态 0已删除， 1正常");
 
     /**
      * The column <code>document_manager.S1_DOC.ctx</code>. 内容
@@ -221,11 +216,11 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row11 type methods
+    // Row10 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, String, Integer, Integer, String, Integer, LocalDateTime, String, Integer, Integer, Integer> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row10<Integer, String, Integer, String, Integer, LocalDateTime, String, Integer, Integer, Integer> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 }

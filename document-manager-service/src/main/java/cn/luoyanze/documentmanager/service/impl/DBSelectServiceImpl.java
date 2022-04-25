@@ -106,7 +106,7 @@ public class DBSelectServiceImpl implements DBSelectService {
 
     @Override
     public FileMenuHttpResponse selectMenuByBu(FileMenuHttpRequset request) {
-        List<S1DirBO> dirs = dao.selectFrom(S1_DIR).where(S1_DIR.BU.eq(request.getBu())).fetchInto(S1DirBO.class);
+        List<S1DirBO> dirs = dao.selectFrom(S1_DIR).where(S1_DIR.BU_ID.eq(request.getBu())).fetchInto(S1DirBO.class);
 
         List<DocVO> docVOS = dao.select().from(S1_DOC).fetchInto(DocVO.class);
 
@@ -188,7 +188,7 @@ public class DBSelectServiceImpl implements DBSelectService {
     public NoticeHttpResponse selectNotice(NoticeHttpRequset requset) {
         NoticeHttpResponse resp = new NoticeHttpResponse();
         LocalDateTime now = LocalDateTime.now();
-        Record2<Integer, String> user = dao.select(S1_USER.PRIMARY_ID, S1_USER.BU)
+        Record2<Integer, Integer> user = dao.select(S1_USER.PRIMARY_ID, S1_USER.BU_ID)
                 .from(S1_USER)
                 .where(S1_USER.ACCOUNT.eq(requset.getHead().getUsername()))
                 .fetchOne();
@@ -204,7 +204,7 @@ public class DBSelectServiceImpl implements DBSelectService {
 
         List<Notice> notices = records.stream()
                 .filter(it -> it.getAcceptUsers().contains(user.get(S1_USER.PRIMARY_ID).toString())
-                        && it.getAcceptBu().contains(user.get(S1_USER.BU))
+                        && it.getAcceptBu().contains(user.get(S1_USER.BU_ID).toString())
                 )
                 .map(it -> new Notice(it.getPrimaryId(), it.getType(), it.getContent()))
                 .collect(Collectors.toList());

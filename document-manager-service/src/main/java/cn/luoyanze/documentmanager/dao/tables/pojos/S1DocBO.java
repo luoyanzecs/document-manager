@@ -19,7 +19,6 @@ public class S1DocBO implements Serializable {
     private Integer       primaryId;
     private String        permissionBu;
     private Integer       authority;
-    private Integer       status;
     private String        ctx;
     private Integer       userId;
     private LocalDateTime lastUpdateTime;
@@ -34,7 +33,6 @@ public class S1DocBO implements Serializable {
         this.primaryId = value.primaryId;
         this.permissionBu = value.permissionBu;
         this.authority = value.authority;
-        this.status = value.status;
         this.ctx = value.ctx;
         this.userId = value.userId;
         this.lastUpdateTime = value.lastUpdateTime;
@@ -48,7 +46,6 @@ public class S1DocBO implements Serializable {
         Integer       primaryId,
         String        permissionBu,
         Integer       authority,
-        Integer       status,
         String        ctx,
         Integer       userId,
         LocalDateTime lastUpdateTime,
@@ -60,7 +57,6 @@ public class S1DocBO implements Serializable {
         this.primaryId = primaryId;
         this.permissionBu = permissionBu;
         this.authority = authority;
-        this.status = status;
         this.ctx = ctx;
         this.userId = userId;
         this.lastUpdateTime = lastUpdateTime;
@@ -110,20 +106,6 @@ public class S1DocBO implements Serializable {
      */
     public void setAuthority(Integer authority) {
         this.authority = authority;
-    }
-
-    /**
-     * Getter for <code>document_manager.S1_DOC.status</code>. 状态 0已删除， 1正常
-     */
-    public Integer getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Setter for <code>document_manager.S1_DOC.status</code>. 状态 0已删除， 1正常
-     */
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     /**
@@ -231,7 +213,6 @@ public class S1DocBO implements Serializable {
         sb.append(primaryId);
         sb.append(", ").append(permissionBu);
         sb.append(", ").append(authority);
-        sb.append(", ").append(status);
         sb.append(", ").append(ctx);
         sb.append(", ").append(userId);
         sb.append(", ").append(lastUpdateTime);
