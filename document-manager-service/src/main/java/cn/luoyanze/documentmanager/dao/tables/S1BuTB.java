@@ -25,7 +25,6 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 
 /**
@@ -52,7 +51,7 @@ public class S1BuTB extends TableImpl<S1BuRecord> {
     /**
      * The column <code>document_manager.S1_BU.primary_id</code>. 自增主键
      */
-    public final TableField<S1BuRecord, UInteger> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "自增主键");
+    public final TableField<S1BuRecord, Integer> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "自增主键");
 
     /**
      * The column <code>document_manager.S1_BU.name</code>. 部门名称
@@ -98,8 +97,8 @@ public class S1BuTB extends TableImpl<S1BuRecord> {
     }
 
     @Override
-    public Identity<S1BuRecord, UInteger> getIdentity() {
-        return (Identity<S1BuRecord, UInteger>) super.getIdentity();
+    public Identity<S1BuRecord, Integer> getIdentity() {
+        return (Identity<S1BuRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -143,7 +142,7 @@ public class S1BuTB extends TableImpl<S1BuRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row2<UInteger, String> fieldsRow() {
+    public Row2<Integer, String> fieldsRow() {
         return (Row2) super.fieldsRow();
     }
 }

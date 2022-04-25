@@ -9,7 +9,7 @@ import cn.luoyanze.common.contract.*;
 
 public interface DBInsertService {
 
-    CreateFileHttpResponse insertNewFile(CreateFileHttpRequest request) throws Exception;
+    CreateFileHttpResponse insertNewFile(CreateFileHttpRequest request);
 
     LeaveMessageHttpResponse insertNewComment(LeaveMessageHttpRequest request) throws Exception;
 

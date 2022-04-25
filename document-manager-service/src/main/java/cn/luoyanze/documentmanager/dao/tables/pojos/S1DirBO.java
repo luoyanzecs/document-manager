@@ -18,7 +18,7 @@ public class S1DirBO implements Serializable {
     private Integer primaryId;
     private String  title;
     private Integer parentId;
-    private String  bu;
+    private Integer buId;
     private Integer deep;
 
     public S1DirBO() {}
@@ -27,7 +27,7 @@ public class S1DirBO implements Serializable {
         this.primaryId = value.primaryId;
         this.title = value.title;
         this.parentId = value.parentId;
-        this.bu = value.bu;
+        this.buId = value.buId;
         this.deep = value.deep;
     }
 
@@ -35,13 +35,13 @@ public class S1DirBO implements Serializable {
         Integer primaryId,
         String  title,
         Integer parentId,
-        String  bu,
+        Integer buId,
         Integer deep
     ) {
         this.primaryId = primaryId;
         this.title = title;
         this.parentId = parentId;
-        this.bu = bu;
+        this.buId = buId;
         this.deep = deep;
     }
 
@@ -88,17 +88,17 @@ public class S1DirBO implements Serializable {
     }
 
     /**
-     * Getter for <code>document_manager.S1_DIR.bu</code>. 所属部门
+     * Getter for <code>document_manager.S1_DIR.bu_id</code>. 所属部门
      */
-    public String getBu() {
-        return this.bu;
+    public Integer getBuId() {
+        return this.buId;
     }
 
     /**
-     * Setter for <code>document_manager.S1_DIR.bu</code>. 所属部门
+     * Setter for <code>document_manager.S1_DIR.bu_id</code>. 所属部门
      */
-    public void setBu(String bu) {
-        this.bu = bu;
+    public void setBuId(Integer buId) {
+        this.buId = buId;
     }
 
     /**
@@ -122,7 +122,7 @@ public class S1DirBO implements Serializable {
         sb.append(primaryId);
         sb.append(", ").append(title);
         sb.append(", ").append(parentId);
-        sb.append(", ").append(bu);
+        sb.append(", ").append(buId);
         sb.append(", ").append(deep);
 
         sb.append(")");

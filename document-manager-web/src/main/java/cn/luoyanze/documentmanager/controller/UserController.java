@@ -55,7 +55,7 @@ public class UserController {
 
     @PostMapping("/createFile")
     @ResponseBody
-    public CreateFileHttpResponse execute(@RequestBody CreateFileHttpRequest request) throws Exception {
+    public CreateFileHttpResponse execute(@RequestBody CreateFileHttpRequest request) {
         return dbInsertService.insertNewFile(request);
     }
 

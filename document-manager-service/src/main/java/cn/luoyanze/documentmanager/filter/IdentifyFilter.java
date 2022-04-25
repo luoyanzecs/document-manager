@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsUtils;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -32,22 +33,24 @@ import java.util.stream.Collectors;
 public class IdentifyFilter implements Filter {
 
     private final static Logger logger = LoggerFactory.getLogger(IdentifyFilter.class);
-    private final static Set<String> EXCLUDE_URLS = Set.of("/login");
+    private final static Set<String> EXCLUDE_URLS = Set.of("/api/login");
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) {
+
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpServletRequest req = (HttpServletRequest) request;
         String path = req.getRequestURI().substring(req.getContextPath().length()).replaceAll("[/]+$", "");
 
         try {
-            if (EXCLUDE_URLS.contains(path)) {
-                resp.sendError(HttpStatus.FORBIDDEN.value(), "验证失败， 请重新登录");
+            if (EXCLUDE_URLS.contains(path) || CorsUtils.isPreFlightRequest(req)) {
+                filterChain.doFilter(req, response);
+                return;
             }
 
             BodyCheckServletRequestWapper requestWrapper = new BodyCheckServletRequestWapper(req);
             RequestHead requestHead = null;
-            if ("/user/uploadAttach".equalsIgnoreCase(path)) {
+            if ("/api/user/uploadAttach".equalsIgnoreCase(path)) {
                 Part head = req.getPart("head");
                 requestHead = JSON.parseObject(String.valueOf(head.getInputStream()), RequestHead.class);
             } else {
@@ -57,7 +60,6 @@ public class IdentifyFilter implements Filter {
                                 .map(it -> it.get("head"))
                                 .map(it -> JSON.parseObject(it.toString(), RequestHead.class)).orElse(null);
             }
-
 
             if (validate(requestHead)) {
                 filterChain.doFilter(requestWrapper, response);

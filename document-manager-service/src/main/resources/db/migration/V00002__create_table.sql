@@ -1,5 +1,4 @@
-use
-`document_manager`;
+use `document_manager`;
 CREATE TABLE `S1_USER`
 (
     `primary_id`      INT      NOT NULL AUTO_INCREMENT COMMENT '自增主键',
@@ -12,9 +11,10 @@ CREATE TABLE `S1_USER`
     `last_login_time` DATETIME COMMENT '最近一次登录时间',
     `register_time`   DATETIME COMMENT '注册时间',
     `status`          INT      NOT NULL COMMENT '在职状态， 在职1， 不在职0',
-    `bu`              CHAR(16) NOT NULL COMMENT '用户部门',
+    `bu_id`           INT      NOT NULL COMMENT '用户部门',
     `authority`       INT      NOT NULL COMMENT '权限等级',
-    PRIMARY KEY (primary_id)
+    PRIMARY KEY (primary_id),
+    FOREIGN KEY (bu_id) REFERENCES S1_BU (primary_id)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
 
 CREATE TABLE `S1_DIR`
@@ -22,9 +22,10 @@ CREATE TABLE `S1_DIR`
     `primary_id` INT      NOT NULL AUTO_INCREMENT COMMENT '自增主键',
     `title`      TEXT     NOT NULL COMMENT '标题',
     `parent_id`  INT      NOT NULL COMMENT '上级目录ID',
-    `bu`         CHAR(16) NOT NULL COMMENT '所属部门',
+    `bu_id`      INT      NOT NULL COMMENT '所属部门',
     `deep`       INT      NOT NULL COMMENT '目录层级',
-    PRIMARY KEY (primary_id)
+    PRIMARY KEY (primary_id),
+    FOREIGN KEY (bu_id) REFERENCES S1_BU (primary_id)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
 
 
@@ -33,7 +34,6 @@ CREATE TABLE `S1_DOC`
     `primary_id`          INT  NOT NULL AUTO_INCREMENT COMMENT '自增主键',
     `permission_bu`       CHAR(16) COMMENT '允许的部门',
     `authority`           INT COMMENT '允许的等级',
-    `status`              INT  NOT NULL default 1 COMMENT '状态 0已删除， 1正常',
     `ctx`                 TEXT NOT NULL COMMENT '内容',
     `user_id`             INT  NOT NULL COMMENT '创建用户id',
     `last_update_time`    DATETIME COMMENT '最近修改时间登录时间',

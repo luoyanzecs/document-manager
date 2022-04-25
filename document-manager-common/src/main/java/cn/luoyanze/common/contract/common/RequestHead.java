@@ -1,13 +1,12 @@
 package cn.luoyanze.common.contract.common;
 
-import lombok.Getter;
+import lombok.Data;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/4/2 8:38 PM
  */
-
-@Getter
+@Data
 public class RequestHead {
 
     private String timestamp;
@@ -19,4 +18,6 @@ public class RequestHead {
     private String role;
 
     private String token;
+
+    private Integer bu;
 }

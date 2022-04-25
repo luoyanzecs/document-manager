@@ -66,7 +66,7 @@ public class FilterSearchServiceImpl implements FilterSearchService {
                 .map(it -> new UserTableItem() {{
                             setItemId(it.getPrimaryId());
                             setName(it.getAccount());
-                            setBu(it.getBu());
+                            setBu(it.getBuId());
                             setTel(it.getTel());
                         }}
                 ).collect(Collectors.toList());
