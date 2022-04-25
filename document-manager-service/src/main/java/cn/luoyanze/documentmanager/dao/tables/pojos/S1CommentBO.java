@@ -22,6 +22,7 @@ public class S1CommentBO implements Serializable {
     private String        ctx;
     private LocalDateTime createTime;
     private Integer       parentId;
+    private Integer       isdel;
 
     public S1CommentBO() {}
 
@@ -32,6 +33,7 @@ public class S1CommentBO implements Serializable {
         this.ctx = value.ctx;
         this.createTime = value.createTime;
         this.parentId = value.parentId;
+        this.isdel = value.isdel;
     }
 
     public S1CommentBO(
@@ -40,7 +42,8 @@ public class S1CommentBO implements Serializable {
         Integer       userId,
         String        ctx,
         LocalDateTime createTime,
-        Integer       parentId
+        Integer       parentId,
+        Integer       isdel
     ) {
         this.primaryId = primaryId;
         this.docId = docId;
@@ -48,6 +51,7 @@ public class S1CommentBO implements Serializable {
         this.ctx = ctx;
         this.createTime = createTime;
         this.parentId = parentId;
+        this.isdel = isdel;
     }
 
     /**
@@ -134,6 +138,20 @@ public class S1CommentBO implements Serializable {
         this.parentId = parentId;
     }
 
+    /**
+     * Getter for <code>document_manager.S1_COMMENT.isDel</code>. 0表示正常， 1为删除
+     */
+    public Integer getIsdel() {
+        return this.isdel;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_COMMENT.isDel</code>. 0表示正常， 1为删除
+     */
+    public void setIsdel(Integer isdel) {
+        this.isdel = isdel;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("S1CommentBO (");
@@ -144,6 +162,7 @@ public class S1CommentBO implements Serializable {
         sb.append(", ").append(ctx);
         sb.append(", ").append(createTime);
         sb.append(", ").append(parentId);
+        sb.append(", ").append(isdel);
 
         sb.append(")");
         return sb.toString();

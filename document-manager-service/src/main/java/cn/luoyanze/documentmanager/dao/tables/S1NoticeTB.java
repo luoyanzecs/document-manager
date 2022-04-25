@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row8;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -88,6 +88,11 @@ public class S1NoticeTB extends TableImpl<S1NoticeRecord> {
      * The column <code>document_manager.S1_NOTICE.is_global</code>. 是否全局通知 1全局
      */
     public final TableField<S1NoticeRecord, Integer> IS_GLOBAL = createField(DSL.name("is_global"), SQLDataType.INTEGER, this, "是否全局通知 1全局");
+
+    /**
+     * The column <code>document_manager.S1_NOTICE.isDel</code>. 0表示正常， 1为删除
+     */
+    public final TableField<S1NoticeRecord, Integer> ISDEL = createField(DSL.name("isDel"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "0表示正常， 1为删除");
 
     private S1NoticeTB(Name alias, Table<S1NoticeRecord> aliased) {
         this(alias, aliased, null);
@@ -169,11 +174,11 @@ public class S1NoticeTB extends TableImpl<S1NoticeRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Integer, Integer, String, LocalDateTime, LocalDateTime, String, String, Integer> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row9<Integer, Integer, String, LocalDateTime, LocalDateTime, String, String, Integer, Integer> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 }

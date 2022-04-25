@@ -19,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row6;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -80,6 +80,11 @@ public class S1OperateTB extends TableImpl<S1OperateRecord> {
      * The column <code>document_manager.S1_OPERATE.content</code>. 内容保留字段
      */
     public final TableField<S1OperateRecord, String> CONTENT = createField(DSL.name("content"), SQLDataType.CLOB, this, "内容保留字段");
+
+    /**
+     * The column <code>document_manager.S1_OPERATE.isDel</code>. 0表示正常， 1为删除
+     */
+    public final TableField<S1OperateRecord, Integer> ISDEL = createField(DSL.name("isDel"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "0表示正常， 1为删除");
 
     private S1OperateTB(Name alias, Table<S1OperateRecord> aliased) {
         this(alias, aliased, null);
@@ -188,11 +193,11 @@ public class S1OperateTB extends TableImpl<S1OperateRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Integer, Integer, LocalDateTime, Integer, Integer, String> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row7<Integer, Integer, LocalDateTime, Integer, Integer, String, Integer> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 }

@@ -22,6 +22,7 @@ public class S1OperateBO implements Serializable {
     private Integer       docId;
     private Integer       userId;
     private String        content;
+    private Integer       isdel;
 
     public S1OperateBO() {}
 
@@ -32,6 +33,7 @@ public class S1OperateBO implements Serializable {
         this.docId = value.docId;
         this.userId = value.userId;
         this.content = value.content;
+        this.isdel = value.isdel;
     }
 
     public S1OperateBO(
@@ -40,7 +42,8 @@ public class S1OperateBO implements Serializable {
         LocalDateTime time,
         Integer       docId,
         Integer       userId,
-        String        content
+        String        content,
+        Integer       isdel
     ) {
         this.primaryId = primaryId;
         this.type = type;
@@ -48,6 +51,7 @@ public class S1OperateBO implements Serializable {
         this.docId = docId;
         this.userId = userId;
         this.content = content;
+        this.isdel = isdel;
     }
 
     /**
@@ -134,6 +138,20 @@ public class S1OperateBO implements Serializable {
         this.content = content;
     }
 
+    /**
+     * Getter for <code>document_manager.S1_OPERATE.isDel</code>. 0表示正常， 1为删除
+     */
+    public Integer getIsdel() {
+        return this.isdel;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_OPERATE.isDel</code>. 0表示正常， 1为删除
+     */
+    public void setIsdel(Integer isdel) {
+        this.isdel = isdel;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("S1OperateBO (");
@@ -144,6 +162,7 @@ public class S1OperateBO implements Serializable {
         sb.append(", ").append(docId);
         sb.append(", ").append(userId);
         sb.append(", ").append(content);
+        sb.append(", ").append(isdel);
 
         sb.append(")");
         return sb.toString();

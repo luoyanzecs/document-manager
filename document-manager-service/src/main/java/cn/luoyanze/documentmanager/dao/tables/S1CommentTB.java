@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row6;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -78,6 +78,11 @@ public class S1CommentTB extends TableImpl<S1CommentRecord> {
      * The column <code>document_manager.S1_COMMENT.parent_id</code>. 上级评论
      */
     public final TableField<S1CommentRecord, Integer> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.INTEGER.nullable(false), this, "上级评论");
+
+    /**
+     * The column <code>document_manager.S1_COMMENT.isDel</code>. 0表示正常， 1为删除
+     */
+    public final TableField<S1CommentRecord, Integer> ISDEL = createField(DSL.name("isDel"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "0表示正常， 1为删除");
 
     private S1CommentTB(Name alias, Table<S1CommentRecord> aliased) {
         this(alias, aliased, null);
@@ -159,11 +164,11 @@ public class S1CommentTB extends TableImpl<S1CommentRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Integer, Integer, Integer, String, LocalDateTime, Integer> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row7<Integer, Integer, Integer, String, LocalDateTime, Integer, Integer> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 }

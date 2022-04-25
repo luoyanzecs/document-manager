@@ -28,6 +28,7 @@ public class S1UserBO implements Serializable {
     private Integer       status;
     private String        bu;
     private Integer       authority;
+    private Integer       isdel;
 
     public S1UserBO() {}
 
@@ -44,6 +45,7 @@ public class S1UserBO implements Serializable {
         this.status = value.status;
         this.bu = value.bu;
         this.authority = value.authority;
+        this.isdel = value.isdel;
     }
 
     public S1UserBO(
@@ -58,7 +60,8 @@ public class S1UserBO implements Serializable {
         LocalDateTime registerTime,
         Integer       status,
         String        bu,
-        Integer       authority
+        Integer       authority,
+        Integer       isdel
     ) {
         this.primaryId = primaryId;
         this.account = account;
@@ -72,6 +75,7 @@ public class S1UserBO implements Serializable {
         this.status = status;
         this.bu = bu;
         this.authority = authority;
+        this.isdel = isdel;
     }
 
     /**
@@ -242,6 +246,20 @@ public class S1UserBO implements Serializable {
         this.authority = authority;
     }
 
+    /**
+     * Getter for <code>document_manager.S1_USER.isDel</code>. 0表示正常， 1为删除
+     */
+    public Integer getIsdel() {
+        return this.isdel;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_USER.isDel</code>. 0表示正常， 1为删除
+     */
+    public void setIsdel(Integer isdel) {
+        this.isdel = isdel;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("S1UserBO (");
@@ -258,6 +276,7 @@ public class S1UserBO implements Serializable {
         sb.append(", ").append(status);
         sb.append(", ").append(bu);
         sb.append(", ").append(authority);
+        sb.append(", ").append(isdel);
 
         sb.append(")");
         return sb.toString();

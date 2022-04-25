@@ -24,6 +24,7 @@ public class S1NoticeBO implements Serializable {
     private String        acceptUsers;
     private String        acceptBu;
     private Integer       isGlobal;
+    private Integer       isdel;
 
     public S1NoticeBO() {}
 
@@ -36,6 +37,7 @@ public class S1NoticeBO implements Serializable {
         this.acceptUsers = value.acceptUsers;
         this.acceptBu = value.acceptBu;
         this.isGlobal = value.isGlobal;
+        this.isdel = value.isdel;
     }
 
     public S1NoticeBO(
@@ -46,7 +48,8 @@ public class S1NoticeBO implements Serializable {
         LocalDateTime endTime,
         String        acceptUsers,
         String        acceptBu,
-        Integer       isGlobal
+        Integer       isGlobal,
+        Integer       isdel
     ) {
         this.primaryId = primaryId;
         this.type = type;
@@ -56,6 +59,7 @@ public class S1NoticeBO implements Serializable {
         this.acceptUsers = acceptUsers;
         this.acceptBu = acceptBu;
         this.isGlobal = isGlobal;
+        this.isdel = isdel;
     }
 
     /**
@@ -170,6 +174,20 @@ public class S1NoticeBO implements Serializable {
         this.isGlobal = isGlobal;
     }
 
+    /**
+     * Getter for <code>document_manager.S1_NOTICE.isDel</code>. 0表示正常， 1为删除
+     */
+    public Integer getIsdel() {
+        return this.isdel;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_NOTICE.isDel</code>. 0表示正常， 1为删除
+     */
+    public void setIsdel(Integer isdel) {
+        this.isdel = isdel;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("S1NoticeBO (");
@@ -182,6 +200,7 @@ public class S1NoticeBO implements Serializable {
         sb.append(", ").append(acceptUsers);
         sb.append(", ").append(acceptBu);
         sb.append(", ").append(isGlobal);
+        sb.append(", ").append(isdel);
 
         sb.append(")");
         return sb.toString();

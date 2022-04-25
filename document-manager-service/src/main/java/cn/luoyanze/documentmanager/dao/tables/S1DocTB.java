@@ -19,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row10;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -69,7 +69,7 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     /**
      * The column <code>document_manager.S1_DOC.status</code>. 状态 0已删除， 1正常
      */
-    public final TableField<S1DocRecord, Integer> STATUS = createField(DSL.name("status"), SQLDataType.INTEGER.nullable(false), this, "状态 0已删除， 1正常");
+    public final TableField<S1DocRecord, Integer> STATUS = createField(DSL.name("status"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("1", SQLDataType.INTEGER)), this, "状态 0已删除， 1正常");
 
     /**
      * The column <code>document_manager.S1_DOC.ctx</code>. 内容
@@ -100,6 +100,11 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
      * The column <code>document_manager.S1_DOC.last_update_user_id</code>. 最近修改用户id
      */
     public final TableField<S1DocRecord, Integer> LAST_UPDATE_USER_ID = createField(DSL.name("last_update_user_id"), SQLDataType.INTEGER.nullable(false), this, "最近修改用户id");
+
+    /**
+     * The column <code>document_manager.S1_DOC.isDel</code>. 0表示正常， 1为删除
+     */
+    public final TableField<S1DocRecord, Integer> ISDEL = createField(DSL.name("isDel"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "0表示正常， 1为删除");
 
     private S1DocTB(Name alias, Table<S1DocRecord> aliased) {
         this(alias, aliased, null);
@@ -216,11 +221,11 @@ public class S1DocTB extends TableImpl<S1DocRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row10 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<Integer, String, Integer, Integer, String, Integer, LocalDateTime, String, Integer, Integer> fieldsRow() {
-        return (Row10) super.fieldsRow();
+    public Row11<Integer, String, Integer, Integer, String, Integer, LocalDateTime, String, Integer, Integer, Integer> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 }
