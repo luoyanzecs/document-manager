@@ -22,9 +22,6 @@ public class CreateFileHttpRequest {
     @JsonProperty("bu")
     private String bu;
 
-    @JsonProperty("userId")
-    private Integer userId;
-
     @JsonProperty("isDir")
     private Boolean isDir;
 

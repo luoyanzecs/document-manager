@@ -15,7 +15,6 @@ public class UserFileHttpRequset {
     @JsonProperty("head")
     private RequestHead head;
 
-    @JsonProperty("fileId")
-    private Integer id;
+        private Integer id;
 
 }

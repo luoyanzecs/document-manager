@@ -50,7 +50,7 @@ public class LoginApiServiceImpl implements LoginApiService {
 
         resp.setHead(new ResponseHead(SUCCESS));
         resp.setUser(
-                new User(user.getAccount(), "", user.getPrimaryId(), user.getBuId(), user.getAuthority())
+                new User(user.getAccount(), "", user.getPrimaryId(), user.getBuId(), user.getRole(), user.getAuthority())
         );
         resp.setToken(TokenUtil.buildJWT(requset.getUsername()));
         return resp;

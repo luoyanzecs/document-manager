@@ -12,4 +12,9 @@ import lombok.Data;
 public class LeaveMessageHttpResponse {
 
     private ResponseHead head;
+
+    /**
+     * 添加成功返回主键
+     */
+    private Integer id;
 }

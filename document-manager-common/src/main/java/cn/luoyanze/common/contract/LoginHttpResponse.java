@@ -58,6 +58,12 @@ public class LoginHttpResponse {
         private Integer bu;
 
         /**
+         * 身份
+         */
+        @JsonProperty("role")
+        private String role;
+
+        /**
          * 用户等级
          */
         @JsonProperty("rank")

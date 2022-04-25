@@ -21,6 +21,7 @@ public enum HeadStatus {
     UPDATE_FILE_FAIL(106,"文件更新失败"),
     DELETE_ATTACH_FAIL(107,"文件删除失败"),
     MENU_INDEX_ERROR(108,"传入的菜单不合法"),
+    FILE_SELECT_ERROR(109,"文件查询失败"),
     UPLOADER_FAIL(110, "文件上传失败"),
     DOC_CREATE_FAIL(111, "新建文件失败")
     ;

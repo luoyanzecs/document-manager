@@ -30,7 +30,7 @@ public class UserFileHttpResponse {
         @JsonProperty("editor")
         private String editor;
 
-        @JsonProperty("lastEditorTime")
+        @JsonProperty("lastEditTime")
         private String lastTime;
 
         @JsonProperty("fileContent")
