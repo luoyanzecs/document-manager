@@ -10,4 +10,4 @@ values
        ('luoyanze', '12345678', '管理员', '', '13333333333', '', NOW(), NOW(),  0, 1, 10);
 
 insert into S1_DIR(title, parent_id, bu_id, deep)
-values ('root', 1, 1, 0)
+values ('root', 0, -1, 0)

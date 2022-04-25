@@ -20,4 +20,6 @@ public class RequestHead {
     private String token;
 
     private Integer bu;
+
+    private Integer rank;
 }

@@ -28,7 +28,6 @@ public class CommonController {
 
     @PostMapping(value = "/test")
     public String execute() throws Exception {
-        //return "hello";
         throw new TestException("hello");
     }
 

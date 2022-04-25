@@ -5,10 +5,7 @@ import cn.luoyanze.common.contract.FileCommentHttpResponse.Comment;
 import cn.luoyanze.common.contract.NoticeHttpResponse.Notice;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.common.util.TimeUtil;
-import cn.luoyanze.documentmanager.dao.tables.pojos.S1DirBO;
-import cn.luoyanze.documentmanager.dao.tables.pojos.S1DocBO;
-import cn.luoyanze.documentmanager.dao.tables.pojos.S1NoticeBO;
-import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
+import cn.luoyanze.documentmanager.dao.tables.pojos.*;
 import cn.luoyanze.documentmanager.model.DocVO;
 import cn.luoyanze.documentmanager.model.FileComment;
 import cn.luoyanze.documentmanager.service.DBSelectService;
@@ -120,7 +117,7 @@ public class DBSelectServiceImpl implements DBSelectService {
     private List<Menu> generate(List<S1DirBO> dirs, List<DocVO> docVOS) {
 
         List<Menu> root = dirs.stream()
-                .filter(it -> it.getParentId() == 0)
+                .filter(it -> it.getParentId() == 1)
                 .map(it -> new Menu(it.getPrimaryId(), it.getTitle(), true, new ArrayList<>()))
                 .collect(Collectors.toList());
         List<S1DirBO> subDirNodes;
@@ -217,10 +214,13 @@ public class DBSelectServiceImpl implements DBSelectService {
 
     @Override
     public GetBuHttpResponse selectAllBu(GetBuHttpRequest request) {
-        List<String> bus = dao.select(S1_BU.NAME).from(S1_BU).fetchInto(String.class);
+        List<S1BuBO> bus = dao.select().from(S1_BU).fetchInto(S1BuBO.class);
         return new GetBuHttpResponse() {{
             setHead(new ResponseHead(SUCCESS));
-            setBuList(bus);
+            setBuList(bus.stream().map(it ->
+                            new GetBuHttpResponse.Bu(it.getPrimaryId(), it.getName())
+                    ).collect(Collectors.toList())
+            );
         }};
     }
 }
