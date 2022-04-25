@@ -10,9 +10,12 @@ import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
 import org.jooq.DSLContext;
 import org.jooq.TransactionProvider;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Service;
 
+import java.sql.Savepoint;
 import java.time.LocalDateTime;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -82,40 +85,33 @@ public class DBUpdateServiceImpl implements DBUpdateService {
     public DeleteTableItemHttpResponse deleteTableItem(DeleteTableItemHttpRequest request) throws CustomException {
 
         dao.transaction(t -> {
+            final DSLContext inner = DSL.using(t);
             Stream<Integer> stream = request.getIds().stream().filter(it -> it > 0);
             switch (request.getMenuIndex()) {
                 case 0: // 用户管理
-                    stream.forEach(it -> {
-                        t.dsl().update(S1_USER)
+                    stream.forEach(it -> inner.update(S1_USER)
                                 .set(S1_USER.ISDEL, 1)
                                 .where(S1_USER.PRIMARY_ID.eq(it))
-                                .execute();
-                    });
-                    break;
+                                .execute()
+                    );break;
                 case 1: // 记录管理
-                    stream.forEach(it -> {
-                        t.dsl().update(S1_OPERATE)
-                                .set(S1_OPERATE.ISDEL, 1)
-                                .where(S1_OPERATE.PRIMARY_ID.eq(it))
-                                .execute();
-                    });
-                    break;
+                    stream.forEach(it -> inner.update(S1_OPERATE)
+                            .set(S1_OPERATE.ISDEL, 1)
+                            .where(S1_OPERATE.PRIMARY_ID.eq(it))
+                            .execute()
+                    );break;
                 case 2: // 文件管理
-                    stream.forEach(it -> {
-                        t.dsl().update(S1_DOC)
-                                .set(S1_DOC.ISDEL, 1)
-                                .where(S1_DOC.PRIMARY_ID.eq(it))
-                                .execute();
-                    });
-                    break;
+                    stream.forEach(it -> inner.update(S1_DOC)
+                            .set(S1_DOC.ISDEL, 1)
+                            .where(S1_DOC.PRIMARY_ID.eq(it))
+                            .execute()
+                    );break;
                 case 3: // 通知
-                    stream.forEach(it -> {
-                        t.dsl().update(S1_NOTICE)
-                                .set(S1_NOTICE.ISDEL, 1)
-                                .where(S1_NOTICE.PRIMARY_ID.eq(it))
-                                .execute();
-                    });
-                    break;
+                    stream.forEach(it -> inner.update(S1_NOTICE)
+                            .set(S1_NOTICE.ISDEL, 1)
+                            .where(S1_NOTICE.PRIMARY_ID.eq(it))
+                            .execute()
+                    );break;
                 default:
                     throw new CustomException("", MENU_INDEX_ERROR);
             }
