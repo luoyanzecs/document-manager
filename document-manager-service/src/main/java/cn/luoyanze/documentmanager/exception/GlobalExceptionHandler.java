@@ -2,14 +2,10 @@ package cn.luoyanze.documentmanager.exception;
 
 import cn.luoyanze.common.contract.common.ResponseHead;
 import org.jooq.tools.StringUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -21,7 +17,6 @@ import java.io.IOException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({
-            TestException.class,
             CustomException.class
     })
     @ResponseBody

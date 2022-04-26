@@ -12,12 +12,15 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -35,8 +38,14 @@ public class IdentifyFilter implements Filter {
     private final static Logger logger = LoggerFactory.getLogger(IdentifyFilter.class);
     private final static Set<String> EXCLUDE_URLS = Set.of("/api/login");
 
+    private final MultipartResolver multipartResolver;
+
+    public IdentifyFilter(MultipartResolver multipartResolver) {
+        this.multipartResolver = multipartResolver;
+    }
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException {
 
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpServletRequest req = (HttpServletRequest) request;
@@ -48,23 +57,32 @@ public class IdentifyFilter implements Filter {
                 return;
             }
 
-            BodyCheckServletRequestWapper requestWrapper = new BodyCheckServletRequestWapper(req);
-            RequestHead requestHead = null;
-            if ("/api/user/uploadAttach".equalsIgnoreCase(path)) {
-                Part head = req.getPart("head");
-                requestHead = JSON.parseObject(String.valueOf(head.getInputStream()), RequestHead.class);
+            RequestHead requestHead;
+            if (multipartResolver.isMultipart(req)) {
+                MultipartHttpServletRequest multipart = multipartResolver.resolveMultipart(req);
+                requestHead =
+                        JSON.parseObject(
+                                new String(multipart.getPart("head").getInputStream().readAllBytes()),
+                                RequestHead.class
+                        );
+                if (validate(requestHead)) {
+                    filterChain.doFilter(multipart, response);
+                } else {
+                    resp.sendError(HttpStatus.FORBIDDEN.value(), "验证失败， 请重新登录");
+                }
             } else {
+                BodyCheckServletRequestWapper requestWrapper = new BodyCheckServletRequestWapper(req);
                 String json = requestWrapper.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
                 requestHead = Optional.ofNullable(JSON.parseObject(json, Map.class))
                                 .map(it -> it.get("head"))
                                 .map(it -> JSON.parseObject(it.toString(), RequestHead.class)).orElse(null);
-            }
 
-            if (validate(requestHead)) {
-                filterChain.doFilter(requestWrapper, response);
-            } else {
-                resp.sendError(HttpStatus.FORBIDDEN.value(), "验证失败， 请重新登录");
+                if (validate(requestHead)) {
+                    filterChain.doFilter(requestWrapper, response);
+                } else {
+                    resp.sendError(HttpStatus.FORBIDDEN.value(), "验证失败， 请重新登录");
+                }
             }
 
         } catch (Exception e) {

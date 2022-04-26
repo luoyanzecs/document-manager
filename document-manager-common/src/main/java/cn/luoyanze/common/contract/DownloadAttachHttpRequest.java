@@ -1,6 +1,7 @@
 package cn.luoyanze.common.contract;
 
 import cn.luoyanze.common.contract.common.RequestHead;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 /**
@@ -13,5 +14,6 @@ public class DownloadAttachHttpRequest {
 
     private RequestHead head;
 
+    @JsonProperty("link")
     private Integer attachId;
 }

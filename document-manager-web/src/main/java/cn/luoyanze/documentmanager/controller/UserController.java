@@ -65,17 +65,16 @@ public class UserController {
         return dbInsertService.insertNewComment(request);
     }
 
-    @PostMapping("/uploadAttach")
+    @PostMapping(value="/uploadAttach", consumes = {"multipart/form-data"})
     @ResponseBody
     public AddAttachHttpResponse execute(
-            @RequestParam("file")MultipartFile file,
-            @RequestParam("docId")Integer docId,
-            @RequestParam("head")RequestHead head) throws Exception {
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("docId") Integer docId,
+            @RequestPart("head") RequestHead head) {
         return attachService.upload(file, docId, head);
     }
 
     @PostMapping("/downloadAttach")
-    @ResponseBody
     public Object execute(@RequestBody DownloadAttachHttpRequest request) throws Exception {
         return attachService.download(request);
     }

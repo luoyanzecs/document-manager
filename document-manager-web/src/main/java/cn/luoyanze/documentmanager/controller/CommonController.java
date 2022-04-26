@@ -1,7 +1,6 @@
 package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.*;
-import cn.luoyanze.documentmanager.exception.TestException;
 import cn.luoyanze.documentmanager.service.DBSelectService;
 import cn.luoyanze.documentmanager.service.LoginApiService;
 import cn.luoyanze.documentmanager.service.ElasticSearchService;
@@ -24,11 +23,6 @@ public class CommonController {
         this.loginApiService = loginApiService;
         this.dbSelectService = dbSelectService;
         this.elasticSearchService = elasticSearchService;
-    }
-
-    @PostMapping(value = "/test")
-    public String execute() throws Exception {
-        throw new TestException("hello");
     }
 
     @PostMapping(value = "/login")

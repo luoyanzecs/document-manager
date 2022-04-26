@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/3/27 1:47 PM
@@ -35,5 +37,17 @@ public class UserFileHttpResponse {
 
         @JsonProperty("fileContent")
         private String ctx;
+
+        private List<Attach> attaches;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Attach {
+        private String name;
+
+        @JsonProperty("link")
+        private Integer primaryId;
     }
 }

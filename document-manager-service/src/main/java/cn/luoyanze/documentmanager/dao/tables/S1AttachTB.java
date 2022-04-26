@@ -19,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row8;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -60,11 +60,6 @@ public class S1AttachTB extends TableImpl<S1AttachRecord> {
      * The column <code>document_manager.S1_ATTACH.doc_primary_id</code>. 文件ID
      */
     public final TableField<S1AttachRecord, Integer> DOC_PRIMARY_ID = createField(DSL.name("doc_primary_id"), SQLDataType.INTEGER.nullable(false), this, "文件ID");
-
-    /**
-     * The column <code>document_manager.S1_ATTACH.link</code>. 是否链接
-     */
-    public final TableField<S1AttachRecord, String> LINK = createField(DSL.name("link"), SQLDataType.VARCHAR(1024).nullable(false), this, "是否链接");
 
     /**
      * The column <code>document_manager.S1_ATTACH.name</code>. 文件名
@@ -198,11 +193,11 @@ public class S1AttachTB extends TableImpl<S1AttachRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Integer, Integer, String, String, Long, LocalDateTime, Integer, Integer> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row7<Integer, Integer, String, Long, LocalDateTime, Integer, Integer> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 }

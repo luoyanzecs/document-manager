@@ -18,7 +18,6 @@ public class S1AttachBO implements Serializable {
 
     private Integer       primaryId;
     private Integer       docPrimaryId;
-    private String        link;
     private String        name;
     private Long          size;
     private LocalDateTime time;
@@ -30,7 +29,6 @@ public class S1AttachBO implements Serializable {
     public S1AttachBO(S1AttachBO value) {
         this.primaryId = value.primaryId;
         this.docPrimaryId = value.docPrimaryId;
-        this.link = value.link;
         this.name = value.name;
         this.size = value.size;
         this.time = value.time;
@@ -41,7 +39,6 @@ public class S1AttachBO implements Serializable {
     public S1AttachBO(
         Integer       primaryId,
         Integer       docPrimaryId,
-        String        link,
         String        name,
         Long          size,
         LocalDateTime time,
@@ -50,7 +47,6 @@ public class S1AttachBO implements Serializable {
     ) {
         this.primaryId = primaryId;
         this.docPrimaryId = docPrimaryId;
-        this.link = link;
         this.name = name;
         this.size = size;
         this.time = time;
@@ -84,20 +80,6 @@ public class S1AttachBO implements Serializable {
      */
     public void setDocPrimaryId(Integer docPrimaryId) {
         this.docPrimaryId = docPrimaryId;
-    }
-
-    /**
-     * Getter for <code>document_manager.S1_ATTACH.link</code>. 是否链接
-     */
-    public String getLink() {
-        return this.link;
-    }
-
-    /**
-     * Setter for <code>document_manager.S1_ATTACH.link</code>. 是否链接
-     */
-    public void setLink(String link) {
-        this.link = link;
     }
 
     /**
@@ -176,7 +158,6 @@ public class S1AttachBO implements Serializable {
 
         sb.append(primaryId);
         sb.append(", ").append(docPrimaryId);
-        sb.append(", ").append(link);
         sb.append(", ").append(name);
         sb.append(", ").append(size);
         sb.append(", ").append(time);

@@ -6,6 +6,8 @@ import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,8 @@ import static cn.luoyanze.documentmanager.dao.Tables.*;
  */
 @Service
 public class DBUpdateServiceImpl implements DBUpdateService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBUpdateServiceImpl.class);
 
     private final DSLContext dao;
 
@@ -56,19 +60,20 @@ public class DBUpdateServiceImpl implements DBUpdateService {
      */
     @Override
     public DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request) throws CustomException {
-
-        int execute = dao.update(S1_ATTACH)
-                .set(S1_ATTACH.ISDEL, 1)
-                .where(S1_ATTACH.PRIMARY_ID.eq(request.getAttachId()))
-                .and(S1_ATTACH.DOC_PRIMARY_ID.eq(request.getDocId()))
-                .and(S1_ATTACH.USER_PRIMARY_ID.eq(request.getHead().getUserId()))
-                .execute();
-
-        if (execute == 0) {
-            throw new CustomException("", DELETE_ATTACH_FAIL);
-        }
         DeleteAttachHttpResponse resp = new DeleteAttachHttpResponse();
-        resp.setHead(new ResponseHead(SUCCESS));
+        try {
+            dao.update(S1_ATTACH)
+                    .set(S1_ATTACH.ISDEL, 1)
+                    .where(S1_ATTACH.PRIMARY_ID.eq(request.getAttachId()))
+                    .execute();
+
+            resp.setHead(new ResponseHead(SUCCESS));
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            resp.setHead(new ResponseHead(DELETE_ATTACH_FAIL));
+        }
+
         return resp;
     }
 

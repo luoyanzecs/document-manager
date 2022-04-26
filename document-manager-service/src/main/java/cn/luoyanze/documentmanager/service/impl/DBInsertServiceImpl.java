@@ -2,8 +2,6 @@ package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.ResponseHead;
-import cn.luoyanze.documentmanager.dao.tables.pojos.S1CommentBO;
-import cn.luoyanze.documentmanager.dao.tables.pojos.S1DocBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1NoticeBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
 import cn.luoyanze.documentmanager.dao.tables.records.S1CommentRecord;

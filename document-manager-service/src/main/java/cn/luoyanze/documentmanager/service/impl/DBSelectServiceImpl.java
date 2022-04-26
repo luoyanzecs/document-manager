@@ -179,6 +179,7 @@ public class DBSelectServiceImpl implements DBSelectService {
         try {
             S1DocBO doc = dao.select().from(S1_DOC)
                     .where(S1_DOC.PRIMARY_ID.eq(request.getId()))
+                    .and(S1_DOC.ISDEL.eq(0))
                     .fetchOneInto(S1DocBO.class);
 
             S1UserBO user = dao.select()
@@ -196,8 +197,13 @@ public class DBSelectServiceImpl implements DBSelectService {
                     .where(S1_USER.PRIMARY_ID.eq(doc.getUserId()))
                     .fetchOneInto(String.class);
 
+            List<UserFileHttpResponse.Attach> attaches = dao.select().from(S1_ATTACH)
+                    .where(S1_ATTACH.DOC_PRIMARY_ID.eq(request.getId()))
+                    .and(S1_ATTACH.ISDEL.eq(0))
+                    .fetchInto(UserFileHttpResponse.Attach.class);
+
             resp.setHead(new ResponseHead(SUCCESS));
-            resp.setFile(new UserFileHttpResponse.File(editorName, TimeUtil.formatter(doc.getLastUpdateTime()), doc.getCtx()));
+            resp.setFile(new UserFileHttpResponse.File(editorName, TimeUtil.formatter(doc.getLastUpdateTime()), doc.getCtx(), attaches));
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             resp.setHead(new ResponseHead(FILE_SELECT_ERROR));
@@ -211,7 +217,7 @@ public class DBSelectServiceImpl implements DBSelectService {
         LocalDateTime now = LocalDateTime.now();
         Record2<Integer, Integer> user = dao.select(S1_USER.PRIMARY_ID, S1_USER.BU_ID)
                 .from(S1_USER)
-                .where(S1_USER.ACCOUNT.eq(requset.getHead().getUsername()))
+                .where(S1_USER.PRIMARY_ID.eq(requset.getHead().getUserId()))
                 .fetchOne();
         if (user == null) {
             resp.setHead(new ResponseHead(USER_NOT_EXISIT));
@@ -241,7 +247,8 @@ public class DBSelectServiceImpl implements DBSelectService {
         List<S1BuBO> bus = dao.select().from(S1_BU).fetchInto(S1BuBO.class);
         return new GetBuHttpResponse() {{
             setHead(new ResponseHead(SUCCESS));
-            setBuList(bus.stream().map(it ->
+            setBuList(bus.stream()
+                    .map(it ->
                             new GetBuHttpResponse.Bu(it.getPrimaryId(), it.getName())
                     ).collect(Collectors.toList())
             );
