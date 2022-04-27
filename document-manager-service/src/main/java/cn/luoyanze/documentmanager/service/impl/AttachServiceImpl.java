@@ -8,10 +8,12 @@ import cn.luoyanze.documentmanager.dao.tables.pojos.S1AttachBO;
 import cn.luoyanze.documentmanager.dao.tables.records.S1AttachRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.AttachService;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.jooq.DSLContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -104,15 +107,20 @@ public class AttachServiceImpl implements AttachService {
             if (attach == null) {
                 throw new CustomException("", FILE_NOT_EXISIT);
             }
+
+            String downloadFileName = new String(attach.getName().getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+
             File file = ResourceUtils.getFile(location + attach.getPrimaryId());
+
             InputStream inputStream = new FileInputStream(file);
             return ResponseEntity.status(HttpStatus.OK)
-                    .header("Content-Disposition", "attachment;filename=" + attach.getName())
+                    .header("Content-Disposition", "attachment;filename=" + downloadFileName)
                     .contentLength(file.length())
-                    .contentType(MediaType.parseMediaType("application/octet-stream"))
-                    .body(inputStream);
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(inputStream.readAllBytes());
 
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
             throw new CustomException("该文件不存在", FILE_NOT_EXISIT);
         }
     }

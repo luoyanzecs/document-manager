@@ -75,6 +75,7 @@ public class UserController {
     }
 
     @PostMapping("/downloadAttach")
+    @ResponseBody
     public Object execute(@RequestBody DownloadAttachHttpRequest request) throws Exception {
         return attachService.download(request);
     }
