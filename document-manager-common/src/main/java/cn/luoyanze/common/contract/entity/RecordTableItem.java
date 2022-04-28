@@ -22,9 +22,6 @@ public class RecordTableItem extends TableItemBase{
     @JsonProperty("id")
     private Integer userId;
 
-    /**
-     * 用户名
-     */
     @JsonProperty("fid")
     private Integer fid;
 
@@ -45,4 +42,6 @@ public class RecordTableItem extends TableItemBase{
      */
     @JsonProperty("bu")
     private String bu;
+
+    private String content;
 }

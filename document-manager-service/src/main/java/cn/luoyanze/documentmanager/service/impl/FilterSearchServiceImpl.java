@@ -6,18 +6,20 @@ import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.common.contract.entity.*;
 import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.common.util.TimeUtil;
+import cn.luoyanze.documentmanager.dao.tables.pojos.S1BuBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1NoticeBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1OperateBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
+import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.FilterSearchService;
-import org.jooq.DSLContext;
-import org.jooq.Record6;
-import org.jooq.Result;
-import org.jooq.types.UInteger;
+import org.jetbrains.annotations.NotNull;
+import org.jooq.*;
+import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.luoyanze.documentmanager.dao.Tables.*;
@@ -54,20 +56,33 @@ public class FilterSearchServiceImpl implements FilterSearchService {
         }
     }
 
-    private FilterSearchHttpResponse wrapperUser(FilterSearchHttpRequest request) {
-        int totalPage = dao.fetchCount(S1_USER) / request.getPageSize();
 
-        List<S1UserBO> users = dao.selectFrom(S1_USER)
+    private FilterSearchHttpResponse wrapperUser(FilterSearchHttpRequest request) {
+        int totalPage = dao.fetchCount(S1_USER) / request.getPageSize() + 1;
+        List<S1BuBO> bus = dao.selectFrom(S1_BU).fetchInto(S1BuBO.class);
+
+
+        List<TableItemBase> items = dao.selectFrom(S1_USER)
+                .where(request.getUserIds().stream().map(S1_USER.PRIMARY_ID::eq).reduce(DSL.noCondition(), Condition::or))
+                .and(request.getBu().stream().map(S1_USER.BU_ID::eq).reduce(DSL.noCondition(), Condition::or))
                 .offset((request.getPage() - 1) * request.getPageSize())
                 .limit(request.getPageSize())
-                .fetchInto(S1UserBO.class);
-
-        List<TableItemBase> items = users.stream()
-                .map(it -> new UserTableItem() {{
-                            setItemId(it.getPrimaryId());
+                .fetchInto(S1UserBO.class)
+                .stream().map(it -> new UserTableItem() {{
+                            setId(it.getPrimaryId());
                             setName(it.getAccount());
-                            setBu(it.getBuId());
+                            setBu(bus.stream()
+                                    .filter(bu -> Objects.equals(bu.getPrimaryId(), it.getBuId()))
+                                    .findFirst()
+                                    .map(S1BuBO::getName)
+                                    .orElse("暂无")
+                            );
                             setTel(it.getTel());
+                            setRegisterTime(TimeUtil.formatter(it.getRegisterTime()));
+                            setRole(it.getRole());
+                            setIsDel(it.getIsdel() == 0 ? "否" : "是");
+                            setStatus(it.getStatus() == 1 ? "在职" : "离职");
+                            setLastLoginTime(TimeUtil.formatter(it.getLastLoginTime()));
                         }}
                 ).collect(Collectors.toList());
 
@@ -85,55 +100,68 @@ public class FilterSearchServiceImpl implements FilterSearchService {
 
     private FilterSearchHttpResponse wrapperRecord(FilterSearchHttpRequest request) {
 
-        int totalPage = dao.fetchCount(S1_OPERATE) / request.getPageSize();
+        int totalPage = dao.fetchCount(S1_OPERATE) / request.getPageSize() + 1;
 
-        List<S1OperateBO> records = dao.selectFrom(S1_OPERATE)
+        List<TableItemBase> items = dao.selectFrom(S1_OPERATE)
+                .where(request.getUserIds().stream().map(S1_USER.PRIMARY_ID::eq).reduce(DSL.noCondition(), Condition::or))
                 .offset((request.getPage() - 1) * request.getPageSize())
                 .limit(request.getPageSize())
-                .fetchInto(S1OperateBO.class);
+                .fetchInto(S1OperateBO.class)
+                .stream().map(it ->
+                        new RecordTableItem() {{
+                            setItemId(it.getPrimaryId());
+                            setUserId(it.getUserId());
+                            setOperate(OpraterType.getValue(it.getType()));
+                            setFid(it.getDocId());
+                            setOperateTime(TimeUtil.formatter(it.getTime()));
+                            setContent(it.getContent());
+                        }})
+                .collect(Collectors.toList());
 
-        List<TableItemBase> items =
-                records.stream()
-                        .map(it -> new RecordTableItem() {{
-                                    setItemId(it.getPrimaryId());
-                                    setUserId(it.getPrimaryId());
-                                    setOperate(it.getType().toString());
-                                    setFid(it.getDocId());
-                                    setOperateTime(TimeUtil.formatter(it.getTime()));
-                                }}
-                        ).collect(Collectors.toList());
 
         return wrapperResp(totalPage, items, Pair.getPairs(request.getMenuIndex()));
     }
 
     private FilterSearchHttpResponse wrapperFile(FilterSearchHttpRequest request) {
 
-        int totalPage = dao.fetchCount(S1_DOC) / request.getPageSize();
+        int totalPage = dao.fetchCount(S1_DOC) / request.getPageSize() + 1;
+        List<S1BuBO> BUS = dao.selectFrom(S1_BU).fetchInto(S1BuBO.class);
 
-        Result<Record6<String, Integer, Integer, String, LocalDateTime, String>> docs = dao.select(
-                        S1_USER.ACCOUNT,
-                        S1_USER.PRIMARY_ID,
-                        S1_DOC.PRIMARY_ID,
-                        S1_DOC.PERMISSION_BU,
-                        S1_DOC.LAST_UPDATE_TIME,
-                        S1_DOC.TITLE
-                ).from(S1_DOC)
-                .rightJoin(S1_USER)
+        List<TableItemBase> items = dao.select(S1_USER.ACCOUNT, S1_DOC.USER_ID, S1_DOC.PRIMARY_ID, S1_DOC.PERMISSION_BU, S1_DOC.LAST_UPDATE_TIME, S1_DOC.TITLE)
+                .from(S1_DOC)
+                .leftJoin(S1_USER)
                 .on(S1_DOC.USER_ID.eq(S1_USER.PRIMARY_ID))
+                // 判断接收部门是否全部包含传入参数
+                .where(request.getBu().stream().map(String::valueOf)
+                        .map(S1_DOC.PERMISSION_BU::contains)
+                        .reduce(DSL.trueCondition(), Condition::and)
+                        .or(S1_DOC.PERMISSION_BU.eq(""))
+                )
+                // 判断是否在用户id集合内
+                .and(request.getUserIds().stream().map(S1_DOC.USER_ID::eq).reduce(DSL.noCondition(), Condition::or))
                 .offset((request.getPage() - 1) * request.getPageSize())
                 .limit(request.getPageSize())
-                .fetch();
+                .fetch()
+                .stream().map(it -> new FileTableItem() {{
+                    setOwner(it.get(S1_USER.ACCOUNT));
+                    setUserId(it.get(S1_DOC.USER_ID));
+                    setFileId(it.get(S1_DOC.PRIMARY_ID));
+                    setBu(Optional.of(it.get(S1_DOC.PERMISSION_BU))
+                            .filter(it -> !StringUtils.isEmpty(it))
+                            .map(it -> Arrays.stream(it.split(","))
+                                    .filter(StringUtils::isEmpty)
+                                    .map(id -> BUS.stream()
+                                            .filter(bu -> bu.getPrimaryId().toString().equals(id))
+                                            .findFirst()
+                                            .map(S1BuBO::getName).orElse(null))
+                                    .filter(StringUtils::isEmpty)
+                                    .collect(Collectors.joining(",")))
+                            .orElse("所有")
+                    );
+                    setTime(TimeUtil.formatter(it.get(S1_DOC.LAST_UPDATE_TIME)));
+                    setTitle(it.get(S1_DOC.TITLE));
+                }}).collect(Collectors.toList());
 
-        List<TableItemBase> items = docs.stream()
-                .map(it -> new FileTableItem() {{
-                            setOwner(it.get(0, String.class));
-                            setUserId(it.get(1, Integer.class));
-                            setFileId(it.get(2, Integer.class));
-                            setBu(it.get(3, String.class));
-                            setTime(TimeUtil.formatter(it.get(4, LocalDateTime.class)));
-                            setTitle(it.get(5, String.class));
-                        }}
-                ).collect(Collectors.toList());
 
         return wrapperResp(totalPage, items, Pair.getPairs(request.getMenuIndex()));
     }
@@ -141,7 +169,7 @@ public class FilterSearchServiceImpl implements FilterSearchService {
 
     private FilterSearchHttpResponse wrapperNotice(FilterSearchHttpRequest request) {
 
-        int totalPage = dao.fetchCount(S1_NOTICE) / request.getPageSize();
+        int totalPage = dao.fetchCount(S1_NOTICE) / request.getPageSize() + 1;
 
         List<S1NoticeBO> notices = dao.selectFrom(S1_NOTICE)
                 .offset((request.getPage() - 1) * request.getPageSize())

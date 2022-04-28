@@ -18,6 +18,9 @@ public class TimeUtil {
     }
 
     public static String formatter(LocalDateTime time) {
+        if (time == null) {
+            return "尚未登录";
+        }
         return time.format(DateTimeFormatter.ofPattern("yyy年MM月d日 HH:mm", Locale.CHINA));
     }
 }

@@ -4,12 +4,16 @@ import cn.luoyanze.common.contract.LoginHttpRequset;
 import cn.luoyanze.common.contract.LoginHttpResponse;
 import cn.luoyanze.common.contract.LoginHttpResponse.User;
 import cn.luoyanze.common.contract.common.ResponseHead;
+import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.common.util.TokenUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
 import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.LoginApiService;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static cn.luoyanze.common.model.HeadStatus.SUCCESS;
 import static cn.luoyanze.common.model.HeadStatus.USER_NOT_EXISIT;
@@ -35,24 +39,35 @@ public class LoginApiServiceImpl implements LoginApiService {
         S1UserBO user = dao.select()
                 .from(S1_USER)
                 .where(S1_USER.ACCOUNT.eq(requset.getUsername()))
+                .and(S1_USER.PASSWORD.eq(requset.getPassword()))
+                .and(S1_USER.ROLE.eq(requset.getRole()))
                 .limit(1)
                 .fetchOneInto(S1UserBO.class);
 
-        return wrapper(user, requset);
-    }
-
-    private LoginHttpResponse wrapper(S1UserBO user, LoginHttpRequset requset) throws CustomException {
         LoginHttpResponse resp = new LoginHttpResponse();
 
-        if (user == null) {
-            throw new CustomException("", USER_NOT_EXISIT);
-        }
+        Optional.ofNullable(user)
+                .ifPresentOrElse(
+                        it -> {
+                            resp.setHead(new ResponseHead(SUCCESS));
+                            resp.setUser(
+                                    new User(
+                                            user.getAccount(),
+                                            user.getAvatar(),
+                                            user.getPrimaryId(),
+                                            user.getBuId(),
+                                            user.getRole(),
+                                            user.getAuthority()
+                                    )
+                            );
+                            resp.setToken(TokenUtil.buildJWT(requset.getUsername()));
+                            dao.update(S1_USER)
+                                    .set(S1_USER.LAST_LOGIN_TIME, LocalDateTime.now())
+                                    .where(S1_USER.PRIMARY_ID.eq(user.getPrimaryId()));
+                        },
+                        () -> resp.setHead(new ResponseHead(USER_NOT_EXISIT))
+                );
 
-        resp.setHead(new ResponseHead(SUCCESS));
-        resp.setUser(
-                new User(user.getAccount(), "", user.getPrimaryId(), user.getBuId(), user.getRole(), user.getAuthority())
-        );
-        resp.setToken(TokenUtil.buildJWT(requset.getUsername()));
         return resp;
     }
 }

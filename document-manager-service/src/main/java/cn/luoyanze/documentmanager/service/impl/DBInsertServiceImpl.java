@@ -6,7 +6,9 @@ import cn.luoyanze.documentmanager.dao.tables.pojos.S1NoticeBO;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
 import cn.luoyanze.documentmanager.dao.tables.records.S1CommentRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1DocRecord;
+import cn.luoyanze.documentmanager.dao.tables.records.S1UserRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
+import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBInsertService;
 import org.jooq.DSLContext;
 import org.slf4j.Logger;
@@ -62,6 +64,14 @@ public class DBInsertServiceImpl implements DBInsertService {
                             it -> {
                                 resp.setHead(new ResponseHead(SUCCESS));
                                 resp.setFileId(it);
+
+                                dao.insertInto(S1_OPERATE)
+                                        .set(S1_OPERATE.TYPE, OpraterType.CREATE_FILE.getId())
+                                        .set(S1_OPERATE.TIME, LocalDateTime.now())
+                                        .set(S1_OPERATE.DOC_ID, it)
+                                        .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
+                                        .set(S1_OPERATE.CONTENT, "文件名 : " + request.getTitle())
+                                        .execute();
                             },
                             () -> resp.setHead(new ResponseHead(DOC_CREATE_FAIL))
                     );
@@ -131,21 +141,22 @@ public class DBInsertServiceImpl implements DBInsertService {
 
     @Override
     public AddUserHttpResponse insertNewUser(AddUserHttpRequest request) throws CustomException {
-        S1UserBO user = new S1UserBO();
-        user.setAccount(request.getName());
-        user.setPassword(request.getPassword());
-        user.setBuId(request.getBu());
-        user.setRole(request.isAdmin() ? "管理员" : "用户");
-        user.setAuthority(request.getRank());
-        user.setRegisterTime(LocalDateTime.now());
-        user.setStatus(1);
-        int execute = dao.insertInto(S1_USER).values(user).execute();
-
         AddUserHttpResponse resp = new AddUserHttpResponse();
-        if (execute == 0) {
-            throw new CustomException("", INSERT_NOTICE_FAIL);
+        try {
+            S1UserRecord user = new S1UserRecord();
+            user.setAccount(request.getName());
+            user.setPassword(request.getPassword());
+            user.setBuId(request.getBu());
+            user.setRole(request.isAdmin() ? "管理员" : "用户");
+            user.setAuthority(request.getRank());
+            user.setRegisterTime(LocalDateTime.now());
+            user.setStatus(1);
+            dao.insertInto(S1_USER).set(user).execute();
+            resp.setHead(new ResponseHead(SUCCESS));
+        } catch (Exception e) {
+            resp.setHead(new ResponseHead(INSERT_USER_FAIL));
         }
-        resp.setHead(new ResponseHead(SUCCESS));
+
         return resp;
     }
 }

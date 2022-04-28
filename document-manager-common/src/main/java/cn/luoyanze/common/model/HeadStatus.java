@@ -23,9 +23,9 @@ public enum HeadStatus {
     MENU_INDEX_ERROR(108,"传入的菜单不合法"),
     FILE_SELECT_ERROR(109,"文件查询失败"),
     UPLOADER_FAIL(110, "文件上传失败"),
-    DOC_CREATE_FAIL(111, "新建文件失败")
+    DOC_CREATE_FAIL(111, "新建文件失败"),
+    INSERT_USER_FAIL(112, "添加用户失败"),
     ;
-
 
     private final int code;
     private final String value;

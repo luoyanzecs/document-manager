@@ -28,8 +28,8 @@ public class FilterSearchHttpRequest {
     private int page;
 
     @JsonProperty("bu")
-    private List<String> bu;
+    private List<Integer> bu;
 
-    @JsonProperty("userIds")
+    @JsonProperty("userids")
     private List<Integer> userIds;
 }

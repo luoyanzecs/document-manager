@@ -17,7 +17,7 @@ public class UserTableItem extends TableItemBase{
      * 条目id
      */
     @JsonProperty("id")
-    private Integer itemId;
+    private Integer id;
 
     /**
      * 用户名
@@ -26,20 +26,25 @@ public class UserTableItem extends TableItemBase{
     private String name;
 
     /**
-     * 用户id
-     */
-    @JsonProperty("userId")
-    private Integer userId;
-
-    /**
      * 用户部门
      */
     @JsonProperty("bu")
-    private Integer bu;
+    private String bu;
 
     /**
      * 用户联系方式
      */
     @JsonProperty("tel")
     private String tel;
+
+    private String isDel;
+
+    private String role;
+
+    private String registerTime;
+
+    private String status;
+
+    private String lastLoginTime;
+
 }

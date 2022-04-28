@@ -20,4 +20,6 @@ public class LoginHttpRequset {
 
     @JsonProperty("password")
     private String password;
+
+    private String role;
 }
