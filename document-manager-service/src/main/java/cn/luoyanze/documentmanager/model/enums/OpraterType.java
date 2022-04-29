@@ -10,6 +10,7 @@ public enum OpraterType {
     UPDATE_FILE(1, "更新内容"),
     CREATE_FILE(2, "创建文件"),
     DELETE_ATTACH(3, "删除附件"),
+    BROWSER_FILE(4, "浏览文件"),
     ;
 
     private final int id;

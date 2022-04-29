@@ -1,9 +1,11 @@
 package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.*;
+import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.documentmanager.service.DBInsertService;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
 import cn.luoyanze.documentmanager.service.FilterSearchService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,26 +34,38 @@ public class AdminController {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
-    public FilterSearchHttpResponse execute(@RequestBody FilterSearchHttpRequest request) {
-        return searchService.execute(request);
+    public ResponseEntity<FilterSearchHttpResponse> execute(@RequestBody FilterSearchHttpRequest request) {
+        FilterSearchHttpResponse resp = searchService.execute(request);
+        return ResponseEntity
+                .status(HeadStatus.getHttpStatus(resp.getHead()))
+                .body(resp);
     }
 
     @RequestMapping(value = "/add/user", method = RequestMethod.POST)
     @ResponseBody
-    public AddUserHttpResponse execute(@RequestBody AddUserHttpRequest request) throws Exception {
-        return dbInsertService.insertNewUser(request);
+    public ResponseEntity<AddUserHttpResponse> execute(@RequestBody AddUserHttpRequest request) {
+        AddUserHttpResponse resp = dbInsertService.insertNewUser(request);
+        return ResponseEntity
+                .status(HeadStatus.getHttpStatus(resp.getHead()))
+                .body(resp);
     }
 
     @RequestMapping(value = "/add/notice", method = RequestMethod.POST)
     @ResponseBody
-    public AddNoticeHttpResponse execute(@RequestBody AddNoticeHttpRequest request) throws Exception {
-        return dbInsertService.insertNewNotice(request);
+    public ResponseEntity<AddNoticeHttpResponse> execute(@RequestBody AddNoticeHttpRequest request) throws Exception {
+        AddNoticeHttpResponse resp = dbInsertService.insertNewNotice(request);
+        return ResponseEntity
+                .status(HeadStatus.getHttpStatus(resp.getHead()))
+                .body(resp);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public DeleteTableItemHttpResponse execute(@RequestBody DeleteTableItemHttpRequest request) throws Exception {
-        return dbUpdateService.deleteTableItem(request);
+    public ResponseEntity<DeleteTableItemHttpResponse> execute(@RequestBody DeleteTableItemHttpRequest request) throws Exception {
+        DeleteTableItemHttpResponse resp =  dbUpdateService.deleteTableItem(request);
+        return ResponseEntity
+                .status(HeadStatus.getHttpStatus(resp.getHead()))
+                .body(resp);
     }
 
 }

@@ -7,6 +7,7 @@ import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1AttachBO;
 import cn.luoyanze.documentmanager.dao.tables.records.S1AttachRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
+import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.AttachService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.jooq.DSLContext;
@@ -27,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,7 +68,7 @@ public class AttachServiceImpl implements AttachService {
         S1AttachRecord record = new S1AttachRecord();
         record.setDocPrimaryId(docId);
         record.setName(name);
-        record.setTime(LocalDateTime.now());
+        record.setTime(LocalDateTime.now(ZoneId.systemDefault()));
         record.setSize(file.getSize());
         record.setUserPrimaryId(head.getUserId());
 
@@ -82,9 +84,7 @@ public class AttachServiceImpl implements AttachService {
                                 Path path = Paths.get(location, it.toString());
                                 Files.copy(file.getInputStream(), path);
                                 resp.setHead(new ResponseHead(SUCCESS));
-                                resp.setAttach(
-                                        new AddAttachHttpResponse.Attach(name, it)
-                                );
+                                resp.setAttach(new AddAttachHttpResponse.Attach(name, it));
                             } catch (IOException e) {
                                 LOGGER.error(e.getMessage(), e);
                                 resp.setHead(new ResponseHead(UPLOADER_FAIL));

@@ -8,6 +8,7 @@ import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.*;
 import cn.luoyanze.documentmanager.model.DocVO;
 import cn.luoyanze.documentmanager.model.FileComment;
+import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBSelectService;
 import org.jooq.DSLContext;
 import org.jooq.Record2;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -202,6 +204,14 @@ public class DBSelectServiceImpl implements DBSelectService {
                     .and(S1_ATTACH.ISDEL.eq(0))
                     .fetchInto(UserFileHttpResponse.Attach.class);
 
+            dao.insertInto(S1_OPERATE)
+                    .set(S1_OPERATE.TYPE, OpraterType.BROWSER_FILE.getId())
+                    .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
+                    .set(S1_OPERATE.DOC_ID, request.getId())
+                    .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
+                    .set(S1_OPERATE.CONTENT, "文档名: " + doc.getTitle() + ", 用户名: " + user.getAccount())
+                    .execute();
+
             resp.setHead(new ResponseHead(SUCCESS));
             resp.setFile(new UserFileHttpResponse.File(editorName, TimeUtil.formatter(doc.getLastUpdateTime()), doc.getCtx(), attaches));
         } catch (Exception e) {
@@ -214,7 +224,7 @@ public class DBSelectServiceImpl implements DBSelectService {
     @Override
     public NoticeHttpResponse selectNotice(NoticeHttpRequset requset) {
         NoticeHttpResponse resp = new NoticeHttpResponse();
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
         Record2<Integer, Integer> user = dao.select(S1_USER.PRIMARY_ID, S1_USER.BU_ID)
                 .from(S1_USER)
                 .where(S1_USER.PRIMARY_ID.eq(requset.getHead().getUserId()))

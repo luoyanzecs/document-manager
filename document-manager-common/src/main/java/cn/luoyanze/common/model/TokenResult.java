@@ -1,10 +1,16 @@
 package cn.luoyanze.common.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
  * @Date 2022/4/3 10:27 PM
  */
 
+@Getter
+@AllArgsConstructor
 public enum TokenResult {
     // 成功
     SUCCESS("验证成功"),
@@ -16,16 +22,9 @@ public enum TokenResult {
     FAIL("校验失败");
 
     private final String value;
-
-    TokenResult(String value) {
-        this.value = value;
-    }
-
+    
     public static boolean checkValid(TokenResult o) {
         return o == SUCCESS;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

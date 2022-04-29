@@ -1,8 +1,10 @@
 package cn.luoyanze.common.model;
 
+import cn.luoyanze.common.contract.common.ResponseHead;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -29,4 +31,20 @@ public enum HeadStatus {
 
     private final int code;
     private final String value;
+
+    public static HeadStatus getStatus(int code) {
+        for (HeadStatus status : HeadStatus.values()) {
+            if (status.code == code) {
+                return status;
+            }
+        }
+        return SUCCESS;
+    }
+
+    public static HttpStatus getHttpStatus(ResponseHead head) {
+        switch (getStatus(head.getStatusCode())) {
+            case SUCCESS: return HttpStatus.OK;
+            default:      return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
 }

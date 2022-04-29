@@ -9,7 +9,7 @@ import cn.luoyanze.documentmanager.dao.tables.S1BuTB;
 import cn.luoyanze.documentmanager.dao.tables.S1CommentTB;
 import cn.luoyanze.documentmanager.dao.tables.S1DirTB;
 import cn.luoyanze.documentmanager.dao.tables.S1DocTB;
-import cn.luoyanze.documentmanager.dao.tables.S1ExceptionTB;
+import cn.luoyanze.documentmanager.dao.tables.S1LogTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NoticeTB;
 import cn.luoyanze.documentmanager.dao.tables.S1OperateTB;
 import cn.luoyanze.documentmanager.dao.tables.S1UserTB;
@@ -61,9 +61,9 @@ public class DocumentManager extends SchemaImpl {
     public final S1DocTB S1_DOC = S1DocTB.S1_DOC;
 
     /**
-     * The table <code>document_manager.S1_EXCEPTION</code>.
+     * The table <code>document_manager.S1_LOG</code>.
      */
-    public final S1ExceptionTB S1_EXCEPTION = S1ExceptionTB.S1_EXCEPTION;
+    public final S1LogTB S1_LOG = S1LogTB.S1_LOG;
 
     /**
      * The table <code>document_manager.S1_NOTICE</code>.
@@ -101,7 +101,7 @@ public class DocumentManager extends SchemaImpl {
             S1CommentTB.S1_COMMENT,
             S1DirTB.S1_DIR,
             S1DocTB.S1_DOC,
-            S1ExceptionTB.S1_EXCEPTION,
+            S1LogTB.S1_LOG,
             S1NoticeTB.S1_NOTICE,
             S1OperateTB.S1_OPERATE,
             S1UserTB.S1_USER);

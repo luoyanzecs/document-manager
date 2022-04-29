@@ -13,6 +13,7 @@ import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 import static cn.luoyanze.common.model.HeadStatus.SUCCESS;
@@ -62,8 +63,9 @@ public class LoginApiServiceImpl implements LoginApiService {
                             );
                             resp.setToken(TokenUtil.buildJWT(requset.getUsername()));
                             dao.update(S1_USER)
-                                    .set(S1_USER.LAST_LOGIN_TIME, LocalDateTime.now())
-                                    .where(S1_USER.PRIMARY_ID.eq(user.getPrimaryId()));
+                                    .set(S1_USER.LAST_LOGIN_TIME, LocalDateTime.now(ZoneId.systemDefault()))
+                                    .where(S1_USER.PRIMARY_ID.eq(user.getPrimaryId()))
+                                    .execute();
                         },
                         () -> resp.setHead(new ResponseHead(USER_NOT_EXISIT))
                 );

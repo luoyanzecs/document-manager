@@ -38,9 +38,11 @@ public class Pair {
                 return List.of(
                         new Pair("记录ID", "itemId"),
                         new Pair("用户ID", "userId"),
+                        new Pair("操作用户", "operator"),
                         new Pair("文件ID", "fid"),
                         new Pair("操作时间", "operateTime"),
-                        new Pair("操作类型", "operate")
+                        new Pair("操作类型", "operate"),
+                        new Pair("备注信息", "content")
                 );
             case 2:
                 return List.of(
@@ -54,6 +56,7 @@ public class Pair {
             case 3:
                 return List.of(
                         new Pair("通知ID", "id"),
+                        new Pair("操作用户ID", "userId"),
                         new Pair("接收用户", "to"),
                         new Pair("开始时间", "startTime"),
                         new Pair("结束时间", "endTime"),

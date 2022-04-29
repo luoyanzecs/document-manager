@@ -102,19 +102,30 @@ public class FilterSearchServiceImpl implements FilterSearchService {
 
         int totalPage = dao.fetchCount(S1_OPERATE) / request.getPageSize() + 1;
 
-        List<TableItemBase> items = dao.selectFrom(S1_OPERATE)
+        List<TableItemBase> items = dao.select(S1_OPERATE.PRIMARY_ID,
+                        S1_OPERATE.DOC_ID,
+                        S1_OPERATE.USER_ID,
+                        S1_OPERATE.TYPE,
+                        S1_OPERATE.TIME,
+                        S1_OPERATE.CONTENT,
+                        S1_USER.ACCOUNT
+                )
+                .from(S1_OPERATE)
+                .leftJoin(S1_USER)
+                .on(S1_OPERATE.USER_ID.eq(S1_USER.PRIMARY_ID))
                 .where(request.getUserIds().stream().map(S1_USER.PRIMARY_ID::eq).reduce(DSL.noCondition(), Condition::or))
                 .offset((request.getPage() - 1) * request.getPageSize())
                 .limit(request.getPageSize())
-                .fetchInto(S1OperateBO.class)
+                .fetch()
                 .stream().map(it ->
                         new RecordTableItem() {{
-                            setItemId(it.getPrimaryId());
-                            setUserId(it.getUserId());
-                            setOperate(OpraterType.getValue(it.getType()));
-                            setFid(it.getDocId());
-                            setOperateTime(TimeUtil.formatter(it.getTime()));
-                            setContent(it.getContent());
+                            setItemId(it.get(S1_OPERATE.PRIMARY_ID));
+                            setUserId(it.get(S1_OPERATE.USER_ID));
+                            setOperate(OpraterType.getValue(it.get(S1_OPERATE.TYPE)));
+                            setFid(it.get(S1_OPERATE.DOC_ID));
+                            setOperateTime(TimeUtil.formatter(it.get(S1_OPERATE.TIME)));
+                            setContent(it.get(S1_OPERATE.CONTENT));
+                            setOperator(it.get(S1_USER.ACCOUNT));
                         }})
                 .collect(Collectors.toList());
 
@@ -146,18 +157,7 @@ public class FilterSearchServiceImpl implements FilterSearchService {
                     setOwner(it.get(S1_USER.ACCOUNT));
                     setUserId(it.get(S1_DOC.USER_ID));
                     setFileId(it.get(S1_DOC.PRIMARY_ID));
-                    setBu(Optional.of(it.get(S1_DOC.PERMISSION_BU))
-                            .filter(it -> !StringUtils.isEmpty(it))
-                            .map(it -> Arrays.stream(it.split(","))
-                                    .filter(StringUtils::isEmpty)
-                                    .map(id -> BUS.stream()
-                                            .filter(bu -> bu.getPrimaryId().toString().equals(id))
-                                            .findFirst()
-                                            .map(S1BuBO::getName).orElse(null))
-                                    .filter(StringUtils::isEmpty)
-                                    .collect(Collectors.joining(",")))
-                            .orElse("所有")
-                    );
+                    setBu(convertToBuName(it.get(S1_DOC.PERMISSION_BU), BUS));
                     setTime(TimeUtil.formatter(it.get(S1_DOC.LAST_UPDATE_TIME)));
                     setTitle(it.get(S1_DOC.TITLE));
                 }}).collect(Collectors.toList());
@@ -166,10 +166,25 @@ public class FilterSearchServiceImpl implements FilterSearchService {
         return wrapperResp(totalPage, items, Pair.getPairs(request.getMenuIndex()));
     }
 
+    private String convertToBuName(String str, List<S1BuBO> BUS) {
+        String res =  Optional.of(str)
+                .filter(it -> !StringUtils.isEmpty(it))
+                .map(it -> Arrays.stream(it.split(","))
+                        .filter(StringUtils::isEmpty)
+                        .map(id -> BUS.stream()
+                                .filter(bu -> bu.getPrimaryId().toString().equals(id))
+                                .findFirst()
+                                .map(S1BuBO::getName).orElse(null))
+                        .filter(StringUtils::isEmpty)
+                        .collect(Collectors.joining(",")))
+                .orElse("所有");
+        return res.isEmpty() || res.isBlank() ? "所有" : res;
+    }
 
     private FilterSearchHttpResponse wrapperNotice(FilterSearchHttpRequest request) {
 
         int totalPage = dao.fetchCount(S1_NOTICE) / request.getPageSize() + 1;
+        List<S1BuBO> BUS = dao.selectFrom(S1_BU).fetchInto(S1BuBO.class);
 
         List<S1NoticeBO> notices = dao.selectFrom(S1_NOTICE)
                 .offset((request.getPage() - 1) * request.getPageSize())
@@ -178,12 +193,13 @@ public class FilterSearchServiceImpl implements FilterSearchService {
 
         List<TableItemBase> items = notices.stream()
                 .map(it -> new NoticeTableItem() {{
-                            setBu(it.getAcceptBu());
+                            setBu(convertToBuName(it.getAcceptBu(), BUS));
                             setCtx(it.getContent());
-                            setTo(it.getAcceptUsers());
+                            setTo(it.getAcceptUsers().isEmpty() ? "所有用户" : it.getAcceptUsers());
                             setStartTime(TimeUtil.formatter(it.getStartTime()));
                             setEndTime(TimeUtil.formatter(it.getEndTime()));
                             setItemId(it.getPrimaryId());
+                            setUserId(it.getUserId());
                         }}
                 ).collect(Collectors.toList());
 

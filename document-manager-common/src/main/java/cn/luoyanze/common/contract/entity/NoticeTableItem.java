@@ -48,4 +48,6 @@ public class NoticeTableItem extends TableItemBase{
      */
     @JsonProperty("bu")
     private String bu;
+
+    private Integer userId;
 }

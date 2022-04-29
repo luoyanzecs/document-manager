@@ -3,7 +3,9 @@ package cn.luoyanze.documentmanager.controller;
 import cn.luoyanze.common.contract.CreateFileHttpRequest;
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.RequestHead;
+import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.documentmanager.service.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,11 +69,15 @@ public class UserController {
 
     @PostMapping(value="/uploadAttach", consumes = {"multipart/form-data"})
     @ResponseBody
-    public AddAttachHttpResponse execute(
+    public ResponseEntity<AddAttachHttpResponse> execute(
             @RequestPart("file") MultipartFile file,
             @RequestPart("docId") Integer docId,
             @RequestPart("head") RequestHead head) {
-        return attachService.upload(file, docId, head);
+        AddAttachHttpResponse resp = attachService.upload(file, docId, head);
+
+        return ResponseEntity
+                .status(HeadStatus.getHttpStatus(resp.getHead()))
+                .body(resp);
     }
 
     @PostMapping("/downloadAttach")
@@ -82,8 +88,12 @@ public class UserController {
 
     @PostMapping("/deleteAttach")
     @ResponseBody
-    public DeleteAttachHttpResponse execute(@RequestBody DeleteAttachHttpRequest request) throws Exception {
-        return dbUpdateService.deleteAttach(request);
+    public ResponseEntity<DeleteAttachHttpResponse> execute(@RequestBody DeleteAttachHttpRequest request) throws Exception {
+        DeleteAttachHttpResponse resp = dbUpdateService.deleteAttach(request);
+
+        return ResponseEntity
+                .status(HeadStatus.getHttpStatus(resp.getHead()))
+                .body(resp);
     }
 
 }

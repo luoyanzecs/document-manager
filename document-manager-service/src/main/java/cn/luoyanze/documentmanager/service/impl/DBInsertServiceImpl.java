@@ -2,10 +2,9 @@ package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.ResponseHead;
-import cn.luoyanze.documentmanager.dao.tables.pojos.S1NoticeBO;
-import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
 import cn.luoyanze.documentmanager.dao.tables.records.S1CommentRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1DocRecord;
+import cn.luoyanze.documentmanager.dao.tables.records.S1NoticeRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1UserRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.model.enums.OpraterType;
@@ -16,6 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +50,7 @@ public class DBInsertServiceImpl implements DBInsertService {
             record.setTitle(request.getTitle());
             record.setPermissionBu(request.getBu());
             record.setDirId(request.getParentId());
-            record.setLastUpdateTime(LocalDateTime.now());
+            record.setLastUpdateTime(LocalDateTime.now(ZoneId.systemDefault()));
             record.setUserId(request.getHead().getUserId());
             record.setAuthority(0);
             record.setLastUpdateUserId(request.getHead().getUserId());
@@ -67,7 +69,7 @@ public class DBInsertServiceImpl implements DBInsertService {
 
                                 dao.insertInto(S1_OPERATE)
                                         .set(S1_OPERATE.TYPE, OpraterType.CREATE_FILE.getId())
-                                        .set(S1_OPERATE.TIME, LocalDateTime.now())
+                                        .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
                                         .set(S1_OPERATE.DOC_ID, it)
                                         .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
                                         .set(S1_OPERATE.CONTENT, "文件名 : " + request.getTitle())
@@ -88,7 +90,7 @@ public class DBInsertServiceImpl implements DBInsertService {
         try {
             S1CommentRecord record = new S1CommentRecord();
             record.setCtx(request.getCtx());
-            record.setCreateTime(LocalDateTime.now());
+            record.setCreateTime(LocalDateTime.now(ZoneId.systemDefault()));
             record.setUserId(request.getHead().getUserId());
             record.setDocId(request.getFileId());
             record.setParentId(Optional.ofNullable(request.getParentCommentId()).orElse(0));
@@ -115,32 +117,41 @@ public class DBInsertServiceImpl implements DBInsertService {
     }
 
     @Override
-    public AddNoticeHttpResponse insertNewNotice(AddNoticeHttpRequest request) throws CustomException {
-        S1NoticeBO notice = new S1NoticeBO();
-        notice.setContent(request.getText());
-        notice.setIsGlobal(request.getType());
-        notice.setEndTime(request.getExpiredTime());
-
-        notice.setStartTime(request.getStartTime());
-        notice.setAcceptBu(request.getBu().stream().map(String::valueOf).collect(Collectors.joining(",")));
-        notice.setAcceptUsers(
-                request.getUsers().stream()
-                        .filter(Objects::nonNull)
-                        .filter(it -> it > 0)
-                        .map(String::valueOf)
-                        .collect(Collectors.joining(","))
-        );
-        int execute = dao.insertInto(S1_NOTICE).values(notice).execute();
+    public AddNoticeHttpResponse insertNewNotice(AddNoticeHttpRequest request) {
         AddNoticeHttpResponse resp = new AddNoticeHttpResponse();
-        if (execute == 0) {
-            throw new CustomException("", INSERT_NOTICE_FAIL);
+        try {
+            S1NoticeRecord notice = new S1NoticeRecord();
+            notice.setContent(request.getText());
+            notice.setIsGlobal(request.getType());
+            notice.setEndTime(LocalDateTime.ofInstant(request.getExpiredTime().toInstant(), ZoneId.systemDefault()));
+            notice.setStartTime(LocalDateTime.ofInstant(request.getStartTime().toInstant(), ZoneId.systemDefault()));
+            // 1成功， 2失败 其他普通信息
+            notice.setType(request.getType());
+            notice.setIsGlobal(request.isGlobal() ? 1 : 0);
+            notice.setUserId(request.getHead().getUserId());
+            notice.setAcceptBu(request.getBu().stream().map(String::valueOf).collect(Collectors.joining(",")));
+            notice.setAcceptUsers(
+                    Optional.ofNullable(request.getUsers())
+                            .orElse(Collections.emptyList())
+                            .stream()
+                            .filter(Objects::nonNull)
+                            .filter(it -> it > 0)
+                            .map(String::valueOf)
+                            .collect(Collectors.joining(","))
+            );
+            dao.insertInto(S1_NOTICE).set(notice).execute();
+            resp.setHead(new ResponseHead(SUCCESS));
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            resp.setHead(new ResponseHead(INSERT_NOTICE_FAIL));
+
         }
-        resp.setHead(new ResponseHead(SUCCESS));
         return resp;
     }
 
     @Override
-    public AddUserHttpResponse insertNewUser(AddUserHttpRequest request) throws CustomException {
+    public AddUserHttpResponse insertNewUser(AddUserHttpRequest request) {
         AddUserHttpResponse resp = new AddUserHttpResponse();
         try {
             S1UserRecord user = new S1UserRecord();
@@ -149,11 +160,13 @@ public class DBInsertServiceImpl implements DBInsertService {
             user.setBuId(request.getBu());
             user.setRole(request.isAdmin() ? "管理员" : "用户");
             user.setAuthority(request.getRank());
-            user.setRegisterTime(LocalDateTime.now());
+            user.setRegisterTime(LocalDateTime.now(ZoneId.systemDefault()));
             user.setStatus(1);
             dao.insertInto(S1_USER).set(user).execute();
             resp.setHead(new ResponseHead(SUCCESS));
+
         } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
             resp.setHead(new ResponseHead(INSERT_USER_FAIL));
         }
 

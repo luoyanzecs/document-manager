@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row9;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -94,6 +94,11 @@ public class S1NoticeTB extends TableImpl<S1NoticeRecord> {
      */
     public final TableField<S1NoticeRecord, Integer> ISDEL = createField(DSL.name("isDel"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "0表示正常， 1为删除");
 
+    /**
+     * The column <code>document_manager.S1_NOTICE.user_id</code>. 关联用户表
+     */
+    public final TableField<S1NoticeRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "关联用户表");
+
     private S1NoticeTB(Name alias, Table<S1NoticeRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -148,6 +153,20 @@ public class S1NoticeTB extends TableImpl<S1NoticeRecord> {
     }
 
     @Override
+    public List<ForeignKey<S1NoticeRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<S1NoticeRecord, ?>>asList(Keys.S1_NOTICE_S1_USER_PRIMARY_ID_FK);
+    }
+
+    private transient S1UserTB _s1User;
+
+    public S1UserTB s1User() {
+        if (_s1User == null)
+            _s1User = new S1UserTB(this, Keys.S1_NOTICE_S1_USER_PRIMARY_ID_FK);
+
+        return _s1User;
+    }
+
+    @Override
     public S1NoticeTB as(String alias) {
         return new S1NoticeTB(DSL.name(alias), this);
     }
@@ -174,11 +193,11 @@ public class S1NoticeTB extends TableImpl<S1NoticeRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row9 type methods
+    // Row10 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Integer, Integer, String, LocalDateTime, LocalDateTime, String, String, Integer, Integer> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row10<Integer, Integer, String, LocalDateTime, LocalDateTime, String, String, Integer, Integer, Integer> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 }

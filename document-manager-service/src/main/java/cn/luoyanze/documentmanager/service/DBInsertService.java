@@ -13,7 +13,7 @@ public interface DBInsertService {
 
     LeaveMessageHttpResponse insertNewComment(LeaveMessageHttpRequest request) throws Exception;
 
-    AddNoticeHttpResponse insertNewNotice(AddNoticeHttpRequest request) throws Exception;
+    AddNoticeHttpResponse insertNewNotice(AddNoticeHttpRequest request);
 
-    AddUserHttpResponse insertNewUser(AddUserHttpRequest request) throws Exception;
+    AddUserHttpResponse insertNewUser(AddUserHttpRequest request);
 }

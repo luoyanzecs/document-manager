@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.stream.Stream;
 
 import static cn.luoyanze.common.model.HeadStatus.*;
@@ -46,16 +47,17 @@ public class DBUpdateServiceImpl implements DBUpdateService {
             dao.update(S1_DOC)
                     .set(S1_DOC.LAST_UPDATE_USER_ID, request.getHead().getUserId())
                     .set(S1_DOC.CTX, request.getJsonValue())
-                    .set(S1_DOC.LAST_UPDATE_TIME, LocalDateTime.now())
+                    .set(S1_DOC.LAST_UPDATE_TIME, LocalDateTime.now(ZoneId.systemDefault()))
                     .where(S1_DOC.PRIMARY_ID.eq(request.getFileId()))
                     .execute();
             resp.setHead(new ResponseHead(SUCCESS));
 
             dao.insertInto(S1_OPERATE)
                     .set(S1_OPERATE.TYPE, OpraterType.UPDATE_FILE.getId())
-                    .set(S1_OPERATE.TIME, LocalDateTime.now())
+                    .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
                     .set(S1_OPERATE.DOC_ID, request.getFileId())
                     .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
+                    .set(S1_OPERATE.CONTENT, "用户名: " + request.getHead().getUsername())
                     .execute();
 
         } catch (Exception e) {
@@ -83,10 +85,11 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                     .from(S1_ATTACH)
                     .where(S1_ATTACH.PRIMARY_ID.eq(request.getAttachId()))
                     .fetchInto(S1AttachBO.class)
-                    .stream().findFirst().ifPresent(it ->
+                    .stream().findFirst()
+                    .ifPresent(it ->
                         dao.insertInto(S1_OPERATE)
                                 .set(S1_OPERATE.TYPE, OpraterType.DELETE_ATTACH.getId())
-                                .set(S1_OPERATE.TIME, LocalDateTime.now())
+                                .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
                                 .set(S1_OPERATE.DOC_ID, it.getDocPrimaryId())
                                 .set(S1_OPERATE.CONTENT, "附件名 : " + it.getName())
                                 .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
