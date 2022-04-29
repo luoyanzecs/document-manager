@@ -1,5 +1,6 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpRequest;
 import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
 
@@ -9,9 +10,7 @@ import lombok.Getter;
  */
 
 @Getter
-public class LeaveMessageHttpRequest {
-
-    private RequestHead head;
+public class LeaveMessageHttpRequest extends BaseHttpRequest {
 
     private Integer fileId;
 

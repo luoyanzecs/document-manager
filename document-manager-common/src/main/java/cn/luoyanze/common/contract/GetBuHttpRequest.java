@@ -1,5 +1,6 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpRequest;
 import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
 
@@ -9,7 +10,6 @@ import lombok.Getter;
  */
 
 @Getter
-public class GetBuHttpRequest {
+public class GetBuHttpRequest extends BaseHttpRequest {
 
-    private RequestHead head;
 }

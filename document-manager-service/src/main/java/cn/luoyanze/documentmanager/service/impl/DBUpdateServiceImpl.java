@@ -50,6 +50,7 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                     .set(S1_DOC.LAST_UPDATE_TIME, LocalDateTime.now(ZoneId.systemDefault()))
                     .where(S1_DOC.PRIMARY_ID.eq(request.getFileId()))
                     .execute();
+
             resp.setHead(new ResponseHead(SUCCESS));
 
             dao.insertInto(S1_OPERATE)
@@ -71,7 +72,7 @@ public class DBUpdateServiceImpl implements DBUpdateService {
      * 删除附件， 只需要把doc数据库的附件链接删除即可
      */
     @Override
-    public DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request) throws CustomException {
+    public DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request) {
         DeleteAttachHttpResponse resp = new DeleteAttachHttpResponse();
         try {
             dao.update(S1_ATTACH)

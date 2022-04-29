@@ -1,5 +1,6 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpRequest;
 import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
 import org.jooq.types.UInteger;
@@ -10,9 +11,7 @@ import org.jooq.types.UInteger;
  */
 
 @Getter
-public class UpdateFileHttpRequest {
-
-    private RequestHead head;
+public class UpdateFileHttpRequest extends BaseHttpRequest {
 
     /**
      * json 格式内容

@@ -1,9 +1,11 @@
 package cn.luoyanze.common.contract;
 
 
+import cn.luoyanze.common.contract.common.BaseHttpRequest;
 import cn.luoyanze.common.contract.common.RequestHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -12,11 +14,8 @@ import java.util.List;
  * @Date 2022/4/10 1:46 AM
  */
 
-@Data
-public class FilterSearchHttpRequest {
-
-    @JsonProperty("head")
-    private RequestHead head;
+@Getter
+public class FilterSearchHttpRequest extends BaseHttpRequest {
 
     @JsonProperty("menuIndex")
     private int menuIndex;
