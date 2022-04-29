@@ -1,5 +1,6 @@
 package cn.luoyanze.common.contract.common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**

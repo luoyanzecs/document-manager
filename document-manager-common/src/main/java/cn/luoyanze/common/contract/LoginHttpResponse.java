@@ -33,7 +33,7 @@ public class LoginHttpResponse extends BaseHttpResponse {
         /**
          * 用户名
          */
-        @JsonProperty("name")
+        @JsonProperty("username")
         private String name;
 
         /**
@@ -45,7 +45,7 @@ public class LoginHttpResponse extends BaseHttpResponse {
         /**
          * 用户id
          */
-        @JsonProperty("id")
+        @JsonProperty("userId")
         private Integer id;
 
         /**

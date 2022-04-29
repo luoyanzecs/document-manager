@@ -1,7 +1,6 @@
 package cn.luoyanze.common.contract;
 
 import cn.luoyanze.common.contract.common.BaseHttpRequest;
-import cn.luoyanze.common.contract.common.RequestHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -11,7 +10,7 @@ import lombok.Getter;
  */
 
 @Getter
-public class LoginHttpRequset extends BaseHttpRequest {
+public class LoginHttpRequest extends BaseHttpRequest {
 
     @JsonProperty("username")
     private String username;

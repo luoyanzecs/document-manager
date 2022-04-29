@@ -121,7 +121,9 @@ public class DBSelectServiceImpl implements DBSelectService {
         List<DocVO> docVOS = dao.select(S1_DOC.PRIMARY_ID.as("id"),
                         S1_DOC.DIR_ID.as("parentId"),
                         S1_DOC.TITLE.as("title"))
-                .from(S1_DOC).fetchInto(DocVO.class);
+                .from(S1_DOC)
+                .where(S1_DOC.PERMISSION_BU.eq("").or(S1_DOC.PERMISSION_BU.contains(request.getBu().toString())))
+                .fetchInto(DocVO.class);
 
         FileMenuHttpResponse resp = new FileMenuHttpResponse();
         resp.setHead(new ResponseHead(SUCCESS));
