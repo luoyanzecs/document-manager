@@ -1,11 +1,9 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpResponse;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,13 +12,9 @@ import java.util.List;
  * @Date 2022/3/27 1:46 PM
  */
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class NoticeHttpResponse {
-
-    /**
-     * 头信息
-     */
-    private ResponseHead head;
+public class NoticeHttpResponse extends BaseHttpResponse {
 
     private List<Notice> notices;
 

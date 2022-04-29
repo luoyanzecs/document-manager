@@ -2,6 +2,7 @@ package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.CreateFileHttpRequest;
 import cn.luoyanze.common.contract.*;
+import cn.luoyanze.common.contract.common.BaseHttpResponse;
 import cn.luoyanze.common.contract.common.RequestHead;
 import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.documentmanager.service.*;
@@ -33,51 +34,48 @@ public class UserController {
 
     @PostMapping("/menu")
     @ResponseBody
-    public FileMenuHttpResponse execute(@RequestBody FileMenuHttpRequset request) {
-        return dbSelectService.selectMenuByBu(request);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody FileMenuHttpRequset request) {
+        return dbSelectService.selectMenuByBu(request).toResponse();
     }
 
     @PostMapping("/comment")
     @ResponseBody
-    public FileCommentHttpResponse execute(@RequestBody FileCommentHttpRequset request) {
-        return dbSelectService.selectFileComment(request);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody FileCommentHttpRequset request) {
+        return dbSelectService.selectFileComment(request).toResponse();
     }
 
     @PostMapping("/file")
     @ResponseBody
-    public UserFileHttpResponse execute(@RequestBody UserFileHttpRequset request) {
-        return dbSelectService.selectFileById(request);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody UserFileHttpRequset request) {
+        return dbSelectService.selectFileById(request).toResponse();
     }
 
     @PostMapping("/updateFile")
     @ResponseBody
-    public UpdateFileHttpResponse execute(@RequestBody UpdateFileHttpRequest request) throws Exception {
-        return dbUpdateService.updateFile(request);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody UpdateFileHttpRequest request) throws Exception {
+        return dbUpdateService.updateFile(request).toResponse();
     }
 
     @PostMapping("/createFile")
     @ResponseBody
-    public CreateFileHttpResponse execute(@RequestBody CreateFileHttpRequest request) {
-        return dbInsertService.insertNewFile(request);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody CreateFileHttpRequest request) {
+        return dbInsertService.insertNewFile(request).toResponse();
     }
 
     @PostMapping("/leaveMessage")
     @ResponseBody
-    public LeaveMessageHttpResponse execute(@RequestBody LeaveMessageHttpRequest request) throws Exception {
-        return dbInsertService.insertNewComment(request);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody LeaveMessageHttpRequest request) {
+        return dbInsertService.insertNewComment(request).toResponse();
     }
 
     @PostMapping(value="/uploadAttach", consumes = {"multipart/form-data"})
     @ResponseBody
-    public ResponseEntity<AddAttachHttpResponse> execute(
+    public ResponseEntity<BaseHttpResponse> execute(
             @RequestPart("file") MultipartFile file,
             @RequestPart("docId") Integer docId,
             @RequestPart("head") RequestHead head) {
-        AddAttachHttpResponse resp = attachService.upload(file, docId, head);
 
-        return ResponseEntity
-                .status(HeadStatus.getHttpStatus(resp.getHead()))
-                .body(resp);
+        return attachService.upload(file, docId, head).toResponse();
     }
 
     @PostMapping("/downloadAttach")
@@ -88,12 +86,8 @@ public class UserController {
 
     @PostMapping("/deleteAttach")
     @ResponseBody
-    public ResponseEntity<DeleteAttachHttpResponse> execute(@RequestBody DeleteAttachHttpRequest request) throws Exception {
-        DeleteAttachHttpResponse resp = dbUpdateService.deleteAttach(request);
-
-        return ResponseEntity
-                .status(HeadStatus.getHttpStatus(resp.getHead()))
-                .body(resp);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody DeleteAttachHttpRequest request) throws Exception {
+        return dbUpdateService.deleteAttach(request).toResponse();
     }
 
 }

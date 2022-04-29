@@ -85,7 +85,7 @@ public class DBInsertServiceImpl implements DBInsertService {
     }
 
     @Override
-    public LeaveMessageHttpResponse insertNewComment(LeaveMessageHttpRequest request) throws CustomException {
+    public LeaveMessageHttpResponse insertNewComment(LeaveMessageHttpRequest request) {
         LeaveMessageHttpResponse resp = new LeaveMessageHttpResponse();
         try {
             S1CommentRecord record = new S1CommentRecord();

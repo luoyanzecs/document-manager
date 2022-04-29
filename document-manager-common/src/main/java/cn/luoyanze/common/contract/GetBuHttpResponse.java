@@ -1,8 +1,10 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpResponse;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -12,9 +14,9 @@ import java.util.List;
  */
 
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class GetBuHttpResponse {
-    private ResponseHead head;
+public class GetBuHttpResponse extends BaseHttpResponse {
 
     private List<Bu> buList;
 

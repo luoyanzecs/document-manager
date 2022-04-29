@@ -1,7 +1,9 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpResponse;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
@@ -10,8 +12,8 @@ import lombok.Getter;
  */
 
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class UpdateFileHttpResponse {
+public class UpdateFileHttpResponse extends BaseHttpResponse {
 
-    private ResponseHead head;
 }

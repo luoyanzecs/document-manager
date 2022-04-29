@@ -1,6 +1,7 @@
 package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.*;
+import cn.luoyanze.common.contract.common.BaseHttpResponse;
 import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.documentmanager.service.DBSelectService;
 import cn.luoyanze.documentmanager.service.LoginApiService;
@@ -30,29 +31,20 @@ public class CommonController {
 
     @PostMapping(value = "/login")
     @ResponseBody
-    public ResponseEntity<LoginHttpResponse> execute(@RequestBody LoginHttpRequset request) throws Exception {
-        LoginHttpResponse resp = loginApiService.execute(request);
-        return ResponseEntity
-                .status(HeadStatus.getHttpStatus(resp.getHead()))
-                .body(resp);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody LoginHttpRequset request) throws Exception {
+        return loginApiService.execute(request).toResponse();
     }
 
     @PostMapping(value = "/notice")
     @ResponseBody
-    public ResponseEntity<NoticeHttpResponse> execute(@RequestBody NoticeHttpRequset request) {
-        NoticeHttpResponse resp = dbSelectService.selectNotice(request);
-        return ResponseEntity
-                .status(HeadStatus.getHttpStatus(resp.getHead()))
-                .body(resp);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody NoticeHttpRequset request) {
+        return dbSelectService.selectNotice(request).toResponse();
     }
 
     @PostMapping(value = "/search")
     @ResponseBody
-    public ResponseEntity<SearchHttpResponse> execute(@RequestBody SearchHttpRequest request) {
-        SearchHttpResponse resp = elasticSearchService.execute(request);
-        return ResponseEntity
-                .status(HeadStatus.getHttpStatus(resp.getHead()))
-                .body(resp);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody SearchHttpRequest request) {
+        return elasticSearchService.execute(request).toResponse();
     }
 
     /**
@@ -60,10 +52,8 @@ public class CommonController {
      */
     @PostMapping(value = "/getbu")
     @ResponseBody
-    public ResponseEntity<GetBuHttpResponse> execute(@RequestBody GetBuHttpRequest request) {
-        GetBuHttpResponse resp =  dbSelectService.selectAllBu(request);
-        return ResponseEntity
-                .status(HeadStatus.getHttpStatus(resp.getHead()))
-                .body(resp);
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody GetBuHttpRequest request) {
+        return dbSelectService.selectAllBu(request).toResponse();
+
     }
 }

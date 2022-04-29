@@ -11,7 +11,7 @@ public interface DBInsertService {
 
     CreateFileHttpResponse insertNewFile(CreateFileHttpRequest request);
 
-    LeaveMessageHttpResponse insertNewComment(LeaveMessageHttpRequest request) throws Exception;
+    LeaveMessageHttpResponse insertNewComment(LeaveMessageHttpRequest request);
 
     AddNoticeHttpResponse insertNewNotice(AddNoticeHttpRequest request);
 

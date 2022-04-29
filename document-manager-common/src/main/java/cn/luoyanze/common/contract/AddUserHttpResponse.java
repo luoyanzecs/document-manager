@@ -1,7 +1,9 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpResponse;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -9,8 +11,8 @@ import lombok.Data;
  */
 
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class AddUserHttpResponse {
+public class AddUserHttpResponse extends BaseHttpResponse {
 
-    private ResponseHead head;
 }
