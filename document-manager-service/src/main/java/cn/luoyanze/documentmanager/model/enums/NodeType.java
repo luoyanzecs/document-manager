@@ -1,5 +1,6 @@
 package cn.luoyanze.documentmanager.model.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,6 +18,7 @@ public enum NodeType {
     TEXT("text")
     ;
 
+    @JsonValue
     private final String type;
 
     public static NodeType toNode(String str) {

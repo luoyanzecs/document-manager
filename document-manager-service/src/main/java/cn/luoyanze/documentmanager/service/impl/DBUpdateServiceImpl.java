@@ -18,11 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.BaseStream;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,7 +78,7 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                                         setLastTime(TimeUtil.now());
                                     }})
                     ).flatMap(it -> it).collect(Collectors.toList())
-            );
+            ).execute();
 
             dao.batchInsert(
                     request.getNewNodes().stream().map(it ->
@@ -94,7 +89,7 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                                     it.getHash(), request.getFileId(), 0, TimeUtil.now()
                             )
                     ).collect(Collectors.toList())
-            );
+            ).execute();
 
 
             resp.setHead(new ResponseHead(SUCCESS));

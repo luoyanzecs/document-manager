@@ -6,7 +6,7 @@ create table S1_NODE
     `style`      varchar(1024) comment 'dom样式',
     `class`      varchar(1024) null comment 'class',
     `attribute`  varchar(1024) null comment '其他的attribute，json格式，map接收',
-    `tag`        char(48)      not null comment 'html标签',
+    `tag`        char(48)      null comment 'html标签',
     `type`       char(12)      not null comment '节点类型',
     `parentUUID` char(48)      null comment '父节点id',
     `index`      char(255)     not null comment '层级索引',

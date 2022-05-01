@@ -15,14 +15,18 @@ import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBSelectService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.util.Strings;
 import org.jooq.DSLContext;
 import org.jooq.Record2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -240,8 +244,8 @@ public class DBSelectServiceImpl implements DBSelectService {
     // 生成顶层root
     private NodeModel generateRoot(List<NodeModel> nodes) {
         LinkedList<NodeModel> rootChildrent = nodes.stream()
-                .filter(it -> it.getId().equals("0") || it.getId() == null)
-                .sorted((o1, o2) -> Double.parseDouble(o1.getIndex()) > Double.parseDouble(o2.getIndex()) ? 1 : 0)
+                .filter(it -> it.getParentId().equals("0") || it.getId() == null)
+                .sorted((o1, o2) -> Double.parseDouble(o1.getIndex()) > Double.parseDouble(o2.getIndex()) ? 1 : -1)
                 .collect(Collectors.toCollection(LinkedList::new));
 
         NodeModel root = new NodeModel();
@@ -257,7 +261,7 @@ public class DBSelectServiceImpl implements DBSelectService {
         return root;
     }
 
-    private String getFile(UserFileHttpRequset request) throws JsonProcessingException {
+    private NodeModel getFile(UserFileHttpRequset request) throws JsonProcessingException {
         List<NodeModel> nodes = dao.selectFrom(S1_NODE)
                 .where(S1_NODE.DOC_ID.eq(request.getId()))
                 .and(S1_NODE.IS_DEL.eq(0))
@@ -267,14 +271,14 @@ public class DBSelectServiceImpl implements DBSelectService {
 
         // 取出第一层节点
         Queue<NodeModel> queue = nodes.stream()
-                .filter(it -> it.getId().equals("0") || it.getId() == null)
+                .filter(it -> it.getParentId().equals("0"))
                 .collect(Collectors.toCollection(LinkedList::new));
 
         while (!queue.isEmpty()) {
-            NodeModel node = queue.peek();
+            NodeModel node = queue.poll();
             node.setChildren(
                     nodes.stream().filter(it -> it.getParentId().equals(node.getId()))
-                            .sorted((o1, o2) -> Double.parseDouble(o1.getIndex()) > Double.parseDouble(o2.getIndex()) ? 1 : 0)
+                            .sorted((o1, o2) -> Double.parseDouble(o1.getIndex()) > Double.parseDouble(o2.getIndex()) ? 1 : -1)
                             .collect(Collectors.toCollection(LinkedList::new))
             );
             queue.addAll(node.getChildren());
@@ -285,27 +289,31 @@ public class DBSelectServiceImpl implements DBSelectService {
 
         // 整理子节点顺序, 并为父节点添加z-children attribute
         while (!queue.isEmpty()) {
-            NodeModel node = queue.peek();
+            NodeModel node = queue.poll();
             if (node.getType() == NodeType.TEXT) {
                 continue;
             }
-            LinkedList<NodeModel> finalChildren = new LinkedList<>();
-            node.getAttr().put(
-                    CHILDREN.getValue(),
-                    String.join(",", node.getChildren().stream().map(NodeModel::getId).collect(Collectors.toSet()))
-            );
-            node.getChildren().forEach(it -> {
-                if (it.getType() == NodeType.TEXT) {
-                    finalChildren.addAll(createTextNodePair(it));
-                } else {
-                    finalChildren.add(it);
-                }
-            });
-            node.setChildren(finalChildren);
-            queue.addAll(finalChildren);
+            if (CollectionUtils.isEmpty(node.getChildren())) {
+                node.getAttr().put(CHILDREN.getValue(), Strings.EMPTY);
+                node.setChildren(null);
+            } else {
+                LinkedList<NodeModel> finalChildren = new LinkedList<>();
+                node.getAttr().put(
+                        CHILDREN.getValue(),
+                        String.join(",", node.getChildren().stream().map(NodeModel::getId).collect(Collectors.toSet()))
+                );
+                node.getChildren().forEach(it -> {
+                    if (it.getType() == NodeType.TEXT) {
+                        finalChildren.addAll(createTextNodePair(it));
+                    } else {
+                        finalChildren.add(it);
+                    }
+                });
+                node.setChildren(finalChildren);
+                queue.addAll(finalChildren);
+            }
         }
-
-        return new ObjectMapper().writeValueAsString(root);
+        return root;
     }
 
     @Override
@@ -327,7 +335,12 @@ public class DBSelectServiceImpl implements DBSelectService {
                 return resp;
             }
 
-            String fileJsonValue = getFile(request);
+            NodeModel root = getFile(request);
+            resp.setRootAttr(root.getAttr());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String fileJsonValue = objectMapper.writeValueAsString(root);
 
             String editorName = dao.select(S1_USER.ACCOUNT)
                     .from(S1_USER)
