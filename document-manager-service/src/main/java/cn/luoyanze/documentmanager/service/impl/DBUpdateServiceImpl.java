@@ -2,10 +2,14 @@ package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.ResponseHead;
+import cn.luoyanze.common.contract.entity.DomNode;
+import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1AttachBO;
+import cn.luoyanze.documentmanager.dao.tables.records.S1NodeRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
+import com.alibaba.fastjson.JSON;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -14,6 +18,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.BaseStream;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static cn.luoyanze.common.model.HeadStatus.*;
@@ -44,25 +54,62 @@ public class DBUpdateServiceImpl implements DBUpdateService {
     public UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request) {
         UpdateFileHttpResponse resp = new UpdateFileHttpResponse();
         try {
-            dao.update(S1_DOC)
-                    .set(S1_DOC.LAST_UPDATE_USER_ID, request.getHead().getUserId())
-                    .set(S1_DOC.CTX, request.getJsonValue())
-                    .set(S1_DOC.LAST_UPDATE_TIME, LocalDateTime.now(ZoneId.systemDefault()))
-                    .where(S1_DOC.PRIMARY_ID.eq(request.getFileId()))
-                    .execute();
+
+            dao.batchUpdate(
+                    Stream.of(
+                            request.getUpdateNodes().stream()
+                                    .filter(it -> "text".equalsIgnoreCase(it.getType()))
+                                    .map(it -> new S1NodeRecord() {{
+                                        setUuid(it.getId());
+                                        setText(it.getText());
+                                        setHash(it.getText().hashCode() + "");
+                                        setHash(it.getHash());
+                                        setLastTime(TimeUtil.now());
+                                    }}),
+                            request.getUpdateNodes().stream()
+                                    .filter(it -> "element".equalsIgnoreCase(it.getType()))
+                                    .map(it -> new S1NodeRecord() {{
+                                        setUuid(it.getId());
+                                        setStyle(it.getStyles());
+                                        setClass_(it.getClasses());
+                                        setAttribute(JSON.toJSONString(it.getAttr()));
+                                        setHash(it.getHash());
+                                        setLastTime(TimeUtil.now());
+                                    }}),
+                            request.getDeleteIds().stream()
+                                    .map(it -> new S1NodeRecord() {{
+                                        setUuid(it);
+                                        setIsDel(1);
+                                        setLastTime(TimeUtil.now());
+                                    }})
+                    ).flatMap(it -> it).collect(Collectors.toList())
+            );
+
+            dao.batchInsert(
+                    request.getNewNodes().stream().map(it ->
+                            new S1NodeRecord(
+                                    it.getId(), it.getStyles(), it.getClasses(),
+                                    JSON.toJSONString(it.getAttr()), it.getTag(),
+                                    it.getType(), it.getParent(), it.getIndex(), it.getText(),
+                                    it.getHash(), request.getFileId(), 0, TimeUtil.now()
+                            )
+                    ).collect(Collectors.toList())
+            );
+
 
             resp.setHead(new ResponseHead(SUCCESS));
 
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            resp.setHead(new ResponseHead(UPDATE_FILE_FAIL));
+        } finally {
             dao.insertInto(S1_OPERATE)
                     .set(S1_OPERATE.TYPE, OpraterType.UPDATE_FILE.getId())
-                    .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
+                    .set(S1_OPERATE.TIME, TimeUtil.now())
                     .set(S1_OPERATE.DOC_ID, request.getFileId())
                     .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
                     .set(S1_OPERATE.CONTENT, "用户名: " + request.getHead().getUsername())
                     .execute();
-
-        } catch (Exception e) {
-            resp.setHead(new ResponseHead(UPDATE_FILE_FAIL));
         }
 
         return resp;
@@ -88,13 +135,13 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                     .fetchInto(S1AttachBO.class)
                     .stream().findFirst()
                     .ifPresent(it ->
-                        dao.insertInto(S1_OPERATE)
-                                .set(S1_OPERATE.TYPE, OpraterType.DELETE_ATTACH.getId())
-                                .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
-                                .set(S1_OPERATE.DOC_ID, it.getDocPrimaryId())
-                                .set(S1_OPERATE.CONTENT, "附件名 : " + it.getName())
-                                .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
-                                .execute()
+                            dao.insertInto(S1_OPERATE)
+                                    .set(S1_OPERATE.TYPE, OpraterType.DELETE_ATTACH.getId())
+                                    .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
+                                    .set(S1_OPERATE.DOC_ID, it.getDocPrimaryId())
+                                    .set(S1_OPERATE.CONTENT, "附件名 : " + it.getName())
+                                    .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
+                                    .execute()
                     );
 
 

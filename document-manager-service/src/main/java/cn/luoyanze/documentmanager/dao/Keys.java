@@ -49,7 +49,7 @@ public class Keys {
     public static final UniqueKey<S1DirRecord> KEY_S1_DIR_PRIMARY = Internal.createUniqueKey(S1DirTB.S1_DIR, DSL.name("KEY_S1_DIR_PRIMARY"), new TableField[] { S1DirTB.S1_DIR.PRIMARY_ID }, true);
     public static final UniqueKey<S1DocRecord> KEY_S1_DOC_PRIMARY = Internal.createUniqueKey(S1DocTB.S1_DOC, DSL.name("KEY_S1_DOC_PRIMARY"), new TableField[] { S1DocTB.S1_DOC.PRIMARY_ID }, true);
     public static final UniqueKey<S1LogRecord> KEY_S1_LOG_PRIMARY = Internal.createUniqueKey(S1LogTB.S1_LOG, DSL.name("KEY_S1_LOG_PRIMARY"), new TableField[] { S1LogTB.S1_LOG.LOGID }, true);
-    public static final UniqueKey<S1NodeRecord> KEY_S1_NODE_PRIMARY = Internal.createUniqueKey(S1NodeTB.S1_NODE, DSL.name("KEY_S1_NODE_PRIMARY"), new TableField[] { S1NodeTB.S1_NODE.PRIMARY_ID }, true);
+    public static final UniqueKey<S1NodeRecord> KEY_S1_NODE_PRIMARY = Internal.createUniqueKey(S1NodeTB.S1_NODE, DSL.name("KEY_S1_NODE_PRIMARY"), new TableField[] { S1NodeTB.S1_NODE.UUID }, true);
     public static final UniqueKey<S1NoticeRecord> KEY_S1_NOTICE_PRIMARY = Internal.createUniqueKey(S1NoticeTB.S1_NOTICE, DSL.name("KEY_S1_NOTICE_PRIMARY"), new TableField[] { S1NoticeTB.S1_NOTICE.PRIMARY_ID }, true);
     public static final UniqueKey<S1OperateRecord> KEY_S1_OPERATE_PRIMARY = Internal.createUniqueKey(S1OperateTB.S1_OPERATE, DSL.name("KEY_S1_OPERATE_PRIMARY"), new TableField[] { S1OperateTB.S1_OPERATE.PRIMARY_ID }, true);
     public static final UniqueKey<S1UserRecord> KEY_S1_USER_PRIMARY = Internal.createUniqueKey(S1UserTB.S1_USER, DSL.name("KEY_S1_USER_PRIMARY"), new TableField[] { S1UserTB.S1_USER.PRIMARY_ID }, true);

@@ -16,80 +16,66 @@ public class S1NodeBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer       primaryId;
     private String        uuid;
     private String        style;
+    private String        class_;
+    private String        attribute;
     private String        tag;
     private String        type;
     private String        parentuuid;
     private String        index;
-    private String        childs;
     private String        text;
     private String        hash;
     private Integer       docId;
-    private Integer       idDel;
+    private Integer       isDel;
     private LocalDateTime lastTime;
 
     public S1NodeBO() {}
 
     public S1NodeBO(S1NodeBO value) {
-        this.primaryId = value.primaryId;
         this.uuid = value.uuid;
         this.style = value.style;
+        this.class_ = value.class_;
+        this.attribute = value.attribute;
         this.tag = value.tag;
         this.type = value.type;
         this.parentuuid = value.parentuuid;
         this.index = value.index;
-        this.childs = value.childs;
         this.text = value.text;
         this.hash = value.hash;
         this.docId = value.docId;
-        this.idDel = value.idDel;
+        this.isDel = value.isDel;
         this.lastTime = value.lastTime;
     }
 
     public S1NodeBO(
-        Integer       primaryId,
         String        uuid,
         String        style,
+        String        class_,
+        String        attribute,
         String        tag,
         String        type,
         String        parentuuid,
         String        index,
-        String        childs,
         String        text,
         String        hash,
         Integer       docId,
-        Integer       idDel,
+        Integer       isDel,
         LocalDateTime lastTime
     ) {
-        this.primaryId = primaryId;
         this.uuid = uuid;
         this.style = style;
+        this.class_ = class_;
+        this.attribute = attribute;
         this.tag = tag;
         this.type = type;
         this.parentuuid = parentuuid;
         this.index = index;
-        this.childs = childs;
         this.text = text;
         this.hash = hash;
         this.docId = docId;
-        this.idDel = idDel;
+        this.isDel = isDel;
         this.lastTime = lastTime;
-    }
-
-    /**
-     * Getter for <code>document_manager.S1_NODE.primary_id</code>. 自增主键
-     */
-    public Integer getPrimaryId() {
-        return this.primaryId;
-    }
-
-    /**
-     * Setter for <code>document_manager.S1_NODE.primary_id</code>. 自增主键
-     */
-    public void setPrimaryId(Integer primaryId) {
-        this.primaryId = primaryId;
     }
 
     /**
@@ -118,6 +104,34 @@ public class S1NodeBO implements Serializable {
      */
     public void setStyle(String style) {
         this.style = style;
+    }
+
+    /**
+     * Getter for <code>document_manager.S1_NODE.class</code>. class
+     */
+    public String getClass_() {
+        return this.class_;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_NODE.class</code>. class
+     */
+    public void setClass_(String class_) {
+        this.class_ = class_;
+    }
+
+    /**
+     * Getter for <code>document_manager.S1_NODE.attribute</code>. 其他的attribute，json格式，map接收
+     */
+    public String getAttribute() {
+        return this.attribute;
+    }
+
+    /**
+     * Setter for <code>document_manager.S1_NODE.attribute</code>. 其他的attribute，json格式，map接收
+     */
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
     }
 
     /**
@@ -177,20 +191,6 @@ public class S1NodeBO implements Serializable {
     }
 
     /**
-     * Getter for <code>document_manager.S1_NODE.childs</code>. 子节点列表
-     */
-    public String getChilds() {
-        return this.childs;
-    }
-
-    /**
-     * Setter for <code>document_manager.S1_NODE.childs</code>. 子节点列表
-     */
-    public void setChilds(String childs) {
-        this.childs = childs;
-    }
-
-    /**
      * Getter for <code>document_manager.S1_NODE.text</code>. 文本内容
      */
     public String getText() {
@@ -233,17 +233,17 @@ public class S1NodeBO implements Serializable {
     }
 
     /**
-     * Getter for <code>document_manager.S1_NODE.id_del</code>. 是否删除 1为删除 0为未删除
+     * Getter for <code>document_manager.S1_NODE.is_del</code>. 是否删除 1为删除 0为未删除
      */
-    public Integer getIdDel() {
-        return this.idDel;
+    public Integer getIsDel() {
+        return this.isDel;
     }
 
     /**
-     * Setter for <code>document_manager.S1_NODE.id_del</code>. 是否删除 1为删除 0为未删除
+     * Setter for <code>document_manager.S1_NODE.is_del</code>. 是否删除 1为删除 0为未删除
      */
-    public void setIdDel(Integer idDel) {
-        this.idDel = idDel;
+    public void setIsDel(Integer isDel) {
+        this.isDel = isDel;
     }
 
     /**
@@ -264,18 +264,18 @@ public class S1NodeBO implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("S1NodeBO (");
 
-        sb.append(primaryId);
-        sb.append(", ").append(uuid);
+        sb.append(uuid);
         sb.append(", ").append(style);
+        sb.append(", ").append(class_);
+        sb.append(", ").append(attribute);
         sb.append(", ").append(tag);
         sb.append(", ").append(type);
         sb.append(", ").append(parentuuid);
         sb.append(", ").append(index);
-        sb.append(", ").append(childs);
         sb.append(", ").append(text);
         sb.append(", ").append(hash);
         sb.append(", ").append(docId);
-        sb.append(", ").append(idDel);
+        sb.append(", ").append(isDel);
         sb.append(", ").append(lastTime);
 
         sb.append(")");

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
+
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -17,13 +19,13 @@ import java.util.List;
 public class DomNode {
 
     @JsonProperty("style")
-    private List<String> styles;
+    private String styles;
 
     @JsonProperty("class")
-    private List<String> classes;
+    private String classes;
 
     @JsonProperty("z-id")
-    private List<String> id;
+    private String id;
 
     @JsonProperty("z-index")
     private String index;
@@ -45,4 +47,7 @@ public class DomNode {
 
     @JsonProperty("text")
     private String text;
+
+    @JsonProperty("attr")
+    private Map<String, String> attr;
 }

@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
@@ -52,11 +51,6 @@ public class S1NodeTB extends TableImpl<S1NodeRecord> {
     }
 
     /**
-     * The column <code>document_manager.S1_NODE.primary_id</code>. 自增主键
-     */
-    public final TableField<S1NodeRecord, Integer> PRIMARY_ID = createField(DSL.name("primary_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "自增主键");
-
-    /**
      * The column <code>document_manager.S1_NODE.uuid</code>. uuid, 由前端生成
      */
     public final TableField<S1NodeRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.CHAR(48).nullable(false), this, "uuid, 由前端生成");
@@ -67,14 +61,24 @@ public class S1NodeTB extends TableImpl<S1NodeRecord> {
     public final TableField<S1NodeRecord, String> STYLE = createField(DSL.name("style"), SQLDataType.VARCHAR(1024), this, "dom样式");
 
     /**
+     * The column <code>document_manager.S1_NODE.class</code>. class
+     */
+    public final TableField<S1NodeRecord, String> CLASS = createField(DSL.name("class"), SQLDataType.VARCHAR(1024), this, "class");
+
+    /**
+     * The column <code>document_manager.S1_NODE.attribute</code>. 其他的attribute，json格式，map接收
+     */
+    public final TableField<S1NodeRecord, String> ATTRIBUTE = createField(DSL.name("attribute"), SQLDataType.VARCHAR(1024), this, "其他的attribute，json格式，map接收");
+
+    /**
      * The column <code>document_manager.S1_NODE.tag</code>. html标签
      */
-    public final TableField<S1NodeRecord, String> TAG = createField(DSL.name("tag"), SQLDataType.CHAR(48), this, "html标签");
+    public final TableField<S1NodeRecord, String> TAG = createField(DSL.name("tag"), SQLDataType.CHAR(48).nullable(false), this, "html标签");
 
     /**
      * The column <code>document_manager.S1_NODE.type</code>. 节点类型
      */
-    public final TableField<S1NodeRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.CHAR(12), this, "节点类型");
+    public final TableField<S1NodeRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.CHAR(12).nullable(false), this, "节点类型");
 
     /**
      * The column <code>document_manager.S1_NODE.parentUUID</code>. 父节点id
@@ -84,12 +88,7 @@ public class S1NodeTB extends TableImpl<S1NodeRecord> {
     /**
      * The column <code>document_manager.S1_NODE.index</code>. 层级索引
      */
-    public final TableField<S1NodeRecord, String> INDEX = createField(DSL.name("index"), SQLDataType.CHAR(255), this, "层级索引");
-
-    /**
-     * The column <code>document_manager.S1_NODE.childs</code>. 子节点列表
-     */
-    public final TableField<S1NodeRecord, String> CHILDS = createField(DSL.name("childs"), SQLDataType.VARCHAR(2048), this, "子节点列表");
+    public final TableField<S1NodeRecord, String> INDEX = createField(DSL.name("index"), SQLDataType.CHAR(255).nullable(false), this, "层级索引");
 
     /**
      * The column <code>document_manager.S1_NODE.text</code>. 文本内容
@@ -99,7 +98,7 @@ public class S1NodeTB extends TableImpl<S1NodeRecord> {
     /**
      * The column <code>document_manager.S1_NODE.hash</code>. hash值
      */
-    public final TableField<S1NodeRecord, String> HASH = createField(DSL.name("hash"), SQLDataType.CHAR(32), this, "hash值");
+    public final TableField<S1NodeRecord, String> HASH = createField(DSL.name("hash"), SQLDataType.CHAR(32).nullable(false), this, "hash值");
 
     /**
      * The column <code>document_manager.S1_NODE.doc_id</code>. 文件id
@@ -107,14 +106,14 @@ public class S1NodeTB extends TableImpl<S1NodeRecord> {
     public final TableField<S1NodeRecord, Integer> DOC_ID = createField(DSL.name("doc_id"), SQLDataType.INTEGER.nullable(false), this, "文件id");
 
     /**
-     * The column <code>document_manager.S1_NODE.id_del</code>. 是否删除 1为删除 0为未删除
+     * The column <code>document_manager.S1_NODE.is_del</code>. 是否删除 1为删除 0为未删除
      */
-    public final TableField<S1NodeRecord, Integer> ID_DEL = createField(DSL.name("id_del"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "是否删除 1为删除 0为未删除");
+    public final TableField<S1NodeRecord, Integer> IS_DEL = createField(DSL.name("is_del"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "是否删除 1为删除 0为未删除");
 
     /**
      * The column <code>document_manager.S1_NODE.last_time</code>. 上次修改时间
      */
-    public final TableField<S1NodeRecord, LocalDateTime> LAST_TIME = createField(DSL.name("last_time"), SQLDataType.LOCALDATETIME(0), this, "上次修改时间");
+    public final TableField<S1NodeRecord, LocalDateTime> LAST_TIME = createField(DSL.name("last_time"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "上次修改时间");
 
     private S1NodeTB(Name alias, Table<S1NodeRecord> aliased) {
         this(alias, aliased, null);
@@ -157,11 +156,6 @@ public class S1NodeTB extends TableImpl<S1NodeRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.S1_NODE_DOC_ID);
-    }
-
-    @Override
-    public Identity<S1NodeRecord, Integer> getIdentity() {
-        return (Identity<S1NodeRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -219,7 +213,7 @@ public class S1NodeTB extends TableImpl<S1NodeRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<Integer, String, String, String, String, String, String, String, String, String, Integer, Integer, LocalDateTime> fieldsRow() {
+    public Row13<String, String, String, String, String, String, String, String, String, String, Integer, Integer, LocalDateTime> fieldsRow() {
         return (Row13) super.fieldsRow();
     }
 }

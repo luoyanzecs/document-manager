@@ -20,17 +20,12 @@ import java.util.List;
 public class UpdateFileHttpRequest extends BaseHttpRequest {
 
     /**
-     * json 格式内容
-     */
-    private String jsonValue;
-
-    /**
      * 文件id
      */
     private Integer fileId;
 
     @JsonProperty("deleteNodes")
-    private List<String> deleteNodes;
+    private List<String> deleteIds;
 
     @JsonProperty("updateNodes")
     private List<DomNode> updateNodes;
