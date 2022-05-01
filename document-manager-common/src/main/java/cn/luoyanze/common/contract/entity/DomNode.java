@@ -24,19 +24,19 @@ public class DomNode {
     @JsonProperty("class")
     private String classes;
 
-    @JsonProperty("z-id")
+    @JsonProperty("data-id")
     private String id;
 
-    @JsonProperty("z-index")
+    @JsonProperty("data-index")
     private String index;
 
-    @JsonProperty("z-hash")
+    @JsonProperty("data-hash")
     private String hash;
 
-    @JsonProperty("z-children")
+    @JsonProperty("data-children")
     private String children;
 
-    @JsonProperty("z-parent")
+    @JsonProperty("data-parent")
     private String parent;
 
     @JsonProperty("tag")

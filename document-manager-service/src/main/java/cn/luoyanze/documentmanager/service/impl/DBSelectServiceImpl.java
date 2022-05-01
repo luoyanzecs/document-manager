@@ -9,7 +9,6 @@ import cn.luoyanze.documentmanager.dao.tables.pojos.*;
 import cn.luoyanze.documentmanager.model.DocVO;
 import cn.luoyanze.documentmanager.model.FileComment;
 import cn.luoyanze.documentmanager.model.NodeModel;
-import cn.luoyanze.documentmanager.model.enums.AttributeType;
 import cn.luoyanze.documentmanager.model.enums.NodeType;
 import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBSelectService;
@@ -25,8 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StreamUtils;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -244,7 +241,7 @@ public class DBSelectServiceImpl implements DBSelectService {
     // 生成顶层root
     private NodeModel generateRoot(List<NodeModel> nodes) {
         LinkedList<NodeModel> rootChildrent = nodes.stream()
-                .filter(it -> it.getParentId().equals("0") || it.getId() == null)
+                .filter(it -> "0".equals(it.getParentId()))
                 .sorted((o1, o2) -> Double.parseDouble(o1.getIndex()) > Double.parseDouble(o2.getIndex()) ? 1 : -1)
                 .collect(Collectors.toCollection(LinkedList::new));
 
@@ -271,7 +268,7 @@ public class DBSelectServiceImpl implements DBSelectService {
 
         // 取出第一层节点
         Queue<NodeModel> queue = nodes.stream()
-                .filter(it -> it.getParentId().equals("0"))
+                .filter(it -> "0".equals(it.getParentId()))
                 .collect(Collectors.toCollection(LinkedList::new));
 
         while (!queue.isEmpty()) {

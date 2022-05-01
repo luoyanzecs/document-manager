@@ -7,11 +7,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AttributeType {
 
-    ID("z-id"),
-    PARENT("z-parent"),
-    INDEX("z-index"),
-    HASH("z-hash"),
-    CHILDREN("z-children"),
+    ID("data-id"),
+    PARENT("data-parent"),
+    INDEX("data-index"),
+    HASH("data-hash"),
+    CHILDREN("data-children"),
     STYLE("style"),
     CLASS("class"),
     CUSTOM_TAG("zzz"),
