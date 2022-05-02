@@ -1,5 +1,6 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpRequest;
 import cn.luoyanze.common.contract.common.RequestHead;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -9,10 +10,7 @@ import lombok.Getter;
  * @Date 2022/3/27 1:48 PM
  */
 @Getter
-public class FileCommentHttpRequset {
-
-    @JsonProperty("head")
-    private RequestHead head;
+public class FileCommentHttpRequset extends BaseHttpRequest {
 
     @JsonProperty("id")
     private Integer id;

@@ -10,9 +10,9 @@ import cn.luoyanze.documentmanager.exception.CustomException;
 
 public interface DBUpdateService {
 
-    UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request) throws Exception;
+    UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request);
 
-    DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request) throws Exception;
+    DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request);
 
     DeleteTableItemHttpResponse deleteTableItem(DeleteTableItemHttpRequest request) throws Exception;
 }

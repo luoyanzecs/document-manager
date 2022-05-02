@@ -19,7 +19,6 @@ public class S1DocBO implements Serializable {
     private Integer       primaryId;
     private String        permissionBu;
     private Integer       authority;
-    private String        ctx;
     private Integer       userId;
     private LocalDateTime lastUpdateTime;
     private String        title;
@@ -33,7 +32,6 @@ public class S1DocBO implements Serializable {
         this.primaryId = value.primaryId;
         this.permissionBu = value.permissionBu;
         this.authority = value.authority;
-        this.ctx = value.ctx;
         this.userId = value.userId;
         this.lastUpdateTime = value.lastUpdateTime;
         this.title = value.title;
@@ -46,7 +44,6 @@ public class S1DocBO implements Serializable {
         Integer       primaryId,
         String        permissionBu,
         Integer       authority,
-        String        ctx,
         Integer       userId,
         LocalDateTime lastUpdateTime,
         String        title,
@@ -57,7 +54,6 @@ public class S1DocBO implements Serializable {
         this.primaryId = primaryId;
         this.permissionBu = permissionBu;
         this.authority = authority;
-        this.ctx = ctx;
         this.userId = userId;
         this.lastUpdateTime = lastUpdateTime;
         this.title = title;
@@ -106,20 +102,6 @@ public class S1DocBO implements Serializable {
      */
     public void setAuthority(Integer authority) {
         this.authority = authority;
-    }
-
-    /**
-     * Getter for <code>document_manager.S1_DOC.ctx</code>. 内容
-     */
-    public String getCtx() {
-        return this.ctx;
-    }
-
-    /**
-     * Setter for <code>document_manager.S1_DOC.ctx</code>. 内容
-     */
-    public void setCtx(String ctx) {
-        this.ctx = ctx;
     }
 
     /**
@@ -213,7 +195,6 @@ public class S1DocBO implements Serializable {
         sb.append(primaryId);
         sb.append(", ").append(permissionBu);
         sb.append(", ").append(authority);
-        sb.append(", ").append(ctx);
         sb.append(", ").append(userId);
         sb.append(", ").append(lastUpdateTime);
         sb.append(", ").append(title);

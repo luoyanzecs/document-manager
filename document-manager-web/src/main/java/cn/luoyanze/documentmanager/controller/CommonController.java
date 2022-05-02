@@ -2,11 +2,9 @@ package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.BaseHttpResponse;
-import cn.luoyanze.common.model.HeadStatus;
 import cn.luoyanze.documentmanager.service.DBSelectService;
 import cn.luoyanze.documentmanager.service.LoginApiService;
 import cn.luoyanze.documentmanager.service.ElasticSearchService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +29,7 @@ public class CommonController {
 
     @PostMapping(value = "/login")
     @ResponseBody
-    public ResponseEntity<BaseHttpResponse> execute(@RequestBody LoginHttpRequset request) throws Exception {
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody LoginHttpRequest request) throws Exception {
         return loginApiService.execute(request).toResponse();
     }
 

@@ -2,10 +2,15 @@ package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.ResponseHead;
+import cn.luoyanze.common.contract.entity.DomNode;
+import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1AttachBO;
+import cn.luoyanze.documentmanager.dao.tables.records.S1NodeRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
+import cn.luoyanze.documentmanager.model.enums.NodeType;
 import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
+import com.alibaba.fastjson.JSON;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -14,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static cn.luoyanze.common.model.HeadStatus.*;
@@ -44,24 +51,71 @@ public class DBUpdateServiceImpl implements DBUpdateService {
     public UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request) {
         UpdateFileHttpResponse resp = new UpdateFileHttpResponse();
         try {
-            dao.update(S1_DOC)
-                    .set(S1_DOC.LAST_UPDATE_USER_ID, request.getHead().getUserId())
-                    .set(S1_DOC.CTX, request.getJsonValue())
-                    .set(S1_DOC.LAST_UPDATE_TIME, LocalDateTime.now(ZoneId.systemDefault()))
-                    .where(S1_DOC.PRIMARY_ID.eq(request.getFileId()))
-                    .execute();
+            Queue<String> queue = new LinkedList<>(request.getDeleteIds());
+            Set<String> deleteIds = new HashSet<>();
+
+            while (!queue.isEmpty()) {
+                String poll = queue.poll();
+                List<String> ids = dao.select(S1_NODE.UUID).from(S1_NODE).where(S1_NODE.PARENTUUID.eq(poll)).fetchInto(String.class);
+                deleteIds.add(poll);
+                queue.addAll(ids);
+            }
+
+            dao.batchUpdate(
+                    Stream.of(
+                            request.getUpdateNodes().stream()
+                                    .filter(it -> NodeType.TEXT.getType().equalsIgnoreCase(it.getType()))
+                                    .map(it -> new S1NodeRecord() {{
+                                        setUuid(it.getId());
+                                        setText(it.getText());
+                                        setHash(it.getText().hashCode() + "");
+                                        setHash(it.getHash());
+                                        setLastTime(TimeUtil.now());
+                                    }}),
+                            request.getUpdateNodes().stream()
+                                    .filter(it -> NodeType.ELEMENT.getType().equalsIgnoreCase(it.getType()))
+                                    .map(it -> new S1NodeRecord() {{
+                                        setUuid(it.getId());
+                                        setStyle(it.getStyles());
+                                        setClass_(it.getClasses());
+                                        setAttribute(JSON.toJSONString(it.getAttr()));
+                                        setHash(it.getHash());
+                                        setLastTime(TimeUtil.now());
+                                    }}),
+                            deleteIds.stream()
+                                    .map(it -> new S1NodeRecord() {{
+                                        setUuid(it);
+                                        setIsDel(1);
+                                        setLastTime(TimeUtil.now());
+                                    }})
+                    ).flatMap(it -> it).collect(Collectors.toList())
+            ).execute();
+
+            dao.batchInsert(
+                    request.getNewNodes().stream().map(it ->
+                            new S1NodeRecord(
+                                    it.getId(), it.getStyles(), it.getClasses(),
+                                    JSON.toJSONString(it.getAttr()), it.getTag(),
+                                    it.getType(), it.getParent(), it.getIndex(), it.getText(),
+                                    it.getHash(), request.getFileId(), 0, TimeUtil.now()
+                            )
+                    ).collect(Collectors.toList())
+            ).execute();
+
+
             resp.setHead(new ResponseHead(SUCCESS));
 
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            resp.setHead(new ResponseHead(UPDATE_FILE_FAIL));
+        } finally {
             dao.insertInto(S1_OPERATE)
                     .set(S1_OPERATE.TYPE, OpraterType.UPDATE_FILE.getId())
-                    .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
+                    .set(S1_OPERATE.TIME, TimeUtil.now())
                     .set(S1_OPERATE.DOC_ID, request.getFileId())
                     .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
                     .set(S1_OPERATE.CONTENT, "用户名: " + request.getHead().getUsername())
                     .execute();
-
-        } catch (Exception e) {
-            resp.setHead(new ResponseHead(UPDATE_FILE_FAIL));
         }
 
         return resp;
@@ -71,7 +125,7 @@ public class DBUpdateServiceImpl implements DBUpdateService {
      * 删除附件， 只需要把doc数据库的附件链接删除即可
      */
     @Override
-    public DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request) throws CustomException {
+    public DeleteAttachHttpResponse deleteAttach(DeleteAttachHttpRequest request) {
         DeleteAttachHttpResponse resp = new DeleteAttachHttpResponse();
         try {
             dao.update(S1_ATTACH)
@@ -87,13 +141,13 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                     .fetchInto(S1AttachBO.class)
                     .stream().findFirst()
                     .ifPresent(it ->
-                        dao.insertInto(S1_OPERATE)
-                                .set(S1_OPERATE.TYPE, OpraterType.DELETE_ATTACH.getId())
-                                .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
-                                .set(S1_OPERATE.DOC_ID, it.getDocPrimaryId())
-                                .set(S1_OPERATE.CONTENT, "附件名 : " + it.getName())
-                                .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
-                                .execute()
+                            dao.insertInto(S1_OPERATE)
+                                    .set(S1_OPERATE.TYPE, OpraterType.DELETE_ATTACH.getId())
+                                    .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
+                                    .set(S1_OPERATE.DOC_ID, it.getDocPrimaryId())
+                                    .set(S1_OPERATE.CONTENT, "附件名 : " + it.getName())
+                                    .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
+                                    .execute()
                     );
 
 

@@ -1,13 +1,11 @@
 package cn.luoyanze.documentmanager.service.impl;
 
-import cn.luoyanze.common.contract.LoginHttpRequset;
+import cn.luoyanze.common.contract.LoginHttpRequest;
 import cn.luoyanze.common.contract.LoginHttpResponse;
 import cn.luoyanze.common.contract.LoginHttpResponse.User;
 import cn.luoyanze.common.contract.common.ResponseHead;
-import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.common.util.TokenUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1UserBO;
-import cn.luoyanze.documentmanager.exception.CustomException;
 import cn.luoyanze.documentmanager.service.LoginApiService;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
@@ -35,7 +33,7 @@ public class LoginApiServiceImpl implements LoginApiService {
     }
 
     @Override
-    public LoginHttpResponse execute(LoginHttpRequset requset) throws Exception {
+    public LoginHttpResponse execute(LoginHttpRequest requset) throws Exception {
 
         S1UserBO user = dao.select()
                 .from(S1_USER)

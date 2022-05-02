@@ -52,7 +52,7 @@ public class UserController {
 
     @PostMapping("/updateFile")
     @ResponseBody
-    public ResponseEntity<BaseHttpResponse> execute(@RequestBody UpdateFileHttpRequest request) throws Exception {
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody UpdateFileHttpRequest request) {
         return dbUpdateService.updateFile(request).toResponse();
     }
 
@@ -86,7 +86,7 @@ public class UserController {
 
     @PostMapping("/deleteAttach")
     @ResponseBody
-    public ResponseEntity<BaseHttpResponse> execute(@RequestBody DeleteAttachHttpRequest request) throws Exception {
+    public ResponseEntity<BaseHttpResponse> execute(@RequestBody DeleteAttachHttpRequest request) {
         return dbUpdateService.deleteAttach(request).toResponse();
     }
 

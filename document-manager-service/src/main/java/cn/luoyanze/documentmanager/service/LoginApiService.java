@@ -1,6 +1,6 @@
 package cn.luoyanze.documentmanager.service;
 
-import cn.luoyanze.common.contract.LoginHttpRequset;
+import cn.luoyanze.common.contract.LoginHttpRequest;
 import cn.luoyanze.common.contract.LoginHttpResponse;
 
 /**
@@ -10,5 +10,5 @@ import cn.luoyanze.common.contract.LoginHttpResponse;
 
 public interface LoginApiService {
 
-    LoginHttpResponse execute(LoginHttpRequset requset) throws Exception;
+    LoginHttpResponse execute(LoginHttpRequest requset) throws Exception;
 }

@@ -1,5 +1,6 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpRequest;
 import cn.luoyanze.common.contract.common.RequestHead;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -21,9 +22,7 @@ import java.util.List;
 
 
 @Getter
-public class AddNoticeHttpRequest {
-
-    private RequestHead head;
+public class AddNoticeHttpRequest extends BaseHttpRequest {
 
     private String text;
 

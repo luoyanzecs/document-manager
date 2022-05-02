@@ -30,7 +30,6 @@ public class DBErrorLogAppender extends UnsynchronizedAppenderBase<ILoggingEvent
 
     private final DSLContext dao;
 
-
     public DBErrorLogAppender(DSLContext dao) {
         this.dao = dao;
     }

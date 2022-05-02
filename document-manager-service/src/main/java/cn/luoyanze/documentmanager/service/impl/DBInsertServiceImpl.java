@@ -45,7 +45,6 @@ public class DBInsertServiceImpl implements DBInsertService {
         CreateFileHttpResponse resp = new CreateFileHttpResponse();
         try {
             S1DocRecord record = new S1DocRecord();
-            record.setCtx("");
             record.setLastUpdateUserId(request.getHead().getUserId());
             record.setTitle(request.getTitle());
             record.setPermissionBu(request.getBu());

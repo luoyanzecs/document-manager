@@ -1,6 +1,7 @@
 package cn.luoyanze.common.util;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -12,6 +13,10 @@ import java.util.Locale;
 
 
 public class TimeUtil {
+
+    public static LocalDateTime now() {
+        return LocalDateTime.now(ZoneId.systemDefault());
+    }
 
     public static long getTimeStamp() {
         return LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();

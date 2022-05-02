@@ -1,5 +1,6 @@
 package cn.luoyanze.common.contract;
 
+import cn.luoyanze.common.contract.common.BaseHttpRequest;
 import cn.luoyanze.common.contract.common.RequestHead;
 import lombok.Getter;
 
@@ -11,9 +12,7 @@ import java.util.List;
  */
 
 @Getter
-public class DeleteTableItemHttpRequest {
-
-    private RequestHead head;
+public class DeleteTableItemHttpRequest extends BaseHttpRequest {
 
     /**
      * 用户选择的目录

@@ -8,20 +8,27 @@ import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.*;
 import cn.luoyanze.documentmanager.model.DocVO;
 import cn.luoyanze.documentmanager.model.FileComment;
+import cn.luoyanze.documentmanager.model.NodeModel;
+import cn.luoyanze.documentmanager.model.enums.NodeType;
 import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBSelectService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.util.Strings;
 import org.jooq.DSLContext;
 import org.jooq.Record2;
-import org.jooq.Record7;
-import org.jooq.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StreamUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,6 +36,7 @@ import static cn.luoyanze.common.contract.FileMenuHttpResponse.*;
 import static cn.luoyanze.common.model.HeadStatus.*;
 import static cn.luoyanze.documentmanager.dao.Tables.*;
 import static cn.luoyanze.documentmanager.dao.Tables.S1_DOC;
+import static cn.luoyanze.documentmanager.model.enums.AttributeType.*;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -121,7 +129,9 @@ public class DBSelectServiceImpl implements DBSelectService {
         List<DocVO> docVOS = dao.select(S1_DOC.PRIMARY_ID.as("id"),
                         S1_DOC.DIR_ID.as("parentId"),
                         S1_DOC.TITLE.as("title"))
-                .from(S1_DOC).fetchInto(DocVO.class);
+                .from(S1_DOC)
+                .where(S1_DOC.PERMISSION_BU.eq("").or(S1_DOC.PERMISSION_BU.contains(request.getBu().toString())))
+                .fetchInto(DocVO.class);
 
         FileMenuHttpResponse resp = new FileMenuHttpResponse();
         resp.setHead(new ResponseHead(SUCCESS));
@@ -175,6 +185,134 @@ public class DBSelectServiceImpl implements DBSelectService {
         return root;
     }
 
+    private NodeModel convertTo(S1NodeBO it) {
+        NodeModel node = new NodeModel();
+        node.setId(it.getUuid());
+        node.setParentId(it.getParentuuid());
+        node.setTag(it.getTag());
+        node.setIndex(it.getIndex());
+        node.setType(NodeType.toNode(it.getType()));
+        if (node.getType() == NodeType.TEXT) {
+            node.setText(it.getText());
+        }
+
+        Map<String, String> map = new HashMap<>();
+        map.put(ID.getValue(), it.getUuid());
+        map.put(PARENT.getValue(), it.getParentuuid());
+        map.put(INDEX.getValue(), it.getIndex());
+        map.put(HASH.getValue(), it.getHash());
+        map.put(STYLE.getValue(), it.getStyle());
+        map.put(CLASS.getValue(), it.getClass_());
+        map.putAll(JSON.parseObject(it.getAttribute(), new TypeReference<Map<String, String>>(){}));
+        node.setAttr(map);
+
+        return node;
+    }
+
+    /**
+     * 创建文本元素载体
+     * @param node
+     * @return
+     */
+    private List<NodeModel> createTextNodePair(NodeModel node) {
+        if (node.getType() != NodeType.TEXT) {
+            return Collections.emptyList();
+        }
+        LinkedList<NodeModel> res = new LinkedList<>();
+
+        NodeModel payload = new NodeModel();
+        payload.setTag(CUSTOM_TAG.getValue());
+        payload.setParentId(node.getParentId());
+        payload.setId(node.getId());
+        payload.setAttr(node.getAttr());
+        payload.setType(NodeType.ELEMENT);
+
+        NodeModel text = new NodeModel();
+        text.setParentId(node.getParentId());
+        text.setText(node.getText());
+        text.setType(NodeType.TEXT);
+
+        res.add(payload);
+        res.add(text);
+
+        return res;
+    }
+
+    // 生成顶层root
+    private NodeModel generateRoot(List<NodeModel> nodes) {
+        LinkedList<NodeModel> rootChildrent = nodes.stream()
+                .filter(it -> "0".equals(it.getParentId()))
+                .sorted((o1, o2) -> Double.parseDouble(o1.getIndex()) > Double.parseDouble(o2.getIndex()) ? 1 : -1)
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        NodeModel root = new NodeModel();
+        root.setChildren(rootChildrent);
+        root.setType(NodeType.ROOT);
+        HashMap<String, String> attr = new HashMap<>();
+        attr.put(ID.getValue(), "0");
+        attr.put(HASH.getValue(), "0");
+        attr.put(STYLE.getValue(), "");
+        attr.put(CLASS.getValue(), "");
+        root.setAttr(attr);
+
+        return root;
+    }
+
+    private NodeModel getFile(UserFileHttpRequset request) throws JsonProcessingException {
+        List<NodeModel> nodes = dao.selectFrom(S1_NODE)
+                .where(S1_NODE.DOC_ID.eq(request.getId()))
+                .and(S1_NODE.IS_DEL.eq(0))
+                .fetchInto(S1NodeBO.class)
+                .stream().map(this::convertTo)
+                .collect(Collectors.toList());
+
+        // 取出第一层节点
+        Queue<NodeModel> queue = nodes.stream()
+                .filter(it -> "0".equals(it.getParentId()))
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        while (!queue.isEmpty()) {
+            NodeModel node = queue.poll();
+            node.setChildren(
+                    nodes.stream().filter(it -> it.getParentId().equals(node.getId()))
+                            .sorted((o1, o2) -> Double.parseDouble(o1.getIndex()) > Double.parseDouble(o2.getIndex()) ? 1 : -1)
+                            .collect(Collectors.toCollection(LinkedList::new))
+            );
+            queue.addAll(node.getChildren());
+        }
+
+        NodeModel root = generateRoot(nodes);
+        queue = new LinkedList<>(List.of(root));
+
+        // 整理子节点顺序, 并为父节点添加z-children attribute
+        while (!queue.isEmpty()) {
+            NodeModel node = queue.poll();
+            if (node.getType() == NodeType.TEXT) {
+                continue;
+            }
+            if (CollectionUtils.isEmpty(node.getChildren())) {
+                node.getAttr().put(CHILDREN.getValue(), Strings.EMPTY);
+                node.setChildren(null);
+            } else {
+                LinkedList<NodeModel> finalChildren = new LinkedList<>();
+                node.getAttr().put(
+                        CHILDREN.getValue(),
+                        String.join(",", node.getChildren().stream().map(NodeModel::getId).collect(Collectors.toSet()))
+                );
+                node.getChildren().forEach(it -> {
+                    if (it.getType() == NodeType.TEXT) {
+                        finalChildren.addAll(createTextNodePair(it));
+                    } else {
+                        finalChildren.add(it);
+                    }
+                });
+                node.setChildren(finalChildren);
+                queue.addAll(finalChildren);
+            }
+        }
+        return root;
+    }
+
     @Override
     public UserFileHttpResponse selectFileById(UserFileHttpRequset request) {
         UserFileHttpResponse resp = new UserFileHttpResponse();
@@ -194,6 +332,13 @@ public class DBSelectServiceImpl implements DBSelectService {
                 return resp;
             }
 
+            NodeModel root = getFile(request);
+            resp.setRootAttr(root.getAttr());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String fileJsonValue = objectMapper.writeValueAsString(root);
+
             String editorName = dao.select(S1_USER.ACCOUNT)
                     .from(S1_USER)
                     .where(S1_USER.PRIMARY_ID.eq(doc.getUserId()))
@@ -204,6 +349,10 @@ public class DBSelectServiceImpl implements DBSelectService {
                     .and(S1_ATTACH.ISDEL.eq(0))
                     .fetchInto(UserFileHttpResponse.Attach.class);
 
+
+            resp.setHead(new ResponseHead(SUCCESS));
+            resp.setFile(new UserFileHttpResponse.File(editorName, TimeUtil.formatter(doc.getLastUpdateTime()), fileJsonValue, attaches));
+
             dao.insertInto(S1_OPERATE)
                     .set(S1_OPERATE.TYPE, OpraterType.BROWSER_FILE.getId())
                     .set(S1_OPERATE.TIME, LocalDateTime.now(ZoneId.systemDefault()))
@@ -211,9 +360,6 @@ public class DBSelectServiceImpl implements DBSelectService {
                     .set(S1_OPERATE.USER_ID, request.getHead().getUserId())
                     .set(S1_OPERATE.CONTENT, "文档名: " + doc.getTitle() + ", 用户名: " + user.getAccount())
                     .execute();
-
-            resp.setHead(new ResponseHead(SUCCESS));
-            resp.setFile(new UserFileHttpResponse.File(editorName, TimeUtil.formatter(doc.getLastUpdateTime()), doc.getCtx(), attaches));
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             resp.setHead(new ResponseHead(FILE_SELECT_ERROR));

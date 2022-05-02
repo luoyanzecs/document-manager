@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -22,6 +23,9 @@ public class UserFileHttpResponse extends BaseHttpResponse {
 
     @JsonProperty("fileInfo")
     private File file;
+
+    @JsonProperty("rootAttr")
+    private Map<String, String> rootAttr;
 
     @Data
     @AllArgsConstructor
