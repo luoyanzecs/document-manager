@@ -4,6 +4,7 @@ import cn.luoyanze.common.contract.common.BaseHttpResponse;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -16,13 +17,14 @@ import java.util.List;
 @Data
 public class SearchHttpResponse extends BaseHttpResponse {
 
-    private ResponseHead head;
     private List<Result> searchResults;
 
     @Data
-    static class Result {
+    @Accessors(chain = true)
+    public static class Result {
         private Integer id;
         private String title;
         private String ctx;
+        private String author;
     }
 }

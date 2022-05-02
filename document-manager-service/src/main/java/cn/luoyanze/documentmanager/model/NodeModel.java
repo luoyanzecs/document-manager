@@ -1,6 +1,5 @@
 package cn.luoyanze.documentmanager.model;
 
-import cn.luoyanze.documentmanager.model.enums.NodeType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -20,7 +19,7 @@ public class NodeModel {
     private Map<String, String> attr;
 
     @JsonProperty("node")
-    private NodeType type;
+    private String type;
 
     @JsonProperty("tag")
     private String tag;

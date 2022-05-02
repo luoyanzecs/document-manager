@@ -2,12 +2,11 @@ package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.ResponseHead;
-import cn.luoyanze.common.contract.entity.DomNode;
 import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1AttachBO;
 import cn.luoyanze.documentmanager.dao.tables.records.S1NodeRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
-import cn.luoyanze.documentmanager.model.enums.NodeType;
+import cn.luoyanze.documentmanager.model.NodeType;
 import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
 import com.alibaba.fastjson.JSON;
@@ -64,7 +63,7 @@ public class DBUpdateServiceImpl implements DBUpdateService {
             dao.batchUpdate(
                     Stream.of(
                             request.getUpdateNodes().stream()
-                                    .filter(it -> NodeType.TEXT.getType().equalsIgnoreCase(it.getType()))
+                                    .filter(it -> NodeType.TEXT.equalsIgnoreCase(it.getType()))
                                     .map(it -> new S1NodeRecord() {{
                                         setUuid(it.getId());
                                         setText(it.getText());
@@ -73,7 +72,7 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                                         setLastTime(TimeUtil.now());
                                     }}),
                             request.getUpdateNodes().stream()
-                                    .filter(it -> NodeType.ELEMENT.getType().equalsIgnoreCase(it.getType()))
+                                    .filter(it -> NodeType.ELEMENT.equalsIgnoreCase(it.getType()))
                                     .map(it -> new S1NodeRecord() {{
                                         setUuid(it.getId());
                                         setStyle(it.getStyles());

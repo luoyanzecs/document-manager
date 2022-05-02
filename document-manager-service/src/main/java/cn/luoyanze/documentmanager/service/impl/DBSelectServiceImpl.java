@@ -9,7 +9,7 @@ import cn.luoyanze.documentmanager.dao.tables.pojos.*;
 import cn.luoyanze.documentmanager.model.DocVO;
 import cn.luoyanze.documentmanager.model.FileComment;
 import cn.luoyanze.documentmanager.model.NodeModel;
-import cn.luoyanze.documentmanager.model.enums.NodeType;
+import cn.luoyanze.documentmanager.model.NodeType;
 import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBSelectService;
 import com.alibaba.fastjson.JSON;
