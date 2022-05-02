@@ -7,6 +7,7 @@ import cn.luoyanze.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1AttachBO;
 import cn.luoyanze.documentmanager.dao.tables.records.S1NodeRecord;
 import cn.luoyanze.documentmanager.exception.CustomException;
+import cn.luoyanze.documentmanager.model.enums.NodeType;
 import cn.luoyanze.documentmanager.model.enums.OpraterType;
 import cn.luoyanze.documentmanager.service.DBUpdateService;
 import com.alibaba.fastjson.JSON;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,11 +51,20 @@ public class DBUpdateServiceImpl implements DBUpdateService {
     public UpdateFileHttpResponse updateFile(UpdateFileHttpRequest request) {
         UpdateFileHttpResponse resp = new UpdateFileHttpResponse();
         try {
+            Queue<String> queue = new LinkedList<>(request.getDeleteIds());
+            Set<String> deleteIds = new HashSet<>();
+
+            while (!queue.isEmpty()) {
+                String poll = queue.poll();
+                List<String> ids = dao.select(S1_NODE.UUID).from(S1_NODE).where(S1_NODE.PARENTUUID.eq(poll)).fetchInto(String.class);
+                deleteIds.add(poll);
+                queue.addAll(ids);
+            }
 
             dao.batchUpdate(
                     Stream.of(
                             request.getUpdateNodes().stream()
-                                    .filter(it -> "text".equalsIgnoreCase(it.getType()))
+                                    .filter(it -> NodeType.TEXT.getType().equalsIgnoreCase(it.getType()))
                                     .map(it -> new S1NodeRecord() {{
                                         setUuid(it.getId());
                                         setText(it.getText());
@@ -62,7 +73,7 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                                         setLastTime(TimeUtil.now());
                                     }}),
                             request.getUpdateNodes().stream()
-                                    .filter(it -> "element".equalsIgnoreCase(it.getType()))
+                                    .filter(it -> NodeType.ELEMENT.getType().equalsIgnoreCase(it.getType()))
                                     .map(it -> new S1NodeRecord() {{
                                         setUuid(it.getId());
                                         setStyle(it.getStyles());
@@ -71,7 +82,7 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                                         setHash(it.getHash());
                                         setLastTime(TimeUtil.now());
                                     }}),
-                            request.getDeleteIds().stream()
+                            deleteIds.stream()
                                     .map(it -> new S1NodeRecord() {{
                                         setUuid(it);
                                         setIsDel(1);

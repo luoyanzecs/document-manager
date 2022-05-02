@@ -73,7 +73,7 @@ public class S1NodeTB extends TableImpl<S1NodeRecord> {
     /**
      * The column <code>document_manager.S1_NODE.tag</code>. html标签
      */
-    public final TableField<S1NodeRecord, String> TAG = createField(DSL.name("tag"), SQLDataType.CHAR(48).nullable(false), this, "html标签");
+    public final TableField<S1NodeRecord, String> TAG = createField(DSL.name("tag"), SQLDataType.CHAR(48), this, "html标签");
 
     /**
      * The column <code>document_manager.S1_NODE.type</code>. 节点类型

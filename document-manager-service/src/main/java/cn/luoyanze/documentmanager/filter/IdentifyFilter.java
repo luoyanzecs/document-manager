@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  */
 @Component
 @Order(1)
-@WebFilter()
+@WebFilter
 public class IdentifyFilter implements Filter {
 
     private final static Logger logger = LoggerFactory.getLogger(IdentifyFilter.class);
