@@ -3,7 +3,6 @@ package cn.luoyanze.documentmanager.search;
 import cn.luoyanze.documentmanager.model.SearchModel;
 import cn.luoyanze.documentmanager.model.NodeType;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;

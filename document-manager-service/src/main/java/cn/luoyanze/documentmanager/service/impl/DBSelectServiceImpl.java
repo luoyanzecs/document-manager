@@ -215,7 +215,7 @@ public class DBSelectServiceImpl implements DBSelectService {
      * @return
      */
     private List<NodeModel> createTextNodePair(NodeModel node) {
-        if (node.getType() != NodeType.TEXT) {
+        if (!Objects.equals(node.getType(), NodeType.TEXT)) {
             return Collections.emptyList();
         }
         LinkedList<NodeModel> res = new LinkedList<>();
@@ -300,7 +300,7 @@ public class DBSelectServiceImpl implements DBSelectService {
                         String.join(",", node.getChildren().stream().map(NodeModel::getId).collect(Collectors.toSet()))
                 );
                 node.getChildren().forEach(it -> {
-                    if (it.getType() == NodeType.TEXT) {
+                    if (Objects.equals(it.getType(), NodeType.TEXT)) {
                         finalChildren.addAll(createTextNodePair(it));
                     } else {
                         finalChildren.add(it);

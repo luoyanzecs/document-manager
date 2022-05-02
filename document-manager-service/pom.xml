@@ -83,7 +83,7 @@
                         <driver>com.mysql.cj.jdbc.Driver</driver>
                         <url>jdbc:mysql://localhost:3306/document_manager?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</url>
                         <user>root</user>
-                        <password>qhf999618</password>
+                        <password>990610</password>
                     </jdbc>
                     <generator>
                         <database>

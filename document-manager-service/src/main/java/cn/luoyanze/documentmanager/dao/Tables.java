@@ -13,6 +13,7 @@ import cn.luoyanze.documentmanager.dao.tables.S1LogTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NodeTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NoticeTB;
 import cn.luoyanze.documentmanager.dao.tables.S1OperateTB;
+import cn.luoyanze.documentmanager.dao.tables.S1TraceTB;
 import cn.luoyanze.documentmanager.dao.tables.S1UserTB;
 
 
@@ -66,6 +67,11 @@ public class Tables {
      * The table <code>document_manager.S1_OPERATE</code>.
      */
     public static final S1OperateTB S1_OPERATE = S1OperateTB.S1_OPERATE;
+
+    /**
+     * The table <code>document_manager.S1_TRACE</code>.
+     */
+    public static final S1TraceTB S1_TRACE = S1TraceTB.S1_TRACE;
 
     /**
      * The table <code>document_manager.S1_USER</code>.

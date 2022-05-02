@@ -13,6 +13,7 @@ import cn.luoyanze.documentmanager.dao.tables.S1LogTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NodeTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NoticeTB;
 import cn.luoyanze.documentmanager.dao.tables.S1OperateTB;
+import cn.luoyanze.documentmanager.dao.tables.S1TraceTB;
 import cn.luoyanze.documentmanager.dao.tables.S1UserTB;
 import cn.luoyanze.documentmanager.dao.tables.records.S1AttachRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1BuRecord;
@@ -23,6 +24,7 @@ import cn.luoyanze.documentmanager.dao.tables.records.S1LogRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1NodeRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1NoticeRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1OperateRecord;
+import cn.luoyanze.documentmanager.dao.tables.records.S1TraceRecord;
 import cn.luoyanze.documentmanager.dao.tables.records.S1UserRecord;
 
 import org.jooq.ForeignKey;
@@ -52,6 +54,7 @@ public class Keys {
     public static final UniqueKey<S1NodeRecord> KEY_S1_NODE_PRIMARY = Internal.createUniqueKey(S1NodeTB.S1_NODE, DSL.name("KEY_S1_NODE_PRIMARY"), new TableField[] { S1NodeTB.S1_NODE.UUID }, true);
     public static final UniqueKey<S1NoticeRecord> KEY_S1_NOTICE_PRIMARY = Internal.createUniqueKey(S1NoticeTB.S1_NOTICE, DSL.name("KEY_S1_NOTICE_PRIMARY"), new TableField[] { S1NoticeTB.S1_NOTICE.PRIMARY_ID }, true);
     public static final UniqueKey<S1OperateRecord> KEY_S1_OPERATE_PRIMARY = Internal.createUniqueKey(S1OperateTB.S1_OPERATE, DSL.name("KEY_S1_OPERATE_PRIMARY"), new TableField[] { S1OperateTB.S1_OPERATE.PRIMARY_ID }, true);
+    public static final UniqueKey<S1TraceRecord> KEY_S1_TRACE_PRIMARY = Internal.createUniqueKey(S1TraceTB.S1_TRACE, DSL.name("KEY_S1_TRACE_PRIMARY"), new TableField[] { S1TraceTB.S1_TRACE.UUID }, true);
     public static final UniqueKey<S1UserRecord> KEY_S1_USER_PRIMARY = Internal.createUniqueKey(S1UserTB.S1_USER, DSL.name("KEY_S1_USER_PRIMARY"), new TableField[] { S1UserTB.S1_USER.PRIMARY_ID }, true);
 
     // -------------------------------------------------------------------------
@@ -68,5 +71,6 @@ public class Keys {
     public static final ForeignKey<S1NoticeRecord, S1UserRecord> S1_NOTICE_S1_USER_PRIMARY_ID_FK = Internal.createForeignKey(S1NoticeTB.S1_NOTICE, DSL.name("S1_NOTICE_S1_USER_primary_id_fk"), new TableField[] { S1NoticeTB.S1_NOTICE.USER_ID }, Keys.KEY_S1_USER_PRIMARY, new TableField[] { S1UserTB.S1_USER.PRIMARY_ID }, true);
     public static final ForeignKey<S1OperateRecord, S1UserRecord> S1_OPERATE_IBFK_1 = Internal.createForeignKey(S1OperateTB.S1_OPERATE, DSL.name("s1_operate_ibfk_1"), new TableField[] { S1OperateTB.S1_OPERATE.USER_ID }, Keys.KEY_S1_USER_PRIMARY, new TableField[] { S1UserTB.S1_USER.PRIMARY_ID }, true);
     public static final ForeignKey<S1OperateRecord, S1DocRecord> S1_OPERATE_IBFK_2 = Internal.createForeignKey(S1OperateTB.S1_OPERATE, DSL.name("s1_operate_ibfk_2"), new TableField[] { S1OperateTB.S1_OPERATE.DOC_ID }, Keys.KEY_S1_DOC_PRIMARY, new TableField[] { S1DocTB.S1_DOC.PRIMARY_ID }, true);
+    public static final ForeignKey<S1TraceRecord, S1UserRecord> S1_TRACE_IBFK_1 = Internal.createForeignKey(S1TraceTB.S1_TRACE, DSL.name("s1_trace_ibfk_1"), new TableField[] { S1TraceTB.S1_TRACE.USER_ID }, Keys.KEY_S1_USER_PRIMARY, new TableField[] { S1UserTB.S1_USER.PRIMARY_ID }, true);
     public static final ForeignKey<S1UserRecord, S1BuRecord> S1_USER_IBFK_1 = Internal.createForeignKey(S1UserTB.S1_USER, DSL.name("s1_user_ibfk_1"), new TableField[] { S1UserTB.S1_USER.BU_ID }, Keys.KEY_S1_BU_PRIMARY, new TableField[] { S1BuTB.S1_BU.PRIMARY_ID }, true);
 }

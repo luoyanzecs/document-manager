@@ -13,6 +13,7 @@ import cn.luoyanze.documentmanager.dao.tables.S1LogTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NodeTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NoticeTB;
 import cn.luoyanze.documentmanager.dao.tables.S1OperateTB;
+import cn.luoyanze.documentmanager.dao.tables.S1TraceTB;
 import cn.luoyanze.documentmanager.dao.tables.S1UserTB;
 
 import java.util.Arrays;
@@ -82,6 +83,11 @@ public class DocumentManager extends SchemaImpl {
     public final S1OperateTB S1_OPERATE = S1OperateTB.S1_OPERATE;
 
     /**
+     * The table <code>document_manager.S1_TRACE</code>.
+     */
+    public final S1TraceTB S1_TRACE = S1TraceTB.S1_TRACE;
+
+    /**
      * The table <code>document_manager.S1_USER</code>.
      */
     public final S1UserTB S1_USER = S1UserTB.S1_USER;
@@ -111,6 +117,7 @@ public class DocumentManager extends SchemaImpl {
             S1NodeTB.S1_NODE,
             S1NoticeTB.S1_NOTICE,
             S1OperateTB.S1_OPERATE,
+            S1TraceTB.S1_TRACE,
             S1UserTB.S1_USER);
     }
 }

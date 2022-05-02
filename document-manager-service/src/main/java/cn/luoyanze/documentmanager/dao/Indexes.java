@@ -9,6 +9,7 @@ import cn.luoyanze.documentmanager.dao.tables.S1DirTB;
 import cn.luoyanze.documentmanager.dao.tables.S1DocTB;
 import cn.luoyanze.documentmanager.dao.tables.S1NodeTB;
 import cn.luoyanze.documentmanager.dao.tables.S1OperateTB;
+import cn.luoyanze.documentmanager.dao.tables.S1TraceTB;
 import cn.luoyanze.documentmanager.dao.tables.S1UserTB;
 
 import org.jooq.Index;
@@ -36,5 +37,6 @@ public class Indexes {
     public static final Index S1_DOC_LAST_UPDATE_USER_ID = Internal.createIndex(DSL.name("last_update_user_id"), S1DocTB.S1_DOC, new OrderField[] { S1DocTB.S1_DOC.LAST_UPDATE_USER_ID }, false);
     public static final Index S1_DOC_USER_ID = Internal.createIndex(DSL.name("user_id"), S1DocTB.S1_DOC, new OrderField[] { S1DocTB.S1_DOC.USER_ID }, false);
     public static final Index S1_OPERATE_USER_ID = Internal.createIndex(DSL.name("user_id"), S1OperateTB.S1_OPERATE, new OrderField[] { S1OperateTB.S1_OPERATE.USER_ID }, false);
+    public static final Index S1_TRACE_USER_ID = Internal.createIndex(DSL.name("user_id"), S1TraceTB.S1_TRACE, new OrderField[] { S1TraceTB.S1_TRACE.USER_ID }, false);
     public static final Index S1_ATTACH_USER_PRIMARY_ID = Internal.createIndex(DSL.name("user_primary_id"), S1AttachTB.S1_ATTACH, new OrderField[] { S1AttachTB.S1_ATTACH.USER_PRIMARY_ID }, false);
 }

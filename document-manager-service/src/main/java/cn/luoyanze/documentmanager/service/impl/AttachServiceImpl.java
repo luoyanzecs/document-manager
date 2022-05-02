@@ -2,6 +2,7 @@ package cn.luoyanze.documentmanager.service.impl;
 
 import cn.luoyanze.common.contract.AddAttachHttpResponse;
 import cn.luoyanze.common.contract.DownloadAttachHttpRequest;
+import cn.luoyanze.common.contract.DownloadAttachHttpResponse;
 import cn.luoyanze.common.contract.common.RequestHead;
 import cn.luoyanze.common.contract.common.ResponseHead;
 import cn.luoyanze.documentmanager.dao.tables.pojos.S1AttachBO;
@@ -98,6 +99,7 @@ public class AttachServiceImpl implements AttachService {
 
     @Override
     public Object download(DownloadAttachHttpRequest request) throws CustomException {
+        DownloadAttachHttpResponse resp = new DownloadAttachHttpResponse();
         try {
             S1AttachBO attach = dao.selectFrom(S1_ATTACH)
                     .where(S1_ATTACH.PRIMARY_ID.eq(request.getAttachId()))
@@ -105,7 +107,8 @@ public class AttachServiceImpl implements AttachService {
                     .fetchOneInto(S1AttachBO.class);
 
             if (attach == null) {
-                throw new CustomException("", FILE_NOT_EXISIT);
+                resp.setHead(new ResponseHead(FILE_NOT_EXISIT));
+                return resp.toResponse();
             }
 
             String downloadFileName = new String(attach.getName().getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
@@ -121,7 +124,8 @@ public class AttachServiceImpl implements AttachService {
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new CustomException("该文件不存在", FILE_NOT_EXISIT);
+            resp.setHead(new ResponseHead(FILE_NOT_EXISIT));
+            return resp.toResponse();
         }
     }
 }

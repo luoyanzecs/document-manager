@@ -62,7 +62,7 @@ public class CommonController {
     /**
      * 返回服务器数据
      */
-    @GetMapping(value = "/check")
+    @GetMapping(value = "/checkHealth")
     @ResponseBody
     public ResponseEntity<BaseHttpResponse> execute(){
         return  checkHealthService.checkHealth().toResponse();
