@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class IdentifyFilter implements Filter {
 
     private final static Logger logger = LoggerFactory.getLogger(IdentifyFilter.class);
-    private final static Set<String> EXCLUDE_URLS = Set.of("/api/login");
+    private final static Set<String> EXCLUDE_URLS = Set.of("/api/login","/api/check");
 
     private final MultipartResolver multipartResolver;
 

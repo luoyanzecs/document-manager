@@ -2,6 +2,7 @@ package cn.luoyanze.documentmanager.controller;
 
 import cn.luoyanze.common.contract.*;
 import cn.luoyanze.common.contract.common.BaseHttpResponse;
+import cn.luoyanze.documentmanager.service.CheckHealthService;
 import cn.luoyanze.documentmanager.service.DBSelectService;
 import cn.luoyanze.documentmanager.service.LoginApiService;
 import cn.luoyanze.documentmanager.service.ElasticSearchService;
@@ -20,11 +21,14 @@ public class CommonController {
     private final LoginApiService loginApiService;
     private final ElasticSearchService elasticSearchService;
     private final DBSelectService dbSelectService;
+    private final CheckHealthService checkHealthService;
 
-    public CommonController(LoginApiService loginApiService, ElasticSearchService elasticSearchService, DBSelectService dbSelectService) {
+    public CommonController(LoginApiService loginApiService, ElasticSearchService elasticSearchService, DBSelectService dbSelectService,CheckHealthService checkHealthService) {
         this.loginApiService = loginApiService;
         this.dbSelectService = dbSelectService;
         this.elasticSearchService = elasticSearchService;
+        this.checkHealthService =checkHealthService;
+
     }
 
     @PostMapping(value = "/login")
@@ -53,5 +57,14 @@ public class CommonController {
     public ResponseEntity<BaseHttpResponse> execute(@RequestBody GetBuHttpRequest request) {
         return dbSelectService.selectAllBu(request).toResponse();
 
+    }
+
+    /**
+     * 返回服务器数据
+     */
+    @GetMapping(value = "/check")
+    @ResponseBody
+    public ResponseEntity<BaseHttpResponse> execute(){
+        return  checkHealthService.checkHealth().toResponse();
     }
 }
