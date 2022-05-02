@@ -32,11 +32,12 @@ import static cn.luoyanze.common.model.HeadStatus.INSERT_USER_FAIL;
 @Service
 public class CheckHealthServiceimpl implements CheckHealthService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckHealthServiceimpl.class);
+
     @Override
     public CheckHealthHttpResponse checkHealth() {
         CheckHealthHttpResponse resp = new CheckHealthHttpResponse();
-        try{
-            Map result = new LinkedHashMap();
+        try {
+            Map<String, String> result = new LinkedHashMap<>();
             Runtime r = Runtime.getRuntime();
             File[] files = File.listRoots();
             for (File file : files) {
@@ -45,8 +46,8 @@ public class CheckHealthServiceimpl implements CheckHealthService {
                 String free = new DecimalFormat("#.#").format(file.getFreeSpace() * 1.0 / 1024 / 1024 / 1024) + "G";
 
                 String path = file.getPath();
-                result.put(path+"磁盘总空间", total);
-                result.put(path+"磁盘空闲空间", free);
+                result.put(path + "磁盘总空间", total);
+                result.put(path + "磁盘空闲空间", free);
 
             }
             OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
@@ -69,7 +70,7 @@ public class CheckHealthServiceimpl implements CheckHealthService {
             String jvmMaxMem = new DecimalFormat("#.#").format(maxMemorySize * 1.0 / 1024 / 1024) + "M";
             String jvmUsedMem = new DecimalFormat("#.#").format(usedMemorySize * 1.0 / 1024 / 1024) + "M";
             result.put("程序启动时间", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(ManagementFactory.getRuntimeMXBean().getStartTime())));
-            result.put("JVM可以使用的处理器个数", r.availableProcessors());
+            result.put("JVM可以使用的处理器个数", r.availableProcessors() + "");
             result.put("物理总内存", totalMemorySize);
             result.put("已使用物理内存", usedMemory);
             result.put("剩余物理内存", freePhysicalMemorySize);
@@ -80,8 +81,8 @@ public class CheckHealthServiceimpl implements CheckHealthService {
             result.put("JVM已使用的内存", jvmUsedMem);
 
             resp.setHead(new ResponseHead(HeadStatus.SUCCESS));
-            resp.setItems((LinkedHashMap) result);
-            } catch (Exception e){
+            resp.setItems(result);
+        } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
         return resp;

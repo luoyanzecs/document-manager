@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author
@@ -16,5 +17,5 @@ import java.util.LinkedHashMap;
 @Data
 public class CheckHealthHttpResponse extends BaseHttpResponse {
     @JsonProperty("items")
-    private LinkedHashMap  items;
+    private Map<String, String> items;
 }
