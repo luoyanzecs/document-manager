@@ -1,28 +1,11 @@
 package cn.luoyanze.documentmanager.search;
 
-import cn.luoyanze.documentmanager.model.SearchModel;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.FSDirectory;
 import org.junit.jupiter.api.Test;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
-import static cn.luoyanze.documentmanager.model.SearchModel.wrapperToSearchModel;
+import static cn.luoyanze.documentmanager.service.model.SearchModel.wrapperToSearchModel;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]

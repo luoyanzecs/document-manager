@@ -1,11 +1,14 @@
 package cn.luoyanze.documentmanager.controller;
 
-import cn.luoyanze.common.contract.*;
-import cn.luoyanze.common.contract.common.BaseHttpResponse;
-import cn.luoyanze.documentmanager.service.CheckHealthService;
-import cn.luoyanze.documentmanager.service.DBSelectService;
-import cn.luoyanze.documentmanager.service.LoginApiService;
-import cn.luoyanze.documentmanager.service.ElasticSearchService;
+import cn.luoyanze.documentmanager.common.contract.GetBuHttpRequest;
+import cn.luoyanze.documentmanager.common.contract.LoginHttpRequest;
+import cn.luoyanze.documentmanager.common.contract.NoticeHttpRequset;
+import cn.luoyanze.documentmanager.common.contract.SearchHttpRequest;
+import cn.luoyanze.documentmanager.common.contract.common.BaseHttpResponse;
+import cn.luoyanze.documentmanager.service.service.CheckHealthService;
+import cn.luoyanze.documentmanager.service.service.DBSelectService;
+import cn.luoyanze.documentmanager.service.service.LoginApiService;
+import cn.luoyanze.documentmanager.service.service.ElasticSearchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,10 +1,10 @@
 package cn.luoyanze.documentmanager.controller;
 
-import cn.luoyanze.common.contract.*;
-import cn.luoyanze.common.model.HeadStatus;
-import cn.luoyanze.documentmanager.service.DBInsertService;
-import cn.luoyanze.documentmanager.service.DBUpdateService;
-import cn.luoyanze.documentmanager.service.FilterSearchService;
+import cn.luoyanze.documentmanager.common.contract.*;
+import cn.luoyanze.documentmanager.common.model.HeadStatus;
+import cn.luoyanze.documentmanager.service.service.DBInsertService;
+import cn.luoyanze.documentmanager.service.service.DBUpdateService;
+import cn.luoyanze.documentmanager.service.service.FilterSearchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;

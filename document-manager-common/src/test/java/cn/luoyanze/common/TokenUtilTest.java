@@ -1,7 +1,7 @@
 package cn.luoyanze.common;
 
-import cn.luoyanze.common.model.TokenResult;
-import cn.luoyanze.common.util.TokenUtil;
+import cn.luoyanze.documentmanager.common.model.TokenResult;
+import cn.luoyanze.documentmanager.common.util.TokenUtil;
 import org.junit.jupiter.api.Test;
 
 /**

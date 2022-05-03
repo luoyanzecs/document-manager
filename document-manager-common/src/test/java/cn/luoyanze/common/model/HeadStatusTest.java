@@ -1,5 +1,6 @@
 package cn.luoyanze.common.model;
 
+import cn.luoyanze.documentmanager.common.model.HeadStatus;
 import org.junit.jupiter.api.Test;
 
 /**
