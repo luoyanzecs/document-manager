@@ -27,6 +27,8 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,12 +45,13 @@ import static cn.luoyanze.documentmanager.service.model.SearchModel.wrapperToSea
 public class LuceneIndexManager {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(LuceneIndexManager.class);
+    private static final ExecutorService executors = Executors.newFixedThreadPool(4);
 
     @Value("${cn.luoyanze.lucene.index.dir}")
     private String path;
     private final DSLContext dao;
-    private IndexWriter indexWriter;
-    private IndexSearcher indexSearcher;
+    private Indexer indexer;
+
 
     public LuceneIndexManager(DSLContext dao) {
         this.dao = dao;
@@ -57,66 +60,71 @@ public class LuceneIndexManager {
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 24)
     @PostConstruct
     public void init() throws IOException {
-        IndexWriter indexWriter = getIndexWriter();
+        if (indexer == null) {
+            indexer = new Indexer(path);
+        }
+        IndexWriter indexWriter = indexer.getIndexWriter();
         indexWriter.deleteAll();
-        indexWriter.addDocuments(createInitIndex());
-        indexWriter.commit();
         indexWriter.close();
+        add(createInitIndex());
     }
 
-    private IndexWriter getIndexWriter() {
-        if (indexWriter == null || !indexWriter.isOpen()) {
+    static class Indexer {
+        private final String path;
+        private IndexWriter indexWriter;
+        private IndexSearcher indexSearcher;
+
+        Indexer(String path) {
+            this.path = path;
+        }
+
+        public IndexWriter getIndexWriter() {
             return createWriter();
         }
-        return indexWriter;
-    }
 
-    private IndexSearcher getIndexSearcher() {
-        if (indexSearcher == null) {
+        public IndexSearcher getIndexSearcher() {
             return createSearcher();
         }
-        return indexSearcher;
-    }
 
-    private IndexSearcher createSearcher() {
-        try {
-            DirectoryReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(path)));
-            return new IndexSearcher(reader);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            return null;
+        private IndexSearcher createSearcher() {
+            try {
+                DirectoryReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(path)));
+                return new IndexSearcher(reader);
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage(), e);
+                return null;
+            }
         }
-    }
 
 
-    private IndexWriter createWriter() {
-        try {
-            Analyzer analyzer = new IKAnalyzer();
-            FSDirectory directory = FSDirectory.open(Paths.get(path));
-            return new IndexWriter(directory, new IndexWriterConfig(analyzer));
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            return null;
+        private IndexWriter createWriter() {
+            try {
+                Analyzer analyzer = new IKAnalyzer();
+                FSDirectory directory = FSDirectory.open(Paths.get(path));
+                return new IndexWriter(directory, new IndexWriterConfig(analyzer));
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage(), e);
+                return null;
+            }
         }
+
     }
 
     // 生成索引字段
-    private List<Document> createInitIndex() {
-        List<SearchModel> searchModels
-                = dao.select(
-                        S1_NODE.UUID.as(SearchModel.NODE_ID),
-                        S1_NODE.TEXT.as(SearchModel.TEXT),
-                        S1_NODE.DOC_ID.as(SearchModel.FILE_ID),
-                        S1_DOC.TITLE.as(SearchModel.TITLE),
-                        S1_USER.ACCOUNT.as(SearchModel.AUTHOR)
-                ).from(S1_NODE)
-                .leftJoin(S1_DOC).on(S1_NODE.DOC_ID.eq(S1_DOC.PRIMARY_ID))
-                .leftJoin(S1_USER).on(S1_DOC.USER_ID.eq(S1_USER.PRIMARY_ID))
-                .where(S1_NODE.IS_DEL.eq(0))
-                .and(S1_NODE.TYPE.eq(NodeType.TEXT))
-                .fetchInto(SearchModel.class);
+    private List<SearchModel> createInitIndex() {
 
-        return searchModels.stream().map(SearchModel::wrapperToDocument).collect(Collectors.toList());
+        return dao.select(
+                S1_NODE.UUID.as(SearchModel.NODE_ID),
+                S1_NODE.TEXT.as(SearchModel.TEXT),
+                S1_NODE.DOC_ID.as(SearchModel.FILE_ID),
+                S1_DOC.TITLE.as(SearchModel.TITLE),
+                S1_USER.ACCOUNT.as(SearchModel.AUTHOR)
+        ).from(S1_NODE)
+        .leftJoin(S1_DOC).on(S1_NODE.DOC_ID.eq(S1_DOC.PRIMARY_ID))
+        .leftJoin(S1_USER).on(S1_DOC.USER_ID.eq(S1_USER.PRIMARY_ID))
+        .where(S1_NODE.IS_DEL.eq(0))
+        .and(S1_NODE.TYPE.eq(NodeType.TEXT))
+        .fetchInto(SearchModel.class);
     }
 
     /**
@@ -124,9 +132,9 @@ public class LuceneIndexManager {
      *
      * @param model
      */
-    public synchronized void add(SearchModel model) {
+    private synchronized void addSync(SearchModel model) {
         try {
-            IndexWriter indexWriter = getIndexWriter();
+            IndexWriter indexWriter = indexer.getIndexWriter();
             indexWriter.addDocument(wrapperToDocument(model));
             indexWriter.close();
         } catch (IOException e) {
@@ -134,34 +142,59 @@ public class LuceneIndexManager {
         }
     }
 
+    public void add(SearchModel model) {
+        executors.submit(() -> addSync(model));
+    }
+
     public void add(List<SearchModel> models) {
         models.forEach(this::add);
     }
 
-    public synchronized void deleteByNodeId(@NotNull String nodeId) {
+    private synchronized void deleteByNodeIdSync(@NotNull String nodeId) {
         try {
-            IndexWriter indexWriter = getIndexWriter();
-            indexWriter.deleteDocuments(new Term(SearchModel.NODE_ID, nodeId));
+            IndexWriter indexWriter = indexer.getIndexWriter();
+            long l = indexWriter.deleteDocuments(new Term(SearchModel.NODE_ID, nodeId));
+            System.out.println(l);
             indexWriter.close();
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
 
+    public void deleteByNodeId(String id) {
+        executors.submit(() -> deleteByNodeIdSync(id));
+    }
+
     public void deleteByNodeIds(@NotNull List<String> nodeIds) {
-        nodeIds.forEach(this::deleteByNodeId);
+            nodeIds.forEach(this::deleteByNodeId);
+    }
+
+    private synchronized void updateTextSync(String id, String text) {
+        try {
+            Document doc = new Document();
+            doc.add(new TextField(SearchModel.TEXT, text, Field.Store.YES));
+            IndexWriter indexWriter = indexer.getIndexWriter();
+            indexWriter.updateDocument(new Term(SearchModel.NODE_ID, id), doc);
+            indexWriter.close();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    public void updateText(String id, String text) {
+        executors.submit(() -> updateText(id, text));
     }
 
     private List<SearchModel> searchFields(String text, String field, int size) {
         try {
             QueryParser queryParser = new QueryParser(field, new IKAnalyzer());
             Query parse = queryParser.parse(text);
-            TopDocs textDocs = getIndexSearcher().search(parse, size);
+            TopDocs textDocs = indexer.getIndexSearcher().search(parse, size);
 
             ArrayList<SearchModel> searchModels = new ArrayList<>();
             for (ScoreDoc doc : textDocs.scoreDocs) {
                 searchModels.add(
-                        wrapperToSearchModel(getIndexSearcher().doc(doc.doc), doc.score)
+                        wrapperToSearchModel(indexer.getIndexSearcher().doc(doc.doc), doc.score)
                 );
             }
             return searchModels;
@@ -200,16 +233,6 @@ public class LuceneIndexManager {
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return Collections.emptyList();
-        }
-    }
-
-    public void updateText(String id, String text) {
-        try {
-            Document doc = new Document();
-            doc.add(new TextField(SearchModel.TEXT, text, Field.Store.YES));
-            getIndexWriter().updateDocument(new Term(SearchModel.NODE_ID, id), doc);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
         }
     }
 }

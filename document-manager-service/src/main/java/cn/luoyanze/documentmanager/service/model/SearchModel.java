@@ -54,9 +54,9 @@ public class SearchModel {
 
     public static Document wrapperToDocument(SearchModel model) {
         Document doc = new Document();
-        doc.add(new StoredField(NODE_ID, model.getNodeId()));
+        doc.add(new StringField(NODE_ID, model.getNodeId(), Field.Store.YES));
         doc.add(new TextField(TEXT, model.getText(), Field.Store.YES));
-        doc.add(new StoredField(FILE_ID, model.getFileId().toString()));
+        doc.add(new StringField(FILE_ID, model.getFileId().toString(), Field.Store.YES));
         doc.add(new TextField(TITLE, model.getTitle(), Field.Store.YES));
         doc.add(new StringField(AUTHOR, model.getAuthor(), Field.Store.YES));
         return doc;
