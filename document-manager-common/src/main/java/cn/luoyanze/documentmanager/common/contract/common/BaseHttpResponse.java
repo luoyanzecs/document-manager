@@ -2,6 +2,7 @@ package cn.luoyanze.documentmanager.common.contract.common;
 
 import cn.luoyanze.documentmanager.common.context.TraceContext;
 import cn.luoyanze.documentmanager.common.model.HeadStatus;
+import cn.luoyanze.documentmanager.common.util.SpringUtils;
 import cn.luoyanze.documentmanager.common.util.TimeUtil;
 import cn.luoyanze.documentmanager.dao.tables.records.S1TraceRecord;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,10 +10,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.jooq.DSLContext;
 import org.jooq.tools.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+
+import static cn.luoyanze.documentmanager.dao.Tables.S1_TRACE;
 
 /**
  * @Author luoyanze[luoyanzeze@icloud.com]
@@ -36,14 +40,20 @@ public abstract class BaseHttpResponse {
             TraceContext.setResponse(
                     objectMapper.writeValueAsString(this),
                     (id, ctx, time, timeStamp) -> {
-                        if (!StringUtils.isEmpty(id)) {
-                            S1TraceRecord record = new S1TraceRecord();
-                            record.setUuid(id);
-                            record.setStoreResponse(ctx);
-                            record.setResponseTime(time);
-                            record.setInternal(Long.valueOf(TimeUtil.getTimeStamp() - timeStamp).intValue());
-                            record.update();
+                        try {
+                            if (!StringUtils.isEmpty(id)) {
+                                DSLContext dsl = SpringUtils.getBean(DSLContext.class);
+                                S1TraceRecord record = dsl.newRecord(S1_TRACE);
+                                record.setUuid(id);
+                                record.setStoreResponse(ctx);
+                                record.setResponseTime(time);
+                                record.setInternal(Long.valueOf(TimeUtil.getTimeStamp() - timeStamp).intValue());
+                                record.update();
+                            }
+                        } catch (Exception e) {
+                            LOGGER.error(e.getMessage(), e);
                         }
+
                     }
             );
         } catch (Exception e) {

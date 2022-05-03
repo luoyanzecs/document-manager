@@ -2,7 +2,9 @@ package cn.luoyanze.documentmanager.common.context;
 
 import cn.luoyanze.documentmanager.common.util.IdUtil;
 import cn.luoyanze.documentmanager.common.util.TimeUtil;
+import org.apache.tomcat.jni.Time;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.*;
 
 /**
@@ -48,13 +50,15 @@ public class TraceContext implements AutoCloseable {
         String uuid = IdUtil.getUUID();
         setId(uuid);
         setTimeStamp(TimeUtil.getTimeStamp());
-        // TODO: 根据生成的uuid存储 request， 利用线程池存储， TRACE表
-        executor.submit(() -> t.apply(uuid, ctx, userId, TimeUtil.now()));
+        LocalDateTime now = TimeUtil.now();
+        executor.submit(() -> t.apply(uuid, ctx, userId, now));
     }
 
     public static void setResponse(String ctx, TraceRespRecorder t) {
-        // TODO: 根据uuid存储response， 计算耗时
-        executor.submit(() -> t.apply(getId(), ctx, TimeUtil.now(), getTimeStamp()));
+        String s = getId();
+        Long timeStamp = getTimeStamp();
+        LocalDateTime now = TimeUtil.now();
+        executor.submit(() -> t.apply(s, ctx, now, timeStamp));
 
     }
 }
