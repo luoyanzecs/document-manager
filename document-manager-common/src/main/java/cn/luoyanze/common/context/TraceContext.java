@@ -1,7 +1,10 @@
 package cn.luoyanze.common.context;
 
 import cn.luoyanze.common.util.IdUtil;
+import cn.luoyanze.common.util.TimeUtil;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.concurrent.*;
 
 /**
@@ -14,18 +17,28 @@ public class TraceContext implements AutoCloseable {
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<String> iDThreadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Long> timeThreadLocal = new ThreadLocal<>();
 
-    private static void set(String str) {
-        threadLocal.set(str);
+    private static void setId(String str) {
+        iDThreadLocal.set(str);
     }
 
-    private static String get() {
-        return threadLocal.get();
+    private static String getId() {
+        return iDThreadLocal.get();
+    }
+
+    private static void setTimeStamp(Long time) {
+        timeThreadLocal.set(time);
+    }
+
+    private static Long getTimeStamp() {
+        return timeThreadLocal.get();
     }
 
     private static void clear() {
-        threadLocal.remove();
+        iDThreadLocal.remove();
+        timeThreadLocal.remove();
     }
 
     @Override
@@ -35,15 +48,15 @@ public class TraceContext implements AutoCloseable {
 
     public static void setRequest(String ctx, String userId, TraceReqRecorder t) {
         String uuid = IdUtil.getUUID();
-        TraceContext.set(uuid);
+        setId(uuid);
+        setTimeStamp(TimeUtil.getTimeStamp());
         // TODO: 根据生成的uuid存储 request， 利用线程池存储， TRACE表
-        executor.submit(() -> t.apply(uuid, ctx, userId));
+        executor.submit(() -> t.apply(uuid, ctx, userId, TimeUtil.now()));
     }
 
     public static void setResponse(String ctx, TraceRespRecorder t) {
-        String uuid = TraceContext.get();
         // TODO: 根据uuid存储response， 计算耗时
-        executor.submit(() -> t.apply(uuid, ctx));
+        executor.submit(() -> t.apply(getId(), ctx, TimeUtil.now(), getTimeStamp()));
 
     }
 }

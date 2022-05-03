@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>document-manager</artifactId>
+        <groupId>cn.luoyanze</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>document-manager-dao</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <configuration>
+                    <jdbc>
+                        <driver>com.mysql.cj.jdbc.Driver</driver>
+                        <url>jdbc:mysql://localhost:3306/document_manager?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</url>
+                        <user>root</user>
+                        <password>990610</password>
+                    </jdbc>
+                    <generator>
+                        <database>
+                            <includes>S1_.*</includes>
+                            <inputSchema>document_manager</inputSchema>
+                        </database>
+                        <generate>
+                            <pojos>true</pojos>
+                        </generate>
+                        <target>
+                            <packageName>cn.luoyanze.documentmanager.dao</packageName>
+                            <directory>src/main/java</directory>
+                        </target>
+
+                        <strategy>
+                            <matchers>
+                                <tables>
+                                    <table>
+                                        <expression>^(.*)$</expression>
+                                        <tableClass>
+                                            <!-- table的后缀为TB -->
+                                            <transform>PASCAL</transform>
+                                            <expression>$1_T_B</expression>
+                                        </tableClass>
+                                        <pojoClass>
+                                            <!-- pojo后缀为BO，作为内部使用的简单对象-->
+                                            <transform>PASCAL</transform>
+                                            <expression>$1_B_O</expression>
+                                        </pojoClass>
+                                    </table>
+                                </tables>
+                            </matchers>
+                        </strategy>
+                    </generator>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

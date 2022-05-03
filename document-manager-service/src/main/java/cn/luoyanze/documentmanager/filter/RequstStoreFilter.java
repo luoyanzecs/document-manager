@@ -69,13 +69,13 @@ public class RequstStoreFilter implements Filter {
                 TraceContext.setRequest(
                         json,
                         Optional.ofNullable(head).map(RequestHead::getUserId).orElse(null) + "",
-                        (id, ctx, userId) -> {
+                        (id, ctx, userId, time) -> {
                             S1TraceRecord record = new S1TraceRecord();
                             record.setUuid(id);
                             record.setUserId(Integer.parseInt(id));
                             record.setUrl(Optional.of(path).orElse(""));
                             record.setStoreRequest(ctx);
-                            record.setRequestTime(TimeUtil.now());
+                            record.setRequestTime(time);
                             record.insert();
                         }
                 );

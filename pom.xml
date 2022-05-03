@@ -7,6 +7,7 @@
         <module>document-manager-common</module>
         <module>document-manager-service</module>
         <module>document-manager-web</module>
+        <module>document-manager-dao</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -38,6 +39,11 @@
             <dependency>
                 <groupId>cn.luoyanze</groupId>
                 <artifactId>document-manager-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.luoyanze</groupId>
+                <artifactId>document-manager-dao</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

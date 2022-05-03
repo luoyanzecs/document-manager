@@ -2,6 +2,8 @@ package cn.luoyanze.common.contract.common;
 
 import cn.luoyanze.common.context.TraceContext;
 import cn.luoyanze.common.model.HeadStatus;
+import cn.luoyanze.common.util.TimeUtil;
+import cn.luoyanze.documentmanager.dao.tables.records.S1TraceRecord;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,9 +35,14 @@ public abstract class BaseHttpResponse {
             objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             TraceContext.setResponse(
                     objectMapper.writeValueAsString(this),
-                    (id, ctx) -> {
+                    (id, ctx, time, timeStamp) -> {
                         if (!StringUtils.isEmpty(id)) {
-
+                            S1TraceRecord record = new S1TraceRecord();
+                            record.setUuid(id);
+                            record.setStoreResponse(ctx);
+                            record.setResponseTime(time);
+                            record.setInternal(Long.valueOf(TimeUtil.getTimeStamp() - timeStamp).intValue());
+                            record.update();
                         }
                     }
             );

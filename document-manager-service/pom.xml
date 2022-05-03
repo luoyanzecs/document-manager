@@ -21,6 +21,17 @@
             <groupId>cn.luoyanze</groupId>
             <artifactId>document-manager-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.luoyanze</groupId>
+            <artifactId>document-manager-dao</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cn.luoyanze</groupId>
+                    <artifactId>document-manager-common</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -73,54 +84,5 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-codegen-maven</artifactId>
-                <configuration>
-                    <jdbc>
-                        <driver>com.mysql.cj.jdbc.Driver</driver>
-                        <url>jdbc:mysql://localhost:3306/document_manager?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</url>
-                        <user>root</user>
-                        <password>990610</password>
-                    </jdbc>
-                    <generator>
-                        <database>
-                            <includes>S1_.*</includes>
-                            <inputSchema>document_manager</inputSchema>
-                        </database>
-                        <generate>
-                            <pojos>true</pojos>
-                        </generate>
-                        <target>
-                            <packageName>cn.luoyanze.documentmanager.dao</packageName>
-                            <directory>src/main/java</directory>
-                        </target>
-
-                        <strategy>
-                            <matchers>
-                                <tables>
-                                    <table>
-                                        <expression>^(.*)$</expression>
-                                        <tableClass>
-                                            <!-- table的后缀为TB -->
-                                            <transform>PASCAL</transform>
-                                            <expression>$1_T_B</expression>
-                                        </tableClass>
-                                        <pojoClass>
-                                            <!-- pojo后缀为BO，作为内部使用的简单对象-->
-                                            <transform>PASCAL</transform>
-                                            <expression>$1_B_O</expression>
-                                        </pojoClass>
-                                    </table>
-                                </tables>
-                            </matchers>
-                        </strategy>
-                    </generator>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
