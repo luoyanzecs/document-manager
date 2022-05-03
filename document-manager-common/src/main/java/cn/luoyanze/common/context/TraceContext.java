@@ -33,14 +33,17 @@ public class TraceContext implements AutoCloseable {
         clear();
     }
 
-    public static void setRequest(String ctx) {
+    public static void setRequest(String ctx, String userId, TraceReqRecorder t) {
         String uuid = IdUtil.getUUID();
         TraceContext.set(uuid);
         // TODO: 根据生成的uuid存储 request， 利用线程池存储， TRACE表
+        executor.submit(() -> t.apply(uuid, ctx, userId));
     }
 
-    public static void setResponse(String ctx) {
-        String s = TraceContext.get();
+    public static void setResponse(String ctx, TraceRespRecorder t) {
+        String uuid = TraceContext.get();
         // TODO: 根据uuid存储response， 计算耗时
+        executor.submit(() -> t.apply(uuid, ctx));
+
     }
 }
