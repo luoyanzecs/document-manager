@@ -61,6 +61,7 @@ public class LuceneIndexManager {
         indexWriter.deleteAll();
         indexWriter.addDocuments(createInitIndex());
         indexWriter.commit();
+        indexWriter.close();
     }
 
     private IndexWriter getIndexWriter() {
@@ -127,7 +128,7 @@ public class LuceneIndexManager {
         try {
             IndexWriter indexWriter = getIndexWriter();
             indexWriter.addDocument(wrapperToDocument(model));
-            indexWriter.commit();
+            indexWriter.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -141,7 +142,7 @@ public class LuceneIndexManager {
         try {
             IndexWriter indexWriter = getIndexWriter();
             indexWriter.deleteDocuments(new Term(SearchModel.NODE_ID, nodeId));
-            indexWriter.commit();
+            indexWriter.close();
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -186,6 +187,12 @@ public class LuceneIndexManager {
                             )
                     )
                     .values().stream()
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.groupingBy(
+                            SearchModel::getFileId,
+                            Collectors.reducing((o1, o2) -> o1.getScore() > o2.getScore() ? o1 : o2)
+                    )).values().stream()
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .sorted(Comparator.comparingDouble(SearchModel::getScore).reversed())

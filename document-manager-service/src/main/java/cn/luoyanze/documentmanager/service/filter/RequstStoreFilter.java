@@ -44,7 +44,7 @@ public class RequstStoreFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         String path = req.getRequestURI().substring(req.getContextPath().length()).replaceAll("[/]+$", "");
 
-        if ("/api/checkHealth".equalsIgnoreCase(path)) {
+        if (!"/api/checkHealth".equalsIgnoreCase(path)) {
 
             //if (multipartResolver.isMultipart(req)) {
             //    MultipartHttpServletRequest multipart = multipartResolver.resolveMultipart(req);
@@ -56,7 +56,7 @@ public class RequstStoreFilter implements Filter {
             //    multipart.getParts().stream().collect(Collectors.groupingBy())
             //} else
 
-            if (req.getMethod().equalsIgnoreCase("POST")) {
+            if (!multipartResolver.isMultipart(req) && req.getMethod().equalsIgnoreCase("POST")) {
                 BodyCheckServletRequestWapper requestWrapper = new BodyCheckServletRequestWapper(req);
                 String json = requestWrapper.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
                 RequestHead head = Optional.ofNullable(JSON.parseObject(json, Map.class))
@@ -76,13 +76,12 @@ public class RequstStoreFilter implements Filter {
                             record.insert();
                         }
                 );
-
                 chain.doFilter(requestWrapper, resp);
+                return;
             }
 
-        } else {
-            chain.doFilter(req, resp);
         }
+        chain.doFilter(req, resp);
     }
 }
 

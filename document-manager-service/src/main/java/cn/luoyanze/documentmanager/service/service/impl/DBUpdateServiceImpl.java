@@ -7,7 +7,9 @@ import cn.luoyanze.documentmanager.dao.tables.pojos.S1AttachBO;
 import cn.luoyanze.documentmanager.dao.tables.records.S1NodeRecord;
 import cn.luoyanze.documentmanager.service.exception.CustomException;
 import cn.luoyanze.documentmanager.service.model.NodeType;
+import cn.luoyanze.documentmanager.service.model.SearchModel;
 import cn.luoyanze.documentmanager.service.model.enums.OpraterType;
+import cn.luoyanze.documentmanager.service.search.LuceneIndexManager;
 import cn.luoyanze.documentmanager.service.service.DBUpdateService;
 import com.alibaba.fastjson.JSON;
 import org.jooq.DSLContext;
@@ -39,10 +41,11 @@ public class DBUpdateServiceImpl implements DBUpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DBUpdateServiceImpl.class);
 
     private final DSLContext dao;
+    private final LuceneIndexManager luceneIndexManager;
 
-
-    public DBUpdateServiceImpl(DSLContext dao) {
+    public DBUpdateServiceImpl(DSLContext dao, LuceneIndexManager luceneIndexManager) {
         this.dao = dao;
+        this.luceneIndexManager = luceneIndexManager;
     }
 
 
@@ -90,15 +93,44 @@ public class DBUpdateServiceImpl implements DBUpdateService {
                     ).flatMap(it -> it).collect(Collectors.toList())
             ).execute();
 
-            dao.batchInsert(
-                    request.getNewNodes().stream().map(it ->
-                            new S1NodeRecord(
-                                    it.getId(), it.getStyles(), it.getClasses(),
-                                    JSON.toJSONString(it.getAttr()), it.getTag(),
-                                    it.getType(), it.getParent(), it.getIndex(), it.getText(),
-                                    it.getHash(), request.getFileId(), 0, TimeUtil.now()
-                            )
+            luceneIndexManager.deleteByNodeIds(
+                    deleteIds.stream().filter(it ->
+                        NodeType.TEXT.equalsIgnoreCase(
+                                dao.select(S1_NODE.TYPE).from(S1_NODE)
+                                        .where(S1_NODE.UUID.eq(it))
+                                        .fetchOneInto(String.class)
+                        )
                     ).collect(Collectors.toList())
+            );
+
+            dao.batchInsert(
+                    request.getNewNodes().stream().map(it -> {
+
+                        if (it.getType().equalsIgnoreCase(NodeType.TEXT)) {
+                            SearchModel searchModel = new SearchModel();
+                            searchModel.setText(it.getText());
+                            searchModel.setNodeId(it.getId());
+                            searchModel.setFileId(request.getFileId());
+                            searchModel.setTitle(
+                                    dao.select(S1_DOC.TITLE).from(S1_DOC)
+                                            .where(S1_DOC.PRIMARY_ID.eq(request.getFileId()))
+                                            .fetchOneInto(String.class)
+                            );
+                            searchModel.setAuthor(
+                                    dao.select(S1_USER.ACCOUNT).from(S1_USER)
+                                            .where(S1_USER.PRIMARY_ID.eq(request.getHead().getUserId()))
+                                            .fetchOneInto(String.class)
+                            );
+                            luceneIndexManager.add(searchModel);
+                        }
+
+                        return new S1NodeRecord(
+                                it.getId(), it.getStyles(), it.getClasses(),
+                                JSON.toJSONString(it.getAttr()), it.getTag(),
+                                it.getType(), it.getParent(), it.getIndex(), it.getText(),
+                                it.getHash(), request.getFileId(), 0, TimeUtil.now()
+                        );
+                    }).collect(Collectors.toList())
             ).execute();
 
 

@@ -54,15 +54,13 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
     }
 
     private String highLight(String text, String input)  {
-        StringBuilder res = new StringBuilder("<p>");
-
+        String res = text;
         Set<String> words = new HashSet<>(getWords(input));
         for (String word : words) {
-            text = text.replaceAll(word, "<span style=\"background-color:#FBBF24\">" + word + "</span>");
+            res = res.replaceAll(word, "<span style=\"background-color:#FBBF24\">" + word + "</span>");
         }
 
-        res.append(text);
-        return res.append("</p>").toString();
+        return res;
     }
 
     private List<String> getWords(String input) {
@@ -80,7 +78,6 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
                 }
             }
             reader.close();
-            System.out.println(words);
             return words;
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
